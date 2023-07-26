@@ -1,0 +1,759 @@
+﻿@using MvcJqGrid
+@using MvcJqGrid.Enums
+@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Prospects";
+}
+@{
+    var PROSPECTS_GRID = "Prospects";
+}
+@section header {
+
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/UpdatedJqgrid")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/generalHelper")
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/jqGrid")
+
+}
+<style type="text/css">
+    input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
+        background-color: #fff;
+        cursor: text;
+    }
+
+    .ui-datepicker .ui-datepicker-title select {
+        height: 20px;
+        padding: 0px;
+    }
+
+    .filter-row {
+        margin-bottom: 10px !important;
+    }
+
+    .date-error input[type="text"] {
+        margin-bottom: 0 !important;
+    }
+
+    .date-error span {
+        color: Red;
+        display: none;
+    }
+
+    #botttom-nav ul {
+        list-style: none;
+        margin-left: -5px;
+        padding-bottom: 15px;
+        margin-top: 16px;
+    }
+
+        #botttom-nav ul li {
+            float: left;
+            padding: 0px 5px;
+            border-right: 1px solid #000;
+            font-size: 12px;
+            line-height: 14px;
+        }
+
+            #botttom-nav ul li:last-child {
+                border-right: none;
+            }
+
+    .prspcttbl tbody > tr td:first-child {
+        text-align: right;
+        float: right;
+        min-width: 144px;
+    }
+
+    .prspcttbl tbody > tr td {
+        padding: 0px 1px 1px 12px;
+    }
+
+    .row-fluid {
+        display: flex;
+        /*padding: 0px 0px 10px 10px;*/
+    }
+
+    .head-div {
+        width: 20%;
+    }
+
+    .radio-div {
+        width: 80%;
+        float: left;
+        margin: 7px 0px 0px 0px;
+    }
+
+        .radio-div > input[type="radio"] {
+            margin-left: 14px;
+        }
+
+    .head-div h5 {
+        font-size: 12px;
+    }
+</style>
+
+<section>
+    <div class="row">
+        <div class="span6 section-heading">
+            <h1>@ViewData["PartnerName"]</h1>
+        </div>
+        <div class="span6">
+            <div class="page-header-btn-group btn-group pull-right">
+
+                @Html.Action("ManageMenu", "Apps")
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-error" id="ErrorMessage" style="display:none">
+    </div>
+
+    <ul id="optionsSelectTabs" class="nav nav-tabs">
+        <li class="active"><a class="tabChange" id="ProspectsTab" href="#manageProspects" data-toggle="tab">Manage Prospects</a></li>
+        @*@if (Roles.IsUserInRole("BHIADMIN") || Roles.IsUserInRole("PARTNERSUPERADMIN"))
+        {
+            <li><a class="tabChange" id="LotsTab" href="#configuration" data-toggle="tab">Configuration</a></li>
+        }*@
+    </ul>
+    <div class="tab-content">
+        @*style="padding:0px 13px 50px 4px;"*@
+        <div class="tab-pane active" id="manageProspects">
+            <div class="row filter-row">
+                <div class="span4">
+                    <select class="span4" id="drpCommunity">
+                        <option value="">--Select Community Name--</option>
+                        @foreach (var opt in ViewData["Communities"] as IEnumerable<string>)
+                        {
+                            <option value="@opt">@opt</option>
+                        }
+                    </select>
+                </div>
+                <div class="span2 date-error">
+                    <input type="text" id="fromDate" placeholder="From Date" class="span2 filterDate" readonly="readonly" />
+                    <span id="startDateError">Select a date</span>
+
+                </div>
+
+
+                <div class="span2 date-error">
+
+                    <input type="text" id="toDate" placeholder="To Date" class="span2 filterDate" readonly="readonly" />
+                    <span id="endDateError">Select a date</span>
+
+                </div>
+                <div class="span2 custom-col-reset">
+                    <a id="btnReset">Reset</a>
+                </div>
+                <div class="span2 custom-col-filter">
+
+                    <button class="btn" type="button" id="btnApplyFilter">Apply Filter</button>
+
+                </div>
+                <div class="span2 custom-col-filter">
+                    <button class="btn btn-primary" id="AddProspect" type="button">Add Prospect</button>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="span12 table-fixed-head-container">
+                    @(Html.Grid(PROSPECTS_GRID)
+                  .AddColumn(new Column("ID").SetHidden(true))
+                  .AddColumn(new Column("ProspectId").SetHidden(true))
+                  .AddColumn(new Column("Name").SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Prospect Name"))
+                  .AddColumn(new Column("CommunityName").SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Community Name"))
+                  .AddColumn(new Column("LastDateOfVisit").SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Date of Visit").SetWidth(90))
+                  .AddColumn(new Column("NumberOfFavorites").SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("# of Favorites").SetWidth(90))
+                  .AddColumn(new Column("EmailAddress").SetAlign(MvcJqGrid.Enums.Align.Center))
+                  .AddColumn(new Column("HomePhone").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(100).SetLabel("Home Phone"))
+                  .AddColumn(new Column("MobilePhone").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(100).SetLabel("Mobile Phone"))
+                  .SetUrl(Url.Action("GetProspects"))
+                  .SetRequestType(MvcJqGrid.Enums.RequestType.Post)
+                  .SetAutoWidth(true)
+                  .SetSortName("Name")
+                  .SetSortOrder(SortOrder.Asc)
+                  .SetMultiSelect(true)
+                  .OnLoadComplete("load()")
+                  .SetRowNum(15)
+                  .SetRowList(new[] { 10, 15, 20, 50 })
+                  .SetPager("pager")
+                  .SetViewRecords(true)
+                  .OnSelectRow("onRowSelected(rowid, status)")
+                  .OnSelectAll("onAllRowSelected(aRowids,status)")
+                    .OnPaging("onPaging()")
+                    .OnSortCol("onSort()")
+                    //.OnPaging("SaveSelectedRows()")
+                    )
+                </div>
+            </div>
+            <div class="row " id="botttom-nav">
+                <div class="span12">
+                    <ul>
+                        <li><a href="javascript:void(0);" role="button" data-toggle="modal" onclick="deleteSelected();" id="lnkDeleteProspect">Delete Selected</a></li>
+                        <li><a class="prospect-export" href="javascript:void(0);" onclick="exportSelected();">Export Selected</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @*@if (Roles.IsUserInRole("BHIADMIN") || Roles.IsUserInRole("PARTNERSUPERADMIN"))
+        {
+            <div class="tab-pane" id="configuration" style="overflow: hidden;">
+                <div>
+                    <label style="font-size: 12px;">
+                        Select qualification fields to display on new Guest Registration entries.<br /> <strong>Important:</strong> This configuration will affect all communities.
+                    </label>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>First Name</h5>
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="fstname" value="true" checked="checked" disabled="disabled" /><span>Yes</span>
+                        <input type="radio" name="fstname" disabled="disabled" value="false" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Last Name</h5>
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="lstname" value="true" checked="checked" disabled="disabled" /><span>Yes</span>
+                        <input type="radio" name="lstname" disabled="disabled" value="false" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Email Address</h5>
+
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="emailaddress" value="true" checked="checked" disabled="disabled" /><span>Yes</span>
+                        <input type="radio" name="emailaddress" disabled="disabled" value="false" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Phone</h5>
+
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="Phone" value="true" data-bind="checked:Phone" /><span>Yes</span>
+                        <input type="radio" name="Phone" value="false" data-bind="checked:Phone" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Mailing Address</h5>
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="mailingaddress" value="true" data-bind="checked:MailingAddress" /><span>Yes</span>
+                        <input type="radio" name="mailingaddress" value="false" data-bind="checked:MailingAddress" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Zip Code</h5>
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="zipcode" value="true" data-bind="checked:ZipCode" disabled="disabled" /><span>Yes</span>
+                        <input type="radio" name="zipcode" disabled="disabled" value="false" data-bind="checked:ZipCode" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Guest Card #</h5>
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="guestcardnumber" value="true" data-bind="checked:GuestCardNumber" /><span>Yes</span>
+                        <input type="radio" name="guestcardnumber" value="false" data-bind="checked:GuestCardNumber" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Referral Sources</h5>
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="referralsources" value="true" data-bind="checked:ReferralSources" /><span>Yes</span>
+                        <input type="radio" name="referralsources" value="false" data-bind="checked:ReferralSources" /><span>No</span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>ISP: Request Info buttons</h5>
+
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="requestInfoModal" value="true" data-bind="checked:RequestInfoModal" /><span>Yes</span>
+                        <input type="radio" name="requestInfoModal" value="false" data-bind="checked:RequestInfoModal" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>ISP: Builder Logo</h5>
+
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="builderLogo" value="true" data-bind="checked:BuilderLogo" /><span>Yes</span>
+                        <input type="radio" name="builderLogo" value="false" data-bind="checked:BuilderLogo" /><span>No</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="head-div">
+                        <h5>Consumer App Invitation</h5>
+
+                    </div>
+                    <div class="radio-div">
+                        <input type="radio" name="emailAllowed" value="true" data-bind="checked:EmailAllowed" /><span>Yes</span>
+                        <input type="radio" name="emailAllowed" value="false" data-bind="checked:EmailAllowed" /><span>No</span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <input type="button" class="btn btn-primary " value="Save Changes" data-bind="click:saveConfiguration" />
+                    <input type="button" class="btn " value="Cancel" data-bind="click:getConfiguration" />
+                </div>
+            </div>
+        }*@
+    </div>
+</section>
+@section modal {
+
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title" id="mySmallModalLabel">
+                This will delete the selected prospects. Are you sure?
+                <a class="anchorjs-link" href="#mySmallModalLabel">
+                    <span class="anchorjs-icon"></span>
+                </a>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <!-- Indicates a successful or positive action -->
+                <div class="span1">
+                    <button type="button" class="btn btn-success btn-confirm">
+                        OK
+                    </button>
+                </div>
+                <!-- Indicates a dangerous or potentially negative action -->
+                <div class="span1">
+                    <button type="button" class="btn btn-danger">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+    @*@if (Roles.IsUserInRole("BHIADMIN") || Roles.IsUserInRole("PARTNERSUPERADMIN"))
+    {
+        <script type="text/javascript">
+            var prospectConfiguration = function () {
+                this.Phone = ko.observable("true");
+                this.ZipCode = ko.observable("true");
+                this.GuestCardNumber = ko.observable("true");
+                this.MailingAddress = ko.observable("true");
+                this.ReferralSources = ko.observable("true");
+                this.RequestInfoModal = ko.observable("true");
+                this.BuilderLogo = ko.observable("true")
+                this.EmailAllowed = ko.observable("true");
+                this.ID = ko.observable("0");
+                saveConfiguration = function () {
+                    $.post("@Url.Action("SaveProspectConfiguration")", ko.toJS(this), function (data) {
+                        vm.ID = ko.observable(data.id);
+                        saveSuccessful();
+                    }).fail(function () {
+                        saveUnsuccessful();
+                    });
+                };
+                getConfiguration = function () {
+                    $.post("@Url.Action("GetProspectConfiguration")", function (data) {
+                        vm.Phone(data.Phone.toString());
+                        vm.ZipCode(data.ZipCode.toString());
+                        vm.GuestCardNumber(data.GuestCardNumber.toString());
+                        vm.MailingAddress(data.MailingAddress.toString());
+                        vm.ReferralSources(data.ReferralSources.toString());
+                        vm.ID(data.ID.toString());
+                        vm.RequestInfoModal(data.RequestInfoModal.toString());
+                        vm.BuilderLogo(data.BuilderLogo.toString());
+                        vm.EmailAllowed(data.EmailAllowed.toString());
+                    });
+                };
+            };
+            var vm = new prospectConfiguration();
+            $.when(getConfiguration()).done(function () {
+                ko.applyBindings(vm);
+            });
+        </script>
+    }*@
+    <script type="text/javascript">
+        var CustomDefaults = {
+            RowDetailsUrl: '/Prospects/GetProspectById',
+            Params: {
+            },
+            RowDetailsAllowed: true
+        };
+        var isSelectAll = false;
+        var loadClick = false;
+        var selectedIds = [];
+        var idsToExclude = [];
+        $(function () {
+            var dates = $("#fromDate, #toDate ").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'm/d/yy',
+                maxDate: new Date(),
+                onSelect: function (selectedDate) {
+                    $(this).css("border", "");
+                    $(this).next("span").hide();
+                    var option = this.id == "fromDate" ? "minDate" : "maxDate",
+                        instance = $(this).data("datepicker"),
+                        date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
+                }
+            });
+
+            $(".btn-confirm").click(function () {
+                $("#myModal").modal("toggle");
+                deleteProspects();
+            });
+
+            $(".btn-danger").click(function () {
+                $("#myModal").modal("toggle");
+            });
+
+
+            $("#btnApplyFilter").click(function () {
+                clearSelection();
+
+                var filterObj = new filterContext();
+                prospect_community = filterObj.Community;
+                prospect_toDate = filterObj.ToDate;
+                prospect_fromDate = filterObj.FromDate;
+                var valid = validate(filterObj);
+                if (valid) {
+                    filteredData(filterObj);
+                }
+                else {
+                    return false;
+                }
+            });
+
+            $("#btnReset").click(function () {
+                var dates = $("#fromDate, #toDate");
+                $("#startDateError").hide();
+                $("#endDateError").hide();
+                Reset();
+                dates.each(function () {
+                    $.datepicker._clearDate(this);
+                });
+                dates.datepicker("option", { maxDate: new Date() });
+                $("#btnApplyFilter").trigger("click");
+            });
+
+            $(document).delegate('#cb_@PROSPECTS_GRID', 'click', function () {
+                $("#ErrorMessage").hide();
+                if (!loadClick) {
+
+                    idsToExclude = [];
+                }
+                var isChecked = $('#cb_@PROSPECTS_GRID').is(":checked");
+                if (isChecked) {
+                    isSelectAll = true;
+                }
+                else {
+                    isSelectAll = false;
+                }
+                loadClick = false;
+            });
+
+
+            // CheckBoxLast.documentLoad("#@PROSPECTS_GRID");
+        });
+
+        function validate() {
+            var filterObj = new filterContext();
+            $(".filterDate").css("border", "");
+            if (filterObj.FromDate != "" || filterObj.ToDate != "") {
+                if (filterObj.FromDate == "") {
+                    $("#fromDate").css("border", "1px solid red");
+                    $("#startDateError").show();
+                    return false;
+                } else if (filterObj.ToDate == "") {
+                    $("#toDate").css("border", "1px solid red");
+                    $("#endDateError").show();
+                    return false;
+                } else if (filterObj.FromDate != "" && filterObj.ToDate != "") {
+                    $(".filterDate").css("border", "");
+                    $("#startDateError").hide();
+                    $("#endDateError").hide();
+                    return true;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+
+
+        function Reset() {
+            $(".filterDate").css("border", "");
+            $("#drpCommunity").val("");
+            $("#fromDate").val("");
+            $("#toDate").val("");
+            prospect_community = "";
+            prospect_toDate = "";
+            prospect_fromDate = "";
+            clearSelection();
+        }
+
+        function filterContext() {
+            this.Community = $("#drpCommunity").val();
+            this.FromDate = $("#fromDate").val();
+            this.ToDate = $("#toDate").val();
+        }
+
+        function filteredData(filterObj) {
+            var data = JSON.stringify(filterObj);
+            $("#Prospects").jqGrid().setGridParam({ postData: filterObj, page: 1 }).trigger('reloadGrid');
+        }
+
+        var prospect_community = "";
+        var prospect_fromDate = "";
+        var prospect_toDate = "";
+
+        function exportSelected() {
+            var sortOrder = jQuery("#@PROSPECTS_GRID").jqGrid('getGridParam', 'sortorder');
+            var sortColumn = jQuery("#@PROSPECTS_GRID").jqGrid('getGridParam', 'sortname');
+            var isAll = isSelectAll;
+            var isAllChecked = $('#cb_@PROSPECTS_GRID').is(":checked");
+            var currentSelectedIds = jQuery("#@PROSPECTS_GRID").jqGrid('getGridParam', 'selarrrow');
+            if (selectedIds.length == 0 && (isAll || !isAll) && currentSelectedIds.length == 0) {
+                $("#ErrorMessage").show();
+                $("#ErrorMessage").html("Please select prospect(s) to export");
+                goToByScroll("ErrorMessage");
+
+                return false;
+            }
+            var idsToFuntion = "";
+            var idsExcludeToFunction = "";
+            if (isAll && idsToExclude.length > 0) {
+                $.each(idsToExclude, function (index, value) {
+                    idsExcludeToFunction += value + ",";
+                });
+            }
+            if (selectedIds.length > 0 || isAll) {
+                $.each(selectedIds, function (index, value) {
+                    idsToFuntion += value + ",";
+                });
+
+            } else if (currentSelectedIds.length > 0) {
+                $.each(currentSelectedIds, function (index, value) {
+                    var id = getColumnData("#@(PROSPECTS_GRID)", value, "ProspectId");
+                    idsToFuntion += id + ",";
+                });
+            }
+
+            if (isAll && isAllChecked && currentSelectedIds.length > 0) {
+
+                idsToExclude = [];
+                idsExcludeToFunction = "";
+            }
+            var URL = "/Prospects/DownloadCSVFormat";
+            $.ajax({
+                url: URL,
+                cache: false,
+                processData: false,
+                type: "Post",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    window.location = '/Prospects/ExportSelected?Ids=' + idsToFuntion + '&Community=' + prospect_community + '&FromDate=' + prospect_fromDate + '&ToDate=' + prospect_toDate + '&SortOrder=' + sortOrder + '&SortName=' + sortColumn + '&IsAll=' + isAll + '&ExcludeIds=' + idsExcludeToFunction + '&IsAllChecked=' + isAllChecked;
+                }
+            });
+
+        }
+
+
+        function onRowSelected(rowid, status) {
+            $("#ErrorMessage").hide();
+
+            if (status) {
+                var i = selectedIds.indexOf(rowid);
+                if (i == -1) {
+                    selectedIds.push(rowid);
+                }
+                var j = idsToExclude.indexOf(rowid);
+                if (j != -1) {
+                    idsToExclude.splice(j, 1);
+                }
+            }
+            else {
+                selectedIds = $.grep(selectedIds, function (value) {
+                    return value != rowid;
+                });
+                var i = idsToExclude.indexOf(rowid);
+                if (i == -1) {
+                    idsToExclude.push(rowid);
+                }
+            }
+            selectAllSelection();
+        }
+
+        function load() {
+            if (isSelectAll) {
+                loadClick = true;
+                $('#cb_@PROSPECTS_GRID').trigger('click');
+                $.each(idsToExclude, function (index, value) {
+                    $('#jqg_Prospects_' + value).trigger('click');
+                });
+            }
+            else {
+                $.each(selectedIds, function (index, value) {
+                    $('#jqg_Prospects_' + value).trigger('click');
+                });
+            }
+            selectAllSelection();
+        }
+
+        function selectAllSelection() {
+            if (idsToExclude.length > 0) {
+                $('#cb_@PROSPECTS_GRID').prop('checked', false);
+            } else if (idsToExclude.length == 0 && isSelectAll) {
+                $('#cb_@PROSPECTS_GRID').prop('checked', true);
+                idsToExclude = [];
+            }
+        }
+
+        function onAllRowSelected(aRowids, status) {
+            if (status) {
+                for (i = 0; i < aRowids.length; i++) {
+                    if (selectedIds.indexOf(aRowids[i]) < 0) {
+                        selectedIds.push(aRowids[i]);
+                        $('#jqg_Prospects_' + aRowids[i]).prop('checked', true);
+                    }
+                }
+            }
+            else {
+                selectedIds = [];
+                idsToExclude = [];
+            }
+        }
+
+        function clearSelection() {
+            isSelectAll = false;
+            idsToExclude = [];
+            selectedIds = [];
+            loadClick = false;
+            $("#ErrorMessage").hide();
+        }
+
+        function resetSaveLabel() {
+            $("#confirmationMessage").removeClass("sucessfully-alert");
+            $("#confirmationMessage").removeClass("unsucessfully-alert");
+            $("#confirmationMessage").text("");
+        }
+
+        function saveSuccessful() {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("sucessfully-alert");
+            $("#confirmationMessage").text("Changes saved");
+            $("#confirmationMessage").show();
+            $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+        }
+        function saveUnsuccessful() {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("unsucessfully-alert");
+            $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+            $("#confirmationMessage").text("Save operation not completed");
+            $("#confirmationMessage").show();
+        }
+
+        function deleteSelected() {
+            $("#ErrorMessage").hide();
+            var currentSelectedIds = jQuery("#@PROSPECTS_GRID").jqGrid('getGridParam', 'selarrrow');
+            if (currentSelectedIds.length == 0) {
+                $("#lnkDeleteProspect").attr("href", "#");
+                $("#ErrorMessage").show();
+                $("#ErrorMessage").html("Please select prospect(s) to delete");
+                goToByScroll("ErrorMessage");
+            }
+            else {
+                $("#lnkDeleteProspect").attr("href", "#myModal");
+            }
+        }
+
+        function deleteProspects() {
+            var prospectsList = "";
+            var currentSelectedIds = jQuery("#@PROSPECTS_GRID").jqGrid('getGridParam', 'selarrrow');
+            $.each(currentSelectedIds, function (index, value) {
+                if (prospectsList.length > 0) {
+                    prospectsList = prospectsList + "," + value;
+                }
+                else {
+                    prospectsList = value;
+                }
+            });
+            $.ajax('@Url.Action("DeleteProspects")', {
+                data: JSON.stringify({
+                    prospectsInfo: prospectsList
+                }),
+                type: "post",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    if (data.Success == "false") {
+                        saveUnsuccessful();
+                        $("#ErrorMessage").show();
+                        $("#ErrorMessage").html(data.Error);
+                        goToByScroll("ErrorMessage");
+                    }
+                    else {
+                        saveSuccessful();
+                        $("#ErrorMessage").hide();
+                        clearSelection();
+                        // isAllChecked = false;
+                        // isSelectAll=false;
+                        jQuery("#@(PROSPECTS_GRID)").trigger('reloadGrid');
+                        goToByScroll("confirmationMessage");
+                    }
+
+                }
+            });
+        }
+
+        function clearExcludeIds() {
+            var isChecked = $('#cb_@PROSPECTS_GRID').is(":checked");
+            if (isSelectAll && isChecked) {
+                idsToExclude = [];
+
+            }
+
+        }
+
+
+        function onPaging() {
+
+            clearExcludeIds();
+        }
+        function onSort() {
+
+            clearExcludeIds();
+        }
+        $('#AddProspect').on('click', function () {
+            window.location.href = 'Prospects/AddProspect';
+        });
+
+    </script>
+}

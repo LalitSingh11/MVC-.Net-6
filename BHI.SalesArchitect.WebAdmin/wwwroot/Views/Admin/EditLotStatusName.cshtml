@@ -1,0 +1,85 @@
+﻿@using System.Web.Optimization;
+@{
+    Layout = null;
+}
+@section header {
+
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/themes/base/css")
+}
+<script type="text/javascript">
+
+    function resetSaveLabel() {
+        $("#confirmationMessage").removeClass("sucessfully-alert");
+        $("#confirmationMessage").removeClass("unsucessfully-alert");
+        $("#confirmationMessage").text("");
+    }
+
+    $('#updateChanges').click(function () {
+
+        var updatedLotName = $('#newLotStatusName').val().trim();
+        if (updatedLotName != null && updatedLotName != undefined && updatedLotName != "") {
+            var jsonModel = { lotStatusName: updatedLotName, configId: @ViewBag.LotStateConfigId };
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/UpdateLotStatusName',
+                data: jsonModel,
+                success: function (data) {
+
+                    if (data.success == true) {
+                        loadConfig();
+                        $("#cc-close").click();
+
+                        resetSaveLabel();
+                        $("#confirmationMessage").addClass("sucessfully-alert");
+                        $("#confirmationMessage").text("Lot Status name updated successfully.");
+                        $("#confirmationMessage").fadeIn().delay(2000).fadeOut();
+                    } else {
+                        resetSaveLabel();
+                        $("#confirmationMessage").addClass("unsucessfully-alert");
+                        $("#confirmationMessage").text(data.Message);
+                        $("#confirmationMessage").fadeIn().delay(2000).fadeOut();
+                    }
+                }
+            });
+        } else {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("unsucessfully-alert");
+            $("#confirmationMessage").text("Lot status name cannot be empty.");
+            $("#confirmationMessage").fadeIn().delay(2000).fadeOut();
+        }
+
+    });
+
+    $('#cc-close').click(function () {
+        $("#customContentModal").addClass("hide");
+        $("#customContentModal").removeClass("in");
+        $("#customContentModal").hide();
+        $("#cc-backdrop").hide();
+    });
+
+</script>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="cc-close">×</button>
+    <h3 id="modalLabel">Edit Lot Status Name</h3>
+</div>
+<div class="modal-body" style="max-height: 430px;">
+    <form method="post">
+        <div class="form-horizontal">
+            <div class="control-group">
+                <label for="name" class="control-label" style="width: 180px !important; text-align: left;">Current Value:</label>
+                <label class="control-label" style="text-align: left; width: 290px;">@ViewBag.LotStateName</label>
+            </div>
+            <div class="control-group">
+                <label for="name" class="control-label" style="width: 180px !important; text-align: left;">New Lot status name:</label>
+                <div class="controls" style="text-align:left;">
+                    <input type="text" id="newLotStatusName" style="width:290px;" maxlength="41"></input>
+                </div>
+            </div>
+            <input type="button" class="btn btn-primary" style="float:right;" value="Update" id="updateChanges">
+        </div>
+    </form>
+</div>

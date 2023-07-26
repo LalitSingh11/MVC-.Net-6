@@ -1,0 +1,52 @@
+﻿<div class="row-fluid">
+    <div class="radio-div">
+        <input type="radio" name="partnerType" value="1" data-bind="checked:PartnerType,event:{change:hideMapsDiv}" style="margin: 0 10px 0 0;" /><span>SVG ISP Partner</span></br>
+        @*<input type="radio" name="partnerType" value="2" data-bind="checked:PartnerType,event:{change:hideMapsDiv}" style="margin: 0 10px 0 0;" /><span>Free Geospatial ISP Partner</span></br>*@
+        <input type="radio" name="partnerType" value="3" data-bind="checked:PartnerType,event:{change:hideMapsDiv}" style="margin: 0 10px 0 0;" /><span>Paid Geospatial ISP Partner</span></br>
+        <input type="radio" name="partnerType" value="4" data-bind="checked:PartnerType,event:{change:hideMapsDiv}" style="margin: 0 10px 0 0;" /><span>SVG and Paid Geospatial ISP Partner</span>
+    </div>
+    <div id="mapsAPIKeydiv" data-bind="visible:isMapsAPIKeydiv">
+        <h6>Google Maps API Key* <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">API key is a preferred key for Geospatial ISP, Client ID will only be used if Google API key is not available.</span></div></h6>
+        <div class="row-fluid">
+            <div class="span4">
+                <div class="control-group">
+                    <label class="control-label">API Key </label>
+                    <div class="controls">
+                        <input class="input-block-level" type="text" id="googleMapsAPIKey" name="apiKey" placeholder="API Key" data-bind="value: GoogleAPIKey" />
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="control-group">
+                    <label class="control-label">Client ID</label>
+                    <div class="controls">
+                        <input class="input-block-level" type="text" id="googleMapsClientId" name="clientId" placeholder="Client Id" data-bind="value: GoogleClientId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid" data-bind="visible:isPreviewISPdiv">
+        <div class="head-div">
+            <h5>Preview ISP Plugin <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Enable ISP Plugin Preview Link on Admin Panel</span></div></h5>
+        </div>
+        <div class="radio-div">
+            <input type="radio" name="previewISPPlugin" value="true" data-bind="checked:PreviewISPPlugin" class="isp-radio" /><span class="isp-config">Yes</span>
+            <input type="radio" name="previewISPPlugin" value="false" data-bind="checked:PreviewISPPlugin" class="isp-radio" /><span>No</span>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="head-div">
+            <h5>Envision NHT Builder Number <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Envision Builder ID</span></div></h5>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <input class="input-block-level" type="text" id="nhtBuilderNumber" placeholder="NHT Builder Number" data-bind="value: NHTBuilderNumber" maxlength="50" />
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="form-actions">
+        <input type="button" class="btn btn-primary " value="Save Changes" data-bind="click:savePartnerTypeConfiguration" />
+        <input type="button" class="btn " value="Cancel" data-bind="click:getPartnerTypeConfiguration" />
+    </div>

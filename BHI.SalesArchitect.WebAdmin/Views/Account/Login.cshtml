@@ -1,0 +1,60 @@
+﻿@model BHI.SalesArchitect.WebAdmin.Models.LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<style>
+    #login-screen .controls {
+        text-align: left;
+        margin-left: 230px;
+    }
+</style>
+
+<section id="loginForm">
+    <hr class="signin-sep">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 signin">
+            <h3>Please sign in:</h3>
+            <div class="well signin-box">
+
+                <!--
+
+                When validating the form, add the 'error' class from the control-group div
+                and add the error message to the 'help-inline' span to display errors
+
+                -->
+                <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" asp-route-isSecured="@ViewData["IsSecured"]" asp-route-requestedCommunityID="@ViewData["RequestedCommunityID"]" asp-route-requestedPartnerID="@ViewData["RequestedPartnerID"]" method="post" class="form-horizontal" id="login-screen">
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <div class="control-group">
+                        <label class="control-label" for="UserName">Username</label>
+                        <div class="controls">
+                            <input asp-for="UserName" class="form-control" />
+                            <span class="text-danger">@Html.ValidationMessageFor(m => m.UserName)</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="Password">Password</label>
+                        <div class="controls">
+                            <input asp-for="Password" class="form-control" />
+                            <span class="text-danger">@Html.ValidationMessageFor(m => m.Password)</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- .row -->
+</section>

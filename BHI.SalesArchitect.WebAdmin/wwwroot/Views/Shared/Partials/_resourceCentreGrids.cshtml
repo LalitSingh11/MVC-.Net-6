@@ -1,0 +1,28 @@
+﻿@using MvcJqGrid
+@using MvcJqGrid.Enums
+@using System.Web.Optimization;
+@model IEnumerable<BHI.SalesArchitect.Model.ConsumerAppResource>
+
+@foreach (var item in Model)
+{
+    <h5>@item.Title</h5>
+    <div class="row">
+        <div class="span12 table-fixed-head-container">
+            @(Html.Grid(item.Title.Replace(" ", "_"))
+                                                                                              .AddColumn(new Column("ID").SetHidden(true))
+                                                                                              .AddColumn(new Column("ParentId").SetHidden(true))
+                                                                                              .AddColumn(new Column("Title").SetLabel("Resource Title"))
+                                                                                              .AddColumn(new Column("URL").SetLabel("Resource URL"))
+                                                                                              .SetUrl(Url.Action("GetResourceDetailsByPartnerId", "Apps", new { parentID = item.ID, builderBDXId = ViewBag.BuilderBDXId}))
+                                                                                              .SetRequestType(MvcJqGrid.Enums.RequestType.Post)
+                                                                                              .OnLoadComplete("load()")
+                                                                                              .SetWidth(938)
+                                                                                              .SetMultiSelect(true)
+                                                                                              .SetViewRecords(true)
+                                                                                              .OnSelectRow("onRowSelected(rowid, status," + @item.Title.Replace(" ", "_") + ")")
+                                                                                              .OnSelectAll("onAllRowSelected(aRowids,status)")
+                                                                                                                              .OnPaging("onPaging()")
+            )
+        </div>
+    </div>
+}

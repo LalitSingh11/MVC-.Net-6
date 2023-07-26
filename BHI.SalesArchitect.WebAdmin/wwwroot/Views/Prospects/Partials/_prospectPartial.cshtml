@@ -1,0 +1,130 @@
+﻿@model BHI.SalesArchitect.Model.ProspectResult
+@{
+    var referralSources = ViewBag.ReferralSources as List<IGrouping<string, BHI.SalesArchitect.Model.ReferralSources>>;
+}
+
+<table class="prspcttbl">
+    <tr>
+        <td>
+            <strong>Prospect Name:</strong>
+        </td>
+        <td>
+            @string.Format("{0} {1}", Model.FirstName, Model.LastName)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Community Name:</strong>
+        </td>
+        <td>
+            @string.Format("{0}", Model.CommunityName)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Date Of Visit:</strong>
+        </td>
+        <td>
+            @Model.LastDateOfVisit
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Number Of Favorites:</strong>
+        </td>
+        <td>
+            @Model.NumberOfFavorites
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Email Address:</strong>
+        </td>
+        <td>
+            @Model.EmailAddress
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Home Phone:</strong>
+        </td>
+        <td>
+            @(String.IsNullOrEmpty(Model.HomePhone) ? "--" : Model.HomePhone)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Guest Card Number:</strong>
+        </td>
+        <td>
+            @(String.IsNullOrEmpty(Model.CardNumber) ? "--" : Model.CardNumber)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Address:</strong>
+        </td>
+        <td>
+            @(String.IsNullOrEmpty(Model.Address) ? "--" : Model.Address)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>State:</strong>
+        </td>
+        <td>
+            @(String.IsNullOrEmpty(Model.State) ? "--" : Model.State)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>City:</strong>
+        </td>
+        <td>
+            @(String.IsNullOrEmpty(Model.City) ? "--" : Model.City)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Zip Code:</strong>
+        </td>
+        <td>
+            @(String.IsNullOrEmpty(Model.ZipCode) ? "--" : Model.ZipCode)
+        </td>
+    </tr>
+    @if (referralSources != null && referralSources.Count() > 0)
+    {
+        <tr>
+            <td>
+                <strong>Referral Sources:</strong>
+            </td>
+            <td>
+                <table>
+                    @foreach (var item in referralSources)
+                    {
+                        if (item.Where(x => !string.IsNullOrEmpty(x.SubTitle) || !string.IsNullOrEmpty(x.CustomValue)).Any())
+                        {
+                            <tr>
+                                <td style="text-align:left;float:left">
+                                    <div style="float:left;margin-left:-12px">
+                                        <div style="float:left;width:58px">@item.Key<div style="float:right">:</div></div>
+                                        <div style="float:left">
+                                            &nbsp;
+                                            @(string.Join(", ", item.Where(x => !string.IsNullOrEmpty(x.SubTitle) || !string.IsNullOrEmpty(x.CustomValue)).Select(x => (string.IsNullOrEmpty(x.CustomValue) || string.IsNullOrEmpty(x.SubTitle) ? (x.SubTitle) : (x.SubTitle + ": ")) + (!string.IsNullOrEmpty(x.CustomValue) ? x.CustomValue : "")).ToArray()))
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            <a style="color:#0088cc" href="/Prospects/AddProspect?prospectId=@Model.ID">Edit</a>
+        </td>
+    </tr>
+
+</table>

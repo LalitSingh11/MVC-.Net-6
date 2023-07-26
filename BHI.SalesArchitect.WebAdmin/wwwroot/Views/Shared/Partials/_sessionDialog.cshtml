@@ -1,0 +1,20 @@
+﻿<input type="hidden" id="hdnAppPath" value=@BHI.SalesArchitect.Core.Configurations.EnvironmentSettings.Settings.ServerName />
+<input type="hidden" id="hdnSessionTimeout" value=@System.Configuration.ConfigurationManager.AppSettings["SessionExpireTime"] />
+<input type="hidden" id="hdnSessionExpNotice" value=@System.Configuration.ConfigurationManager.AppSettings["SessionExpNotice"] />
+<input type="hidden" id="hdnSessionTimeoutCheckInterval" value=@System.Configuration.ConfigurationManager.AppSettings["sessionTimeoutCheckInterval"] />
+<div class="custom-alert-card-wrapper" id="SessionExpNotice" style="display:none;">
+    <div class="modal fadeIn" style="width:400px !important; margin:-200px 0 0 -180px;height: 135px !important;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body" style="text-align:center;padding:30px;">
+                    <h5 style="padding: 0 0 5px;">Your session will expire soon.</h5>
+                    <div class="sel">
+                        <a onclick="return SessionOKClick()" class="btn btn-primary">
+                            <i class="fa fa-save"></i>Continue
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

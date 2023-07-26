@@ -1,0 +1,926 @@
+﻿@using BHI.SalesArchitect.WebAdmin.Lib.Extensions
+@using MvcJqGrid
+@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Partner Administration";
+    var GRID = "Grid";
+    var GRID_PARTNER = "GridPartner";
+    var GRIDInactiveUsers = "GridInactiveUsers";
+    var FORM = "#FormValidation";
+    var username = User.Identity.Name;
+}
+<link href="../../Content/main.css" rel="stylesheet" type="text/css" />
+
+@section header {
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/jqGrid")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/generalHelper")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/jqGrid")
+
+}
+<style>
+    .ui-state-highlight {
+        border: 1px solid #999 !important;
+        background: #dadada !important;
+        font-weight: normal;
+        color: #212121 !important;
+    }
+    .edit-partner-btn {
+        text-decoration: underline;
+        color: #6495ED;
+        border: none;
+        background-color: transparent;
+    }
+
+    .ui-jqgrid tr.jqgrow td {
+        white-space: normal !important;
+    }
+
+    .edit-partner-btn {
+        text-decoration: underline;
+        color: #6495ED;
+        border: none;
+        background-color: transparent;
+    }
+    .search-filter-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0px;
+    }
+
+    .search-filter-container .community-status-filter-container {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        position: relative;
+    }
+
+    .search-filter-container .community-status-filter-container .community-status-filter {
+        margin: 0;
+        width: 90px !important;
+    }
+
+    .search-filter-container .community-status-filter-container .community-status-filter-label {
+        margin: 0;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+</style>
+<section>
+    <script type="text/javascript" src="../../Scripts/validate_additional.js"></script>
+    <div class="row">
+        <div class="span6 section-heading" id="HeaderDiv">
+            <h1>Manage @ViewData["PartnerName"]  Partners</h1>
+        </div>
+        <div class="span6">
+            <div class="page-header-btn-group btn-group pull-right">
+                @Html.Action("ManageMenu", "Apps")
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-error" id="ErrorMessage" style="display:none"></div>
+    <ul id="optionsSelectTabs" class="nav nav-tabs">
+        <li class="active"><a class="tabChange" id="ProspectsTab" href="#managePartnerUsers" data-toggle="tab">Manage Partners</a></li>
+        @*<li><a class="tabChange" id="LotsTab" href="#inactiveUsers" data-toggle="tab">Inactive Users</a></li>*@
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="managePartnerUsers">
+                <div>
+                   <div class="alert alert-error" id="ErrorMessage" style="display:none"></div>
+                   <form id="FormValidation" action="#">
+                       @*<div class="form-actions">
+            <button type="button" class="btn btn-primary" onclick="SaveUser();">Save changes</button>
+            <button type="button" class="btn" onclick="reloadUser();">Cancel</button>
+            <button type="button" class="btn pull-right" style="display:none;"><i class="icon-envelope"></i> Send login details to user</button>
+        </div>*@
+                       
+                       <div class="page-header-btn-group">
+                           <legend>Partners</legend>
+                           <div class="search-filter-container">
+                               <div class="community-status-filter-container">
+                                   <label class="community-status-filter-label">Sync Status</label>
+                                   <select class="community-status-filter" onchange="onPartnerStatusChange(this.value);" style="outline: none;">
+                                       <option value="0">Active</option>
+                                       <option value="1">Inactive</option>
+                                       <option value="2">All</option>
+                                   </select>
+                               </div>
+                               <button type="button" class="btn btn-success  pull-right" id="newPartner-btn" data-target="#addPartnerModal" data-toggle="modal"><i class="icon-plus icon-white"></i> New Partner</button>
+                           </div>
+                       </div>
+                      
+                       
+                       <fieldset id="partnersGrid">
+
+                        @(Html.Grid(GRID_PARTNER)
+                                .AddColumn(new Column("ID").SetHidden(true))
+                                .AddColumn(new Column("Partner Label").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center))
+                                .AddColumn(new Column("Partner").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center))
+                                .AddColumn(new Column("Partner Brands").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center))
+                                .AddColumn(new Column("API Key").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(80))
+                                .AddColumn(new Column("Sync Status").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(70))
+                                .AddColumn(new Column("Actions").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(60))
+                                .SetRequestType(MvcJqGrid.Enums.RequestType.Post)
+                                .SetUrl(Url.Action("GetPartner"))
+                                .SetRowNum(10000)
+                                .SetViewRecords(true)
+                                .SetMultiSelect(true)
+                                .SetMultiBoxOnly(true)
+                                .SetWidth(964)
+                                .OnSelectRow("onRowSiteSelected(rowid, status)")
+                                .OnLoadComplete("loadSites()")
+                            )
+
+                    </fieldset>
+
+
+                    <div class="row" style="margin-top:20px;">
+
+                        <div class="span12">
+
+                            <div class="page-header-btn-group">
+                                <legend>Users</legend>
+                                <a class="btn btn-danger" href="Javascript:void(0);" onclick="deleteSelected();">Delete Selected</a>
+                                <button type="button" class="btn btn-success  pull-right" onclick="location.href='/PartnerAdministration/CreateUser'"><i class="icon-plus icon-white"></i> New User</button>
+                            </div>
+                        </div>
+
+                        <div class="span12 table-fixed-head-container">
+
+                            @(Html.Grid(GRID)
+                                    .AddColumn(new Column("ID").SetHidden(true))
+                                    .AddColumn(new Column("UserName").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(100).SetLabel("User"))
+                                    .AddColumn(new Column("FirstName").SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("First Name"))
+                                    .AddColumn(new Column("LastName").SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Last Name"))
+                                    .AddColumn(new Column("Phone Number").SetHidden(true))
+                                    .AddColumn(new Column("Email").SetAlign(MvcJqGrid.Enums.Align.Center))
+                                    .AddColumn(new Column("Partner").SetHidden(true))
+                                    .AddColumn(new Column("Role").SetHidden(true))
+                                    .SetUrl(Url.Action("GetUsers"))
+                                    .SetRequestType(MvcJqGrid.Enums.RequestType.Post)
+                                    .SetAutoWidth(true)
+                                    .SetSortName("UserName")
+                                    .SetSortOrder(MvcJqGrid.Enums.SortOrder.Asc)
+                                    .SetRowNum(10000)
+                                    .SetMultiSelect(true)
+                                    .SetMultiBoxOnly(true)
+                                    .SetViewRecords(true)
+                                    .SetWidth(938)
+                                    .OnSelectRow("onRowSelected(rowid, status)")
+                                    .OnLoadComplete("onPartnerLoadComplete(xhr)"))
+
+
+                        </div><!-- .table-fixed-head-container -->
+                    </div><!-- .row -->
+
+
+
+                    <h4><span id="userName" data-bind="text: UserName"></span></h4>
+                    <fieldset id="FieldSet2Bind">
+                        <legend>User Information</legend>
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label">First Name</label>
+                                    <div class="controls">
+                                        <input class="input-block-level" type="text" id="userFirstName" name="firstName" placeholder="First Name" data-bind="value: FirstName" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Username</label>
+                                    <div class="controls">
+                                        <input class="input-block-level" type="text" id="userUserName" name="userName" placeholder="Username" data-bind="value: UserName" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Phone Number</label>
+                                    <div class="controls">
+                                        <input class="input-block-level" type="text" id="userPhoneNumber" name="phoneNumber" placeholder="Phone Number" data-bind="value: PhoneNumber" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="row custom-row1 newuser-checkbox">
+                                        <input class="input-block-level" type="checkbox" id="isPartnerSuperAdmin" name="isPartnerSuperAdmin" data-bind="value: IsPartnerSuperAdmin" />
+                                        <label class="control-label">Is Partner Super Admin?</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label">Last Name</label>
+                                    <div class="controls">
+                                        <input class="input-block-level" type="text" id="userLastName" name="lastName" placeholder="LastName" data-bind="value: LastName" />
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Email</label>
+                                    <div class="controls">
+                                        <input class="input-block-level" type="text" id="userEmail" name="email" placeholder="Email" data-bind="value: Email" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="userPartner" name="partner" data-bind="value: AssociationIds">
+                    </fieldset>
+
+                    <fieldset class="form-horizontal" id="FieldSet2Bind2">
+                        <legend>Reset Password</legend>
+                        <div class="control-group">
+                            <label class="control-label">New Password:</label>
+                            <div class="controls">
+                                <input type="password" id="userRetypePassword" data-bind="value: Password">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputRetypePassword">Re-type Password:</label>
+                            <div class="controls">
+                                <input type="password" id="userPassword" name="password" data-bind="value: ConfirmPassword">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" onclick="SaveUser();">Save changes</button>
+                        <button type="button" class="btn" onclick="reloadUser();">Cancel</button>
+                        <button type="button" class="btn pull-right" style="display:none;"><i class="icon-envelope"></i> Send login details to user</button>
+
+                    </div>
+                </form>
+
+            </div>
+
+
+            <div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Modal{
+    <div class="modal fade hide" id="addPartnerModal" tabindex="-1" role="dialog"
+         aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-header" id="addPartner-modal-header">
+            <button type="button" class="close" id="addPartner-modal-close" data-dismiss="modal" aria-hidden="true">
+                ×
+            </button>
+            <h3 id="modalLabel">
+                Add Partner
+            </h3>
+        </div>
+        <div class="modal-body" id="addPartner-modal-body">
+            <div>
+                <label class="control-label" for="PartnerName">Partner Label</label>
+                <input class="input-block-level" id="addPartnerLabel" name="PartnerName" type="text" value="" maxlength="100" required>
+            </div>
+
+            <div>
+                <label class="control-label" for="BDXLiveId">BDXLIVE ID</label>
+                <input class="input-block-level" id="addBDXLiveId" name="BDXLiveId" type="number" oninput="limitNumberLength(this)" value="">
+            </div>
+            <div>Sync Status</div>
+            <div class="radio-div">
+                <input type="radio" name="addPartnerStatus" value="true" disabled class="isp-radio"><span class="isp-config">Active &nbsp;</span>
+                <input type="radio" name="addPartnerStatus" value="false" id="add-partner-inactive" checked="checked" disabled class="isp-radio"><span class="isp-config">Inactive</span>
+            </div>
+            <button type="button" class="btn btn-primary  pull-right" id="addPartner-btn"> Add Partner</button>
+        </div>
+    </div>
+
+    <div class="modal fade hide" id="editPartnerModal" tabindex="-1" role="dialog"
+         aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-header" id="editPartner-modal-header">
+            <button type="button" class="close" id="editPartner-modal-close" data-dismiss="modal" aria-hidden="true">
+                ×
+            </button>
+            <h3 id="modalLabel">
+                Edit Partner
+            </h3>
+        </div>
+        <div class="modal-body" id="editPartner-modal-body">
+            <div>
+                <label class="control-label"  for="PartnerName">Partner Label</label>
+                <input class="input-block-level" id="editPartnerLabel" name="PartnerName" type="text" maxlength="100" value="">
+            </div>
+
+            <div>
+                <label class="control-label" for="BDXLiveId">BDXLIVE ID</label>
+                <input class="input-block-level" id="editBDXLiveId" name="BDXLiveId" type="number" oninput="limitNumberLength(this)" value="" required>
+            </div>
+            <div>Sync Status</div>
+            <div class="radio-div">
+                <input type="radio" name="editPartnerStatus" value="true" id="edit-partner-active" disabled class="isp-radio"><span class="isp-config">Active &nbsp;</span>
+                <input type="radio" name="editPartnerStatus" value="false" id="edit-partner-inactive" disabled class="isp-radio"><span class="isp-config">Inactive</span>
+            </div>
+            <button type="button" class="btn btn-primary pull-right" id="editPartner-btn"> Save</button>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    var viewUser = {};
+    currentRowId = -1;
+    $(document).ready(function () {
+        $("@FORM").validate({
+            onkeyup: function (element, event) {
+                if (event == "keypress" && this.elementValue(element) === "") {
+                    return;
+                }
+                else {
+                    this.element(element);
+                }
+            },
+            rules: {
+                firstName: {
+                    required: true
+                },
+                lastName: {
+                    required: true
+                },
+                userName: {
+                    required: true
+                },
+                phoneNumber: {
+                    phoneUS: true
+                },
+                email:
+                {
+                    required: true,
+                    email: true
+                },
+                password:
+                {
+                    equalTo: "#userRetypePassword"
+                },
+                partner:
+                {
+                    required: true
+                }
+            }
+        });
+        $(".btn-danger").click(function () {
+            $("#myModal").modal("toggle");
+        });
+        $(".btn-confirm").click(function () {
+            if ($('#RoleId').val() == '0' || $('#RoleId').val() == 0) {
+                saveUnsuccessfulWithMessage("Please select a role.")
+            } else {
+                $("#myModal").modal("toggle");
+                activateUsers();
+            }
+        });
+        $('#RoleId').on('change', function () {
+            if ($(this).val() == '2') {
+                $('#comAdminNote').css('display', 'block');
+            } else {
+                $('#comAdminNote').css('display', 'none');
+            }
+        });
+        $('#newPartner-btn').on('click', function () {
+            clearAddPartnerModal();
+        })
+        $('#addPartner-btn').on('click', function () {
+            createPartner();
+        });
+        $('#editPartner-btn').on('click', function (event) {
+            updatePartner(event.target.dataset.id);
+        });
+        $('#editBDXLiveId, #addBDXLiveId').on("keydown", function (e) {
+            const invalidChars = ["-", "+", "e", "E", "."];
+            if (invalidChars.includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+        $('#editBDXLiveId, #addBDXLiveId').on('paste', function (event) {
+            var pastedText = event.originalEvent?.clipboardData?.getData('text/plain') || "";
+            const invalidChars = ["-", "+", "e", "E", "."];
+            var containsElement = invalidChars.some(function (element) {
+                return pastedText.includes(element);
+            });
+            if (containsElement) 
+                event.preventDefault();
+        });
+        $('#addBDXLiveId').on("keyup", function (e) {
+            var val = $('#addBDXLiveId').val();
+            if (val.length > 0)
+                $('input[name=addPartnerStatus]').prop("disabled", false);
+            else {
+                $('input[name=addPartnerStatus]').prop("disabled", true);
+                $('#add-partner-inactive').prop("checked", true);
+            }
+        })
+        $('#editBDXLiveId').on("keyup", function () {
+            var val = $('#editBDXLiveId').val();
+            if (val.length > 0)
+                $('input[name=editPartnerStatus]').prop("disabled", false);
+            else
+                $('input[name=editPartnerStatus]').prop("disabled", true);
+        })
+        $('#editPartner-modal-close').on('click', function () {
+            $("#editPartnerModal").find(".alert-error").remove();
+        })
+    });
+
+    //$('.tabChange').click(function () {
+    //    if ($(this).attr('id') == "LotsTab") {
+    //        //Remove all label success error labels
+    //        $(".save-result").hide();
+    //        loadinactiveUsers();
+    //    }
+    //});
+
+    function onPartnerStatusChange(selectedValue) {
+        jQuery("#@(GRID_PARTNER)").jqGrid().setGridParam({ postData: { partnerStatusType: selectedValue }}).trigger('reloadGrid'); 
+    }
+
+    function createPartner() {
+        let data = {};
+        data.PartnerLabel = $('#addPartnerLabel').val();
+        data.BDXLiveId = $('#addBDXLiveId').val();
+        data.PartnerStatus = $("input[type='radio'][name='addPartnerStatus']:checked").val();
+        $("#addPartnerModal").find(".alert-error").remove();
+        $.ajax('@Url.Action("CreatePartner")', {
+            data: JSON.stringify(data),
+            type: "post",
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
+                if (data.Success == "true") {
+                    saveSuccessful();
+                    jQuery("#@(GRID_PARTNER)").jqGrid().trigger('reloadGrid');
+                    $('#addPartnerModal').modal('hide');
+                }
+                else {
+                    $("#addPartnerModal").find(".alert-error").remove();
+                    $('#addPartner-modal-body').prepend(`<div class="alert alert-error">${data.Error}</div>`);
+                }
+            }
+        });
+    }
+    function updatePartner(id) {
+        let data = {};
+        data.PartnerLabel = $('#editPartnerLabel').val();
+        data.BDXLiveId = $('#editBDXLiveId').val();
+        data.PartnerStatus = $("input[type='radio'][name='editPartnerStatus']:checked").val();
+        $("#editPartnerModal").find(".alert-error").remove();
+        $.ajax('@Url.Action("UpdatePartner")', {
+            data: JSON.stringify({ model: data, id }),
+            type: "post",
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
+                if (data.Success == "true") {
+                    saveSuccessful();
+                    jQuery("#@(GRID_PARTNER)").jqGrid().trigger('reloadGrid');
+                    $('#editPartnerModal').modal('hide');
+                }
+                else {
+                    $("#editPartnerModal").find(".alert-error").remove();
+                    $('#editPartner-modal-body').prepend(`<div class="alert alert-error">${data.Error}</div>`);
+                }
+            }
+        });
+    }
+
+    function loadPartnerDetailsInModal(id) {
+        var fieldsetElement = document.getElementById("partnersGrid");
+        if (fieldsetElement) {
+            var trElements = fieldsetElement.querySelectorAll('tr');
+            for (var i = 0; i < trElements.length; i++) {
+                var trElement = trElements[i];
+                if (trElement.id == id) {
+                    var buttonElement = trElement.querySelector('button');
+                    if (buttonElement) {
+                        let bdxid = buttonElement.dataset.bdxid;
+                        let ispName = buttonElement.dataset.ispname;
+                        let status = buttonElement.dataset.status;
+                        let id = buttonElement.dataset.id;
+                        $('#editPartner-btn').attr('data-id', id);
+                        $('#editPartnerLabel').val(ispName ?? '');
+                        if (status.toLowerCase() == "true") {
+                            $('#edit-partner-active').prop("checked", true);
+                        }
+                        else {
+                            $('#edit-partner-inactive').prop("checked", true);
+                        }
+                        if (bdxid != 0) {
+                            $('#editBDXLiveId').val(bdxid);
+                            $('#editBDXLiveId').prop("readonly", true);
+                            $('input[name=editPartnerStatus]').prop("disabled", false);
+                        }
+                        else {
+                            $('#editBDXLiveId').val('');
+                            $('#editBDXLiveId').prop("readonly", false);
+                            $('input[name=editPartnerStatus]').prop("disabled", true);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    function clearAddPartnerModal() {
+        $("#addPartnerModal").find(".alert-error").remove();
+        $('#addPartnerLabel').val('');
+        $('#addBDXLiveId').val('');
+        $('input[name=addPartnerStatus]').prop("disabled", true);
+        $('#add-partner-inactive').prop("checked", true);
+    }
+
+    function limitNumberLength(input) {
+        input.value = input.value.slice(0, 9);
+    }
+
+    function loadinactiveUsers() {
+        var urlp = '@Url.Action("GetInactiveUsers")';
+        setTimeout(function () {
+            jQuery("#@(GRIDInactiveUsers)").jqGrid("setGridParam", { url: urlp }).trigger('reloadGrid', [{ page: 1 }]);
+        }, 1000);
+        inactiveusersLoaded = true;
+
+    }
+    function onRowSelected(rowid, status) {
+        if (currentRowId != rowid) {
+            currentRowId = rowid;
+            BindControls(rowid);
+        }
+        else if (status == false) {
+            UnBindControls(rowid);
+            currentRowId = -1;
+        }
+    }
+
+    function onPartnerLoadComplete(data) {
+        if (jQuery("#" + '@GRID').getGridParam('datatype') === "json") {
+        // data.userdata is the same as jQuery("#list").getGridParam('userData');
+        var userdata = jQuery("#" + '@GRID').getGridParam('userData');
+        var curPage = jQuery("#" + '@GRID').getGridParam('page'); // is always 1
+        @*if (curPage !== userdata.page) {
+            setTimeout(function(){
+                jQuery("#" + '@GRID').setGridParam(
+                    { page: userdata.page }).trigger("reloadGrid");
+                jQuery("#" + '@GRID').setSelection (userdata.selId, true);
+            },100);
+        }
+        else {*@
+            jQuery("#" + '@GRID').setSelection(userdata.selId, true);
+            selRowId = jQuery("#" + '@GRID').jqGrid ('getGridParam', 'selrow')
+            BindControls(selRowId);
+        //}
+    }
+
+    }
+    function BindControls(rowId) {
+        $("#ErrorMessage").hide();
+        viewUser.UserName = getColumnData("#@(GRID)", rowId, "UserName");
+        viewUser.FirstName = getColumnData("#@(GRID)", rowId, "FirstName");
+        viewUser.LastName = getColumnData("#@(GRID)", rowId, "LastName");
+        viewUser.PhoneNumber = getColumnData("#@(GRID)", rowId, "Phone Number");
+        viewUser.Email = getColumnData("#@(GRID)", rowId, "Email");
+        viewUser.IsPartnerSuperAdmin = getColumnData("#@(GRID)", rowId, "Role");
+        viewUser.AssociationIds = getColumnData("#@(GRID)", rowId, "Partner");
+        viewUser.Password = "";
+        viewUser.ConfirmPassword = "";
+        if (viewUser.IsPartnerSuperAdmin == "true") {
+            $("#isPartnerSuperAdmin").prop("checked", true);
+        }
+        else {
+            $("#isPartnerSuperAdmin").prop("checked", false);
+        }
+        ko.cleanNode($("#FieldSet2Bind")[0]);
+        ko.cleanNode($("#FieldSet2Bind2")[0]);
+        ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+        ko.applyBindings(viewUser, $("#FieldSet2Bind2")[0]);
+        $("#@(GRID_PARTNER)").jqGrid('resetSelection');
+        $("#@GRID_PARTNER").jqGrid('setSelection', viewUser.AssociationIds, true);
+
+    }
+    //for UnSelect data table
+
+    function UnBindControls(rowId) {
+        $("#ErrorMessage").hide();
+        viewUser.UserName = getColumnData("#@(GRID)", rowId, "");
+        viewUser.FirstName = getColumnData("#@(GRID)", rowId, "");
+        viewUser.LastName = getColumnData("#@(GRID)", rowId, "");
+        viewUser.PhoneNumber = getColumnData("#@(GRID)", rowId, "");
+        viewUser.Email = getColumnData("#@(GRID)", rowId, "");
+        viewUser.IsPartnerSuperAdmin = getColumnData("#@(GRID)", rowId, "");
+        viewUser.AssociationIds = getColumnData("#@(GRID)", rowId, "");
+        viewUser.Password = "";
+        viewUser.ConfirmPassword = "";
+        $("#isPartnerSuperAdmin").prop("checked", false);
+        ko.cleanNode($("#FieldSet2Bind")[0]);
+        ko.cleanNode($("#FieldSet2Bind2")[0]);
+        ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+        ko.applyBindings(viewUser, $("#FieldSet2Bind2")[0]);
+        $("#@(GRID_PARTNER)").jqGrid('resetSelection');
+        $("#@GRID_PARTNER").jqGrid('setSelection', viewUser.AssociationIds, true);
+
+    }
+    function reloadUser() {
+        if (currentRowId != -1) {
+            BindControls(currentRowId);
+            goToByScroll("HeaderDiv");
+        }
+    }
+
+    //    function EmailUserLoginDetails() {
+    //        if (currentRowId != -1) {
+    //            if ($("@FORM").valid()) {
+    //                $.ajax('@Url.Action("EmailUserLoginDetails")', {
+    //                    data: "{ model: " + ko.toJSON(viewUser) + ", userId: " + getColumnData("#@(GRID)", currentRowId, "ID") + "}",
+    //                    type: "post",
+    //                    contentType: 'application/json',
+    //                    dataType: 'json',
+    //                    success: function (data, textStatus, xhr) {
+    //                        if (data.Success == "true") {
+    //                            $("#ErrorMessage").hide();
+    //                            sentSuccessful();
+    //                            jQuery("#@(GRID)").trigger('reloadGrid');
+    //                            $("#@(GRID_PARTNER)").jqGrid('resetSelection');
+    //                            currentRowId = -1;
+    //                            viewUser = {};
+    //                            viewUser.UserName = "";
+    //                            viewUser.FirstName = "";
+    //                            viewUser.LastName = "";
+    //                            viewUser.PhoneNumber = "";
+    //                            viewUser.Email = "";
+    //                            viewUser.IsPartnerSuperAdmin = ko.observable("");
+    //                            $("#isPartnerSuperAdmin").prop("checked", false);
+    //                            viewUser.AssociationIds = "";
+    //                            viewUser.Password = "";
+    //                            viewUser.ConfirmPassword = "";
+    //                            ko.cleanNode($("#FieldSet2Bind")[0]);
+    //                            ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+    //                            ko.cleanNode($("#FieldSet2Bind2")[0]);
+    //                            ko.applyBindings(viewUser, $("#FieldSet2Bind2")[0]);
+    //                            goToByScroll("confirmationMessage");
+    //                        }
+    //                    }
+    //                });
+    //            }
+    //        }
+    //    }
+
+    function SaveUser() {
+        if (currentRowId != -1) {
+            if ($("@FORM").valid()) {
+                var phoneNumber = $("#userPhoneNumber").val();
+                if ($("#isPartnerSuperAdmin").prop("checked")) {
+                    viewUser.IsPartnerSuperAdmin = "true";
+                }
+                else {
+                    viewUser.IsPartnerSuperAdmin = "false";
+                }
+
+                phoneNumber = phoneNumber.replace(/\s+/g, "");
+                $("#userPhoneNumber").val(phoneNumber);
+                viewUser.PhoneNumber = phoneNumber;
+                $.ajax('@Url.Action("UpdateUser")', {
+                    data: "{ model: " + ko.toJSON(viewUser) + ", userId: " + getColumnData("#@(GRID)", currentRowId, "ID") + "}",
+                    type: "post",
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (data, textStatus, xhr) {
+                        if (data.Success == "false") {
+                            saveUnsuccessful();
+                            $("#ErrorMessage").show();
+                            $("#ErrorMessage").html(data.Error);
+                            goToByScroll("confirmationMessage");
+                        }
+                        else {
+                            saveSuccessful();
+                            $("#ErrorMessage").hide();
+                            jQuery("#@(GRID)").trigger('reloadGrid');
+                            $("#@(GRID_PARTNER)").jqGrid('resetSelection');
+                            currentRowId = -1;
+                            viewUser = {};
+                            viewUser.UserName = "";
+                            viewUser.FirstName = "";
+                            viewUser.LastName = "";
+                            viewUser.PhoneNumber = "";
+                            viewUser.Email = "";
+                            viewUser.IsPartnerSuperAdmin = ko.observable("");
+                            $("#isPartnerSuperAdmin").prop("checked", false);
+                            viewUser.AssociationIds = "";
+                            viewUser.Password = "";
+                            viewUser.ConfirmPassword = "";
+                            ko.cleanNode($("#FieldSet2Bind")[0]);
+                            ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+                            ko.cleanNode($("#FieldSet2Bind2")[0]);
+                            ko.applyBindings(viewUser, $("#FieldSet2Bind2")[0]);
+                            goToByScroll("confirmationMessage");
+                        }
+
+                    }
+                });
+            }
+        }
+    }
+
+
+    function onRowSiteSelected(rowid, status) {
+        viewUser.AssociationIds = rowid;
+        loadPartnerDetailsInModal(rowid);
+    }
+    function loadSites() {
+        $("#@GRID_PARTNER").jqGrid('hideCol', 'cb');
+        var selRowId = jQuery("#" + '@GRID').jqGrid ('getGridParam', 'selrow')
+        BindControls(selRowId);
+    }
+    function deleteSelected() {
+        $("#ErrorMessage").hide();
+        var selectedIds = jQuery("#@GRID").jqGrid('getGridParam', 'selarrrow');
+        if (selectedIds.length == 0) {
+            $("#ErrorMessage").show();
+            $("#ErrorMessage").html("Please select user(s) to delete");
+            //  goToByScroll("ErrorMessage");
+            $("#@(GRID_PARTNER)").jqGrid('resetSelection');
+            currentRowId = -1;
+            viewUser = {};
+            viewUser.UserName = "";
+            viewUser.FirstName = "";
+            viewUser.LastName = "";
+            viewUser.PhoneNumber = "";
+            viewUser.Email = "";
+            viewUser.IsPartnerSuperAdmin = ko.observable("");
+            $("#isPartnerSuperAdmin").prop("checked", false);
+            viewUser.AssociationIds = "";
+            viewUser.Password = "";
+            viewUser.ConfirmPassword = "";
+            ko.cleanNode($("#FieldSet2Bind")[0]);
+            ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+            ko.cleanNode($("#FieldSet2Bind2")[0]);
+            ko.applyBindings(viewUser, $("#FieldSet2Bind2")[0]);
+            //  goToByScroll("HeaderDiv");
+        }
+        else {
+            $.ajax('@Url.Action("DeleteUsers")', {
+                data: JSON.stringify({
+                    usersId: selectedIds
+                }),
+                type: "post",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    if (data.Success == "false") {
+                        saveUnsuccessful();
+                        $("#ErrorMessage").show();
+                        $("#ErrorMessage").html(data.Error);
+                        goToByScroll("confirmationMessage");
+                    }
+                    else {
+                        saveSuccessful();
+                        $("#ErrorMessage").hide();
+                        jQuery("#@(GRID)").trigger('reloadGrid');
+                        jQuery("#@(GRIDInactiveUsers)").trigger('reloadGrid');
+                        $("#@(GRID_PARTNER)").jqGrid('resetSelection');
+                        currentRowId = -1;
+                        viewUser = {};
+                        viewUser.UserName = "";
+                        viewUser.FirstName = "";
+                        viewUser.LastName = "";
+                        viewUser.PhoneNumber = "";
+                        viewUser.Email = "";
+                        viewUser.IsPartnerSuperAdmin = ko.observable("");
+                        $("#isPartnerSuperAdmin").prop("checked", false);
+                        viewUser.AssociationIds = "";
+                        viewUser.Password = "";
+                        viewUser.ConfirmPassword = "";
+                        ko.cleanNode($("#FieldSet2Bind")[0]);
+                        ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+                        ko.cleanNode($("#FieldSet2Bind2")[0]);
+                        ko.applyBindings(viewUser, $("#FieldSet2Bind2")[0]);
+                        goToByScroll("confirmationMessage");
+                    }
+
+                }
+            });
+        }
+    }
+
+    function activateSelected() {
+        $("#ErrorMessage").hide();
+        var currentSelectedIds = jQuery("#@GRIDInactiveUsers").jqGrid('getGridParam', 'selarrrow');
+        if (currentSelectedIds.length == 0) {
+            $("#lnkDeleteProspect").attr("href", "#");
+            $("#ErrorMessage").show();
+            $("#ErrorMessage").html("Please select user(s) to activate");
+            goToByScroll("ErrorMessage");
+        }
+        else {
+            $("#lnkDeleteProspect").attr("href", "#myModal");
+        }
+        @*$("#ErrorMessage").hide();
+        $('#pop-div').modal('show');
+        var selectedIds = jQuery("#@GRIDInactiveUsers").jqGrid('getGridParam', 'selarrrow');
+        if (selectedIds.length == 0) {
+            $("#ErrorMessage").show();
+            $("#ErrorMessage").html("Please select user(s) to Activate");
+        }
+        else {
+            $.ajax('@Url.Action("ActivateUsers")', {
+                data: JSON.stringify({
+                    usersId: selectedIds
+                }),
+                type: "post",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    if (data.Success == "false") {
+                        saveUnsuccessful();
+                        $("#ErrorMessage").show();
+                        $("#ErrorMessage").html(data.Error);
+                        goToByScroll("confirmationMessage");
+                    }
+                    else {
+                        saveSuccessful();
+                        $("#ErrorMessage").hide();
+                        jQuery("#@(GRIDInactiveUsers)").trigger('reloadGrid');
+                    }
+
+                }
+            });
+        }*@
+    }
+
+    function activateUsers() {
+        var selectedIds = jQuery("#@GRIDInactiveUsers").jqGrid('getGridParam', 'selarrrow');
+        if (selectedIds.length == 0) {
+            $("#ErrorMessage").show();
+            $("#ErrorMessage").html("Please select user(s) to Activate");
+        }
+        else {
+            $.ajax('@Url.Action("ActivateUsers")', {
+                data: JSON.stringify({
+                    usersId: selectedIds,
+                    roleId: $('#RoleId').val()
+                }),
+                type: "post",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    if (data.Success == "false") {
+                        saveUnsuccessful();
+                        $("#ErrorMessage").show();
+                        $("#ErrorMessage").html(data.Error);
+                        goToByScroll("confirmationMessage");
+                    }
+                    else {
+                        saveSuccessful();
+                        $("#ErrorMessage").hide();
+                        jQuery("#@(GRIDInactiveUsers)").trigger('reloadGrid');
+                        jQuery("#@(GRID)").trigger('reloadGrid');
+                    }
+
+                }
+            });
+        }
+    }
+
+    /* GUI FUNCTION */
+    function resetSaveLabel() {
+        $("#confirmationMessage").removeClass("sucessfully-alert");
+        $("#confirmationMessage").removeClass("unsucessfully-alert");
+        $("#confirmationMessage").text("");
+    }
+    function saveSuccessful() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("sucessfully-alert");
+        $("#confirmationMessage").text("Changes saved");
+        $("#confirmationMessage").show();
+        $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+    }
+    function saveUnsuccessful() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("unsucessfully-alert");
+        $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+        $("#confirmationMessage").text("Save operation not completed");
+        $("#confirmationMessage").show();
+    }
+    function saveUnsuccessfulWithMessage(message) {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("unsucessfully-alert");
+        $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+        $("#confirmationMessage").text(message);
+        $("#confirmationMessage").show();
+    }
+    function sentSuccessful() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("sucessfully-alert");
+        $("#confirmationMessage").text("Login details sent successfully");
+        $("#confirmationMessage").show();
+        $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+    }
+</script>

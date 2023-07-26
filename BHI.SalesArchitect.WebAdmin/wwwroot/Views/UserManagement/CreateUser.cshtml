@@ -1,0 +1,188 @@
+﻿@model BHI.SalesArchitect.WebAdmin.Models.RegisterModel
+@using System.Web.Optimization;
+@{
+    ViewBag.Title = "Create User";
+    var GRID = "Grid";
+}
+@section header {
+
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/jqGrid")
+    
+    @Scripts.Render("~/bundles/generalHelper")
+    @Scripts.Render("~/bundles/bootstrap")
+    
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/jqGrid")
+   
+}
+@using MvcJqGrid
+<section>
+
+    <div class="row">
+	    <div class="span6 section-heading">
+		    <h1>New User for @ViewData["PartnerName"]</h1>
+	    </div>
+	    <div class="span6">
+	        <div class="page-header-btn-group btn-group pull-right">
+			    <button class="btn" onclick="location.href='/UserManagement'">Manage Users</button>
+		    </div>
+	    </div>
+    </div>
+    <div class="row">
+    <div class="span12">
+    <div class="user-select">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        if (!ViewData.ModelState.IsValid)
+        {
+                           <div class="alert alert-error">
+                                @Html.ValidationSummary()
+                            </div>
+        } 
+    
+
+    <fieldset>
+        <legend>User Information</legend>
+                <div class="row-fluid">
+			<div class="span6">
+				<div class="control-group">
+					@Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.FirstName, new { @class = "input-block-level", @placeholder = "First Name" })
+					</div>
+				</div>
+                <div class="control-group">
+					@Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.LastName, new { @class = "input-block-level", @placeholder = "Last Name" })
+					</div>
+				</div>
+				<div class="control-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
+					<div class="controls">
+					    @Html.TextBoxFor(m => m.UserName, new { @class = "input-block-level", @placeholder = "User Name" })
+					</div>
+				</div>
+                <div class="control-group">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+					<div class="controls">
+					    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "input-block-level", @placeholder = "Phone Number",@id="txtPhoneNumber" })
+					</div>
+				</div>
+
+                <div class="control-group">
+                    <div class="btn-group" data-toggle="buttons-radio">
+                        <button type="button" class="btn active btnRole" data-toggle="button" id="btnSalesRepresentative">
+                            Sales Representative
+                            @Html.RadioButtonFor(m => m.IsAdministrator, "3", new { @class = "rdRole" })
+                        </button>
+                        <button type="button" class="btn btnRole" data-toggle="button" id="btnCommunityAdministrator">
+                            Community Administrator
+                            @Html.RadioButtonFor(m => m.IsAdministrator, "2", new { @class = "rdRole" })
+                        </button>
+                        <button type="button" class="btn btnRole" data-toggle="button" id="btnLotStatusEditor">
+                            Lot Status Editor
+                            @Html.RadioButtonFor(m => m.IsAdministrator, "5", new { @class = "rdRole" })
+                        </button>
+                    </div>​					
+				</div>
+			</div>
+			<div class="span6">
+				<div class="control-group">
+					@Html.LabelFor(m => m.Email, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.Email, new { @class = "input-block-level", @placeholder = "Email Address" })
+					</div>
+				</div> 
+                <div class="control-group">
+					@Html.LabelFor(m => m.Password, new { @class = "control-label" })
+					<div class="controls">
+						@Html.PasswordFor(m => m.Password, new { @class = "input-block-level", @placeholder = "Password" })
+					</div>
+				</div> 
+                <div class="control-group">
+					@Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+					<div class="controls">
+						@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "input-block-level", @placeholder = "Password" })
+					</div>
+				</div>                                    
+			</div>
+            @Html.HiddenFor(m => m.AssociationIds)        
+    </fieldset>
+   
+    <fieldset>
+    <legend>Communities for User</legend>
+        @(Html.Grid(GRID)
+        .AddColumn(new Column("ID").SetHidden(true))
+        .AddColumn(new Column("Name").SetSortable(false).SetLabel("Community").SetAlign(MvcJqGrid.Enums.Align.Center))
+        .SetUrl(Url.Action("GetCommunities"))
+        .SetRequestType(MvcJqGrid.Enums.RequestType.Post)
+        .SetAutoWidth(true)
+        .SetRowNum(10000)
+        .SetViewRecords(true)
+        .SetMultiSelect(true)
+        .OnSelectAll("selectAll(status)")
+        .OnSelectRow("onRowSelected(rowid, status)")
+        .OnLoadComplete("load()")
+        )
+    </fieldset>
+        <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="btnRegister">Register</button> 
+    </div>	  
+    }
+    </div>
+    </div>
+
+    </div>
+</section>
+<script type="text/javascript">
+    var selectedIds = $('input[name="AssociationIds"]').val().split(",");
+    function onRowSelected(rowid, status) {
+        var index = $.inArray(rowid, selectedIds);
+        if (!status && index >= 0) {
+            selectedIds.splice(index, 1); // remove id from the list
+        } else if (index < 0) {
+            selectedIds.push(rowid);
+        }
+        $('input[name="AssociationIds"]').val(selectedIds.toString());
+    }
+    function load() {
+        for (i = 0, count = selectedIds.length; i < count; i++) {
+            if (selectedIds[i] != "") {
+                $("#@GRID").jqGrid('setSelection', selectedIds[i], true);
+            }
+        }
+    }
+    function selectAll(status) {
+        if (status) {
+            var s = jQuery("#@GRID").jqGrid('getGridParam', 'selarrrow');
+            selectedIds = s;
+        }
+        else {
+            selectedIds = [];
+        }
+
+        $('input[name="AssociationIds"]').val(selectedIds.toString());
+    }
+
+    $(document).ready(function () {
+        var isAdministrator = '@Model.IsAdministrator';
+        $(".btnRole").click(function () {
+            $(this).find(".rdRole").prop('checked', true);
+        });
+
+        if (isAdministrator == "True") {
+            $("#btnCommunityAdministrator").trigger('click');
+        }
+
+        $("#btnRegister").on('click', function () {
+            var phoneNumber = $("#txtPhoneNumber").val();
+            phoneNumber = phoneNumber.replace(/\s+/g, "");
+            $("#txtPhoneNumber").val(phoneNumber);
+        });
+    });
+
+</script>

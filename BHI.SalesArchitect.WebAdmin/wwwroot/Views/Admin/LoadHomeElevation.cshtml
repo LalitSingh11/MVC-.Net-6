@@ -1,0 +1,174 @@
+﻿@using BHI.SalesArchitect.Model
+@model SelectElevation
+@using BHI.SalesArchitect.WebAdmin.Lib.Extensions
+@using System.Web.Optimization;
+@{
+    Layout = null;
+}
+<style>
+    .upload-error {
+        color: #b94a48;
+        text-align: left;
+        display: none;
+    }
+
+    .upload-map-ui .control-label {
+        width: 130px !important;
+        padding-top: 0px;
+    }
+
+    .upload-map-ui .controls {
+        text-align: left;
+    }
+
+    .upload-map-ui #file-upload {
+        float: right;
+    }
+
+    input.help-inline {
+        color: black;
+    }
+
+    .plan-top {
+        display: flex;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+
+        .plan-top input {
+            margin-right: 10px;
+        }
+
+    .img-container {
+        display: grid;
+        grid-column-gap: 15px;
+        grid-template-columns: auto auto auto;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #eee;
+        max-height: 296px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .img-item {
+        text-align: center;
+        width: 186px;
+        padding-bottom: 15px;
+    }
+
+        .img-item img {
+            max-width: 100%;
+            margin-top: 3px;
+        }
+</style>
+@section header {
+
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/themes/base/css")
+
+}
+
+<script type="text/javascript">
+
+    function resetSaveLabel() {
+        $("#confirmationMessage").removeClass("sucessfully-alert");
+        $("#confirmationMessage").removeClass("unsucessfully-alert");
+        $("#confirmationMessage").text("");
+    }
+
+    function showErrorMessage(msg) {
+        var errorLabel = document.getElementById('errorMessage');
+        errorLabel.style.display = 'block';
+        errorLabel.innerText = msg;
+    }
+
+    function hideErrorMessage() {
+        var errorLabel = document.getElementById('errorMessage');
+        errorLabel.style.display = 'none';
+    }
+
+    $(document).ready(function () {
+        if (@Model.LotListingImageId != 0) {
+            $("#@Model.LotListingImageId").prop("checked", true);
+        } else {
+            $("#0").prop("checked", true);
+        }
+        if (@Model.ListingImages.Count == 0) {
+            $("#noimages").show();
+            $("#imagesAvailable").hide();
+            $("#saveChanges").hide();
+        } else {
+            $("#noimages").hide();
+            $("#imagesAvailable").show();
+            $("#saveChanges").show();
+        }
+    });
+
+    $('#saveChanges').click(function () {
+
+        var selectedImage = $("input[type='radio'][class='elevation-radio']:checked").attr('value');
+        var selectedImageId = $("input[type='radio'][class='elevation-radio']:checked").attr('id');
+        var selectedImageTitle = $("input[type='radio'][class='elevation-radio']:checked").attr('title');
+        var selectedImageType = $("input[type='radio'][class='elevation-radio']:checked").attr('data-type');
+        if (selectedImage != "") {
+            $("#elevationbutton_" + @Model.Listing.ID).hide();
+            $("#elevationimage_" + @Model.Listing.ID).show();
+            $("#elevationimage_" + @Model.Listing.ID).attr('src', selectedImage);
+            $("#elevationimage_" + @Model.Listing.ID).attr('data-image-id', selectedImageId);
+            $("#elevationTitle_" + @Model.Listing.ID).show();
+            if (selectedImageType != "Interior") {
+                $("#elevationTitle_" + @Model.Listing.ID).html("<strong>Title: </strong>" + selectedImageTitle);
+            } else {
+                $("#elevationTitle_" + @Model.Listing.ID).html("");
+            }
+            $("#elevationImageId_" + @Model.Listing.ID).show();
+            $("#elevationImageId_" + @Model.Listing.ID).html("<strong>Elevation Image ID: </strong>" + selectedImageId);
+        } else {
+            $("#elevationbutton_" + @Model.Listing.ID).show();
+            $("#elevationimage_" + @Model.Listing.ID).hide();
+            $("#elevationimage_" + @Model.Listing.ID).attr('src', selectedImage);
+            $("#elevationimage_" + @Model.Listing.ID).attr('data-image-id', selectedImageId);
+            $("#elevationTitle_" + @Model.Listing.ID).hide();
+            $("#elevationImageId_" + @Model.Listing.ID).hide();
+        }
+        $('#SelectElevationModal').modal("hide");
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("sucessfully-alert");
+        $("#confirmationMessage").text("Elevation selected successfully.");
+        $("#confirmationMessage").fadeIn().delay(2000).fadeOut();
+    });
+
+</script>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="modalLabel">Select Elevation Image for </h3><h3>@Model.Listing.Name @(Model.Listing.Type == "P" ? " Plan" : (Model.Listing.Type == "S" ? " Spec " : " Model Home ") + Model.Listing.Address)</h3>
+</div>
+<div class="modal-body">
+    <div class="form-horizontal upload-map-ui">
+        <div id="imagesAvailable">
+            <div class="plan-top">
+                <input type="radio" id="0" value="" name="elevationRadio" class="elevation-radio"> <label for="male">Use default plan image</label>
+            </div>
+
+            <div class="img-container">
+                @foreach (var image in Model.ListingImages)
+                {
+                <div class="img-item">
+                    <input type="radio" id="@image.ID" value="@image.URL" class="elevation-radio" name="elevationRadio" title="@image.Title" data-type="@image.Type">
+                    <label style="font-size:13px;"><strong>Elevation Image ID:</strong> @image.ID</label>
+                    <img src="@image.URL" alt="@image.Title" id="@image.ID" />
+                    @if (image.Type != "Interior")
+                    {
+                        <label><strong>Title:</strong> @image.Title</label>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+        <h4 id="noimages" style="text-align:center;">No images available</h4>
+        <input type="submit" class="btn btn-primary" value="Select Elevation" id="saveChanges" style="float: right;" />
+    </div>
+</div>

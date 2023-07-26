@@ -1,0 +1,177 @@
+﻿@using BHI.SalesArchitect.WebAdmin.Lib.Extensions
+@using System.Web.Optimization;
+@{
+    Layout = null;
+}
+<style>
+    .upload-error {
+        color: #b94a48;
+        text-align: left;
+        display: none;
+    }
+
+    .upload-update-data-ui #file-upload {
+        float: right;
+    }
+
+    .upload-update-data-ui .control-label {
+        width: 130px !important;
+        padding-top: 0px;
+    }
+
+    .upload-update-data-ui .controls {
+        text-align: left;
+    }
+
+    input.help-inline {
+        color: black;
+        border: 0px;
+    }
+</style>
+@section header {
+
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    var loadUpdateDataSubmitValidator = $("#LoadUpdateDataSubmit").validate({
+        rules: {
+            file: {
+                required: true
+            }
+        },
+        messages: {
+            file: "Please choose a file"
+
+        }
+    });
+    $(document).ready(function () {
+        $('#choose-LoadUpdateDatafile').click(function () {
+            $('#file').trigger('click');
+        });
+        $('#file').change(function () {
+            var fileName = $(this).val();
+            var arr = fileName.split("\\");
+            if (arr.length > 0) {
+                fileName = arr[arr.length - 1];
+                $('#filePath').val(fileName);
+                if (fileName == '') {
+                    $('#filePath').css('display', 'none');
+                }
+                else {
+                    $('#filePath').css('display', '');
+                }
+            }
+            else {
+                $('#filePath').val(fileName);
+                $('#filePath').css('display', 'none');
+            }
+            $("#LoadUpdateDataSubmit").valid();
+        });
+    });
+
+    function missingColumnError() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("unsucessfully-alert");
+        $("#confirmationMessage").fadeIn("1000").delay(6000).fadeOut('1500').hide(0);
+        $("#confirmationMessage").text("Error in Excel. BDX CommunityID/Lot Internal Refernce Column missing.");
+        $("#confirmationMessage").show();
+    }
+
+    function invalidFileError() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("unsucessfully-alert");
+        $("#confirmationMessage").fadeIn("1000").delay(6000).fadeOut('1500').hide(0);
+        $("#confirmationMessage").text("Invalid File Format.");
+        $("#confirmationMessage").show();
+    }
+
+    function saveUnsuccessful() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("unsucessfully-alert");
+        $("#confirmationMessage").fadeIn("1000").delay(4000).fadeOut('1500').hide(0);
+        $("#confirmationMessage").text("Error in Excel. Please check Downloaded file.");
+        $("#confirmationMessage").show();
+    }
+    function resetSaveLabel() {
+        $("#confirmationMessage").removeClass("unsucessfully-alert");
+        $("#confirmationMessage").text("");
+    }
+
+
+    $('#file-upload').click(function () {
+        var $file = document.getElementById('file'),
+            $formData = new FormData();
+
+        if ($file.files.length > 0) {
+            for (var i = 0; i < $file.files.length; i++) {
+                $formData.append('file-' + i, $file.files[i]);
+            }
+            var extension = $file.files[0].name.split('.')[1];
+            if (extension != 'xlsx')
+            {
+                saveUnsuccessfulMessage('Invalid Format. (Valid Format is .xlsx)');
+                return;
+            }
+        }
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/Admin/LoadUpdateData",
+            data: $formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+                if (response.success) {
+                    var url = '@Url.Action("Index", "Communities")';
+                    window.location.replace(url);
+                } else if (response.missingColumn == true) {
+                    $('#uploadExcelButton').click();
+                    missingColumnError();
+                } else if (response.invalidFile == true) {
+                    $('#uploadExcelButton').click();
+                    invalidFileError();
+                }
+                else {
+                    var fileName = response.fileName;
+                    $('#uploadExcelButton').click();
+                    saveUnsuccessful();
+                    var url = '@Url.Action("DownloadErrorExcel", "Admin")?name=' + fileName;
+                    downloadExcel(url);
+                }
+
+            },
+            error: function (e) {
+
+            }
+        });
+    });
+
+    function downloadExcel(url) {
+        var link = document.createElement('a');
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+</script>
+<iframe id="hiddenFrame" src="" style="display:none; visibility:hidden;"></iframe>
+<div class="form-horizontal upload-update-data-ui">
+    <div class="control-group">
+        <label for="LoadUpdateDatafile" class="control-label">
+            Filename:
+        </label>
+        <div class="controls">
+            <input type="button" class="btn btn-primary" value="Choose File" id="choose-LoadUpdateDatafile" />
+            <input type="text" id="filePath" style="display:none;width:225px" readonly="readonly" /><br />
+            <input type="file" class="input-file" name="file" id="file" style="visibility:hidden;width:0px" />
+        </div>
+    </div>
+    <input type="button" class="btn btn-primary" value="Upload" id="file-upload" />
+</div>

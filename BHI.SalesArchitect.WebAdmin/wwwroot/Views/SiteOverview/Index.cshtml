@@ -1,0 +1,516 @@
+﻿@using System.Web.Optimization
+@using BHI.SalesArchitect.Model
+@model BHI.SalesArchitect.WebAdmin.Models.SiteOverview
+@{
+    Layout = null;
+    var TopNavigationBar = Model.PartnerSettings.FirstOrDefault(x => x.Key.Equals(BHI.SalesArchitect.Core.Enumerations.PartnerSettingsKey.TopNavigationBar));
+    var TopNavigationBarText = Model.PartnerSettings.FirstOrDefault(x => x.Key.Equals(BHI.SalesArchitect.Core.Enumerations.PartnerSettingsKey.TopNavigationBarText));
+    var LotDetailHeaderBarGradientColor = Model.SiteMapConfigurations.FirstOrDefault(x => x.Configuration.Code.Equals("SMPCLR_Lot Detail Info Bar Gradient")) != null ? Model.SiteMapConfigurations.FirstOrDefault(x => x.Configuration.Code.Equals("SMPCLR_Lot Detail Info Bar Gradient")).Value : "";
+    var LotDetailHeaderBarColor = Model.SiteMapConfigurations.FirstOrDefault(x => x.Configuration.Code.Equals("SMPCLR_Lot Detail Info Bar")) != null ? Model.SiteMapConfigurations.FirstOrDefault(x => x.Configuration.Code.Equals("SMPCLR_Lot Detail Info Bar")).Value : "";
+    var LotDetailHeaderBarTextColor = Model.SiteMapConfigurations.FirstOrDefault(x => x.Configuration.Code.Equals("SMPCLR_Lot Detail Info Bar Text")) != null ? Model.SiteMapConfigurations.FirstOrDefault(x => x.Configuration.Code.Equals("SMPCLR_Lot Detail Info Bar Text")).Value : "";
+    var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+    serializer.MaxJsonLength = Int32.MaxValue;
+    var lotData = serializer.Serialize(Model.LotData);
+    var defaultListingData = serializer.Serialize(Model.DefaultListingData);
+    var legends = serializer.Serialize(Model.Legends);
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta id="metaviewport" name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="MobileOptimized" content="1800">
+    <title>@Model.Community.Name</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/siteoverview")
+    @Styles.Render("~/Content/CommonCss")
+    <link href="/Content/swipebox.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/LightGallery/css/lightgallery.css" rel="stylesheet" />
+    <link href="~/Content/themes/LightGallery/css/lg-transitions.css" rel="stylesheet" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="//code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-ui-1.10.4.custom.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.panzoom.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/simple-slider.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.swipebox.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ui.touch-punch.min.js")"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.4/jquery.touchSwipe.js"></script>
+    <script src="/Scripts/fastclick.js" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/siteoverview")
+    <script src="/Scripts/siteoverview-ui.js" type="text/javascript"></script>
+    <script src="/Scripts/interactable-panel.js" type="text/javascript"></script>
+    <script src="~/Content/themes/LightGallery/js/lightgallery-all.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/RequiredIf.js"></script>
+    @*<script src="~/Scripts/IEPointerTouch.js"></script>*@
+    @if (!String.IsNullOrEmpty(Model.SelectedLotID))
+    {
+        <script type="text/javascript">
+            var selectedLotID=@Model.SelectedLotID;
+        </script>
+    }
+    <script type="text/javascript">
+        var refresh = true;
+        var initialMinRange;
+        var initialMaxrange;
+        var dragging = false;
+        var isSwipeBoxOpen=false;
+        var requestButtonAllowed = '@Model.RequestInfoModal' == "true" || '@Model.RequestInfoModal' == "True"?true:false;
+        var lots = @Html.Raw(lotData);
+        var defaultListings = @Html.Raw(defaultListingData);
+          var legends=@Html.Raw(legends)
+        var manager = null;
+        var filterClick = false;
+        var sendLotId = @Html.Raw(Json.Encode(Model.SendLotIds));
+        function resetSaveLabel() {
+            $("#confirmationMessage").removeClass("sucessfully-alert");
+            $("#confirmationMessage").removeClass("unsucessfully-alert");
+            $("#confirmationMessage").text("");
+        }
+        function saveSuccessful() {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("sucessfully-alert");
+            $("#confirmationMessage").text("Your request was sent. Thank you!");
+            $("#confirmationMessage").show();
+            $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+        }
+        function saveUnsuccessful() {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("unsucessfully-alert");
+            $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+            $("#confirmationMessage").text("Save operation not completed");
+            $("#confirmationMessage").show();
+        }
+        $(document).ready(function () {
+            FastClick.attach(document.body);
+            manager = new BHI.SalesArchitectOnePage.Manager(lots, defaultListings, legends, sendLotId);
+            manager.initialize();
+            if (typeof selectedLotID !== 'undefined') {
+                manager.highlightLot(selectedLotID);
+            }
+            initFilterUI();
+            initSlidingPanel();
+            $(".filter-main-container").on('click',function(event){
+                event.stopImmediatePropagation();
+            });
+
+            var mvp = document.getElementById('metaviewport');
+            if (!(/Android/i.test(navigator.userAgent)) || ((/Android/i.test(navigator.userAgent)) && $(window).width() > 768)) {
+                mvp.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no');
+                $('html').css({ 'touch-action': 'none', '-ms-touch-action': 'none' });
+            } else {
+                mvp.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes');
+                $('#resetSVG').css("display", "none");
+            }
+            $('.ui-loader').remove()
+        });
+        $(document).on('click','.OpenUrl',function(){
+            var left = (screen.width - 840) / 2;
+            var top = (screen.height - 600) / 2;
+            window.open($(this).attr('url'),'Listings','width=840,height=600,top='+top+',left='+left+',resizable=yes');
+        });
+
+        window.location.hash = '';
+
+        $(document).on('click', '#masterPlanButton', function () {
+            var masterPlanURL = "@Html.Raw(Url.Action("Index", "SiteMapPreview", new { communityID = Model.Community.ID, masterSiteID = Model.Community.MasterPlanID }))";
+            window.open(masterPlanURL, "_self");
+        });
+
+    </script>
+    <style>
+        html {
+            -ms-content-zooming: none;
+            /*-ms-touch-action: pan-x pan-y;*/
+            /*-ms-touch-action: none;*/
+            /*touch-action: none;*/
+            -ms-scroll-chaining: none;
+        }
+    </style>
+    @if (LotDetailHeaderBarColor != "" && LotDetailHeaderBarGradientColor != "")
+    {
+        <style>
+            #panelTopInfo {
+                background-image:linear-gradient(@(LotDetailHeaderBarColor),@(LotDetailHeaderBarGradientColor)) !important;
+            }
+        </style>
+    }
+    @if (LotDetailHeaderBarTextColor != "")
+    {
+        <style>
+            #topPaneHeader,#topPaneSub, #default-text, .block-info-panel, .column-info-next > div ,.column-info-next >span , #topPaneDefaultText{
+                color:@LotDetailHeaderBarTextColor !important
+            }
+        </style>
+    }
+</head>
+
+<body>
+    @if (Model.RequestInfoModal)
+    {
+        @Html.Partial("Partials/_modal", new BHI.SalesArchitect.WebAdmin.Models.ProspectLead() { CommunityID = Model.Community.ID, IsZipCodeRequired = Model.IsZipCodeRequired, partnerID = Model.PartnerID })
+    }
+    <div id="confirmationMessage" class="save-result"></div>
+    <div class="fTable fConsumeAll">
+        <div id="mainTitleRow" class="fTableRow">
+            <table class="main-title-table">
+                <tr style="background-color:@TopNavigationBar.Value;color:@TopNavigationBarText.Value">
+                    @if (Model.IsBuilderLogo)
+                    {
+                        <td width="100">
+                            <img class="builder_logo" src="@Model.BuilderBrandLogo" />
+                        </td>
+                    }
+                    <td class="mainTitle">
+                        @Model.Community.Name
+                        <div id="debuggingArea">
+                        </div>
+                    </td>
+
+
+                    @if (@Model.OtherCommunities != null)
+                    {
+                        <td class="change-community-cell">
+                            <a class="btn btn-primary" id="masterPlanButton">
+                                <img src="../../Content/images/ic_masterplan.png" /> Master Plan
+                            </a>
+                            @if (Model.OtherCommunities != null && Model.OtherCommunities.Count() > 0)
+                            {
+                                <div class="dropdown" style="display:inline-block; vertical-align:middle">
+                                    <a href="#" class="btn btn-primary tooltips change-community-tooltip dropdown-toggle text-format-style pull-right"
+                                       data-toggle="dropdown" role="button" aria-expanded="false" id="" style="outline:none;"><img src="../../Content/images/ic_dropdown.png" />&nbsp;change Community</a>
+                                    <ul class="dropdown-menu dropdown-tip" role="menu">
+                                        @foreach (var c in @Model.OtherCommunities)
+                                        {
+                                            @*<li>@Html.ActionLink(c.Name, "Index", "SiteOverview", new { partnerID = @Model.PartnerID, siteID = @c.SiteID }, new { @class = "masterplan-data" })</li>*@
+                                            if (c.NewIsp)
+                                            {
+                                                <li>@Html.ActionLink(c.Name, "NewIsp", "SiteOverview", new { partnerID = @Model.PartnerID, siteID = @c.SiteID }, new { @class = "masterplan-data" })</li>
+                                            }
+                                            else
+                                            {
+                                                <li>@Html.ActionLink(c.Name, "Index", "SiteOverview", new { partnerID = @Model.PartnerID, siteID = @c.SiteID }, new { @class = "masterplan-data" })</li>
+                                            }
+
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </td>
+                    }
+                    @*<td class="filter-box">
+                            <input type="button" value="Refine" id="filter-btn" class="filter-main-btn" />
+                            <div class="filter-main-container" role="menu" aria-labelledby="dLabel">
+                                <div class="filter-row">
+                                    <div class="filter-left-column">
+                                        Inventory:
+                                    </div>
+                                    <div class="filter-right-column  inventory-check custom-checkbox">
+                                        <input type="checkbox" class="isSpecHome" name="isSpecHome" id="isSpecHome" />
+                                        <label for="isSpecHome">
+                                        </label>
+                                        <img src="../../Content/images/key-icon.png" width="16" />
+                                    </div>
+                                </div>
+                                <div class="filter-row ">
+                                    <div class="filter-left-column price-row">
+                                        Price:
+                                    </div>
+                                    <div class="filter-right-column filter-price-range">
+                                        <div id="slider-range">
+                                        </div>
+                                        <input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;">
+                                    </div>
+                                </div>
+                                <div class="filter-row ">
+                                    <div class="filter-left-column">
+                                        Bedrooms:
+                                    </div>
+                                    <div class="filter-right-column badroom-label-btn">
+                                        <input type="radio" id="bd-any" value="-1" data-bind="checked: numberOfBed" name="badroomNo"
+                                               checked="checked">
+                                        <label for="bd-any">
+                                            Any
+                                        </label>
+                                        <input type="radio" id="bd1" value="1" data-bind="checked: numberOfBed" name="badroomNo"
+                                               disabled="disabled">
+                                        <label for="bd1" class="disable-btn">
+                                            1+
+                                        </label>
+                                        <input type="radio" id="bd2" value="2" data-bind="checked: numberOfBed" name="badroomNo"
+                                               disabled="disabled">
+                                        <label for="bd2" class="disable-btn">
+                                            2+
+                                        </label>
+                                        <input type="radio" id="bd3" value="3" data-bind="checked: numberOfBed" name="badroomNo"
+                                               disabled="disabled">
+                                        <label for="bd3" class="disable-btn">
+                                            3+
+                                        </label>
+                                        <input type="radio" id="bd4" value="4" data-bind="checked: numberOfBed" name="badroomNo"
+                                               disabled="disabled">
+                                        <label for="bd4" class="disable-btn">
+                                            4+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="filter-row">
+                                    <div class="filter-left-column">
+                                        Bathrooms:
+                                    </div>
+                                    <div class="filter-right-column badroom-label-btn">
+                                        <input type="radio" id="bth-any" name="bathroomNo" value="-1" checked="checked">
+                                        <label for="bth-any">
+                                            Any
+                                        </label>
+                                        <input type="radio" id="bth1" name="bathroomNo" value="1" disabled="disabled">
+                                        <label for="bth1" class="disable-btn">
+                                            1+
+                                        </label>
+                                        <input type="radio" id="bth2" name="bathroomNo" value="2" disabled="disabled">
+                                        <label for="bth2" class="disable-btn">
+                                            2+
+                                        </label>
+                                        <input type="radio" id="bth3" name="bathroomNo" value="3" disabled="disabled">
+                                        <label for="bth3" class="disable-btn">
+                                            3+
+                                        </label>
+                                        <input type="radio" id="bth4" name="bathroomNo" value="4" disabled="disabled">
+                                        <label for="bth4" class="disable-btn">
+                                            4+
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="filter-row btn-row">
+                                    <input type="button" value="Clear" class="filter-btn" id="cancelFilter" />
+                                    <input type="button" value="Apply" class="filter-btn filter-apply-btn" id="applyFilter" />
+                                </div>
+                            </div>
+                        </td>*@
+                </tr>
+            </table>
+        </div>
+        <div class="fTableRow">
+            <div class="fTableCell fConsumeAll">
+                <div class="fConsumeAll refPosition">
+                    <div id="mainPanel" class="fLeft fConsumeAll">
+                        <div class="fTable fConsumeAll">
+                            <div class="fTableRow barBaseDimension">
+                                <div class="fTableCell barBaseDimension">
+                                    <div id="panelTopInfo" class="panelTopInfo">
+                                        <div class="panelTopInfoContent">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <button class="cButton" id="toggleTopPaneButton">
+                                                            <i class="icon icon-arrowdown"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="top-panel-header-width">
+                                                        <div id="topPaneHeader">
+                                                        </div>
+                                                        <div id="topPaneSub">
+                                                        </div>
+                                                    </td>
+                                                    <td class="top-panel-width">
+                                                        <div id="topPaneInfo">
+                                                        </div>
+                                                        <div id="topPaneDefaultText">
+                                                            Tap a homesite below or choose a plan at right
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fTableRow fConsumeAll">
+                                <div class="fTableCell fConsumeAll mapPanel">
+                                    <div class="mapContent">
+                                        <!-- START MAP PANEL CONTENT //-->
+                                        <div id="mapData" style="display: block">
+                                            <div class="mapButtonBar">
+                                                <div class="slider-map" style="top:@(Model.RequestInfoModal?"15px":"53px")">
+                                                    <input id="svgslider" type="text" data-slider="true" data-slider-vertical="true"
+                                                           data-slider-range="1,5" />
+                                                </div>
+                                                <div class="btn-map">
+                                                    <button id="zoomIn" title="Zoom In">
+                                                        <i class="icon icon-zoomin"></i>
+                                                    </button>
+                                                    <button id="zoomOut" title="Zoom Out">
+                                                        <i class="icon icon-zoomout"></i>
+                                                    </button>
+                                                    <button id="resetSVG" title="Reset">
+                                                        <i class="icon icon-reset"></i>
+                                                    </button>
+                                                    <button id="getPdf" title="Download Pdf">
+                                                        <i class="pdf"></i>
+                                                    </button>
+                                                    @if (Model.RequestInfoModal)
+                                                    {
+                                                        <button title="Request Info" data-toggle="modal" data-target="#myModal">
+                                                            <img style="padding: 0px 0px 3px 0;" src="~/Content/images/requestInfo.ico" />
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </div>
+                                            @Html.Raw(Model.MapData)
+                                        </div>
+                                        <!-- END MAP PANEL CONTENT //-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="flyoutPanel">
+                        <div class="panelCarousel">
+                            <div class="carouselButtonPanel" style="background: #ECF1EF;">
+                                <div class="nav-buttons">
+                                    <button class="cButton" id="buttonUp"><i class="arrow down"></i></button>
+                                    <button class="cButton" id="buttonDown"><i class="arrow up"></i></button>
+                                </div>
+                                <div class="refine">
+                                    <button type="button" id="filter-btn" class="filter-main-btn">
+                                        <img src="/Content/images/ic_filter.png" />
+                                        Refine
+                                    </button>
+
+
+
+                                </div>
+
+                            </div>
+                            <div class='filter-no-result'>
+                                No results found
+                                <br />
+                                <button class="show-result">
+                                    Show All Results
+                                </button>
+                            </div>
+                            <div id="carouselContent" class="carouselContent">
+                                <!-- VSCROLLER PLUGIN RENDERS CONTENT HERE //-->
+                            </div>
+                        </div>
+                        <div id="listingDetails" class="panelDiagram">
+                            <div class="diagramHeader">
+                                <button class="cButton" id="closeDiagramPaneButton">
+                                    <i class="icon icon-arrowright"></i>
+                                </button>
+                                <span id="hpanelTitle">Duke</span><span id="hpanelViewing"></span>
+                            </div>
+                            <div id="diagramContent" class="diagramContent">
+                                <div class="light-gallery">
+                                    <!-- HSCROLLER PLUGIN RENDERS CONTENT HERE //-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearFloat">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sa-loading-bar" style="display:none">
+        <div class="sa-loading-info">
+            <img src="~/Content/images/pdfloading.svg" />
+            <p class="loading-text">Generating PDF...</p>
+        </div>
+    </div>
+
+    @*Refine Filter popup*@
+    <div class="filter-main-container" role="menu" aria-labelledby="dLabel">
+        <div class="filter-row">
+            <div class="filter-left-column">
+                Inventory:
+            </div>
+            <div class="filter-right-column  inventory-check custom-checkbox">
+                <input type="checkbox" class="isSpecHome" name="isSpecHome" id="isSpecHome" />
+                <label for="isSpecHome">
+                </label>
+                <img src="../../Content/images/key-icon.png" width="16" />
+            </div>
+        </div>
+        <div class="filter-row ">
+            <div class="filter-left-column price-row">
+                Price:
+            </div>
+            <div class="filter-right-column filter-price-range">
+                <div id="slider-range">
+                </div>
+                <input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;">
+            </div>
+        </div>
+        <div class="filter-row ">
+            <div class="filter-left-column">
+                Bedrooms:
+            </div>
+            <div class="filter-right-column badroom-label-btn">
+                <input type="radio" id="bd-any" value="-1" data-bind="checked: numberOfBed" name="badroomNo"
+                       checked="checked">
+                <label for="bd-any">
+                    Any
+                </label>
+                <input type="radio" id="bd1" value="1" data-bind="checked: numberOfBed" name="badroomNo"
+                       disabled="disabled">
+                <label for="bd1" class="disable-btn">
+                    1+
+                </label>
+                <input type="radio" id="bd2" value="2" data-bind="checked: numberOfBed" name="badroomNo"
+                       disabled="disabled">
+                <label for="bd2" class="disable-btn">
+                    2+
+                </label>
+                <input type="radio" id="bd3" value="3" data-bind="checked: numberOfBed" name="badroomNo"
+                       disabled="disabled">
+                <label for="bd3" class="disable-btn">
+                    3+
+                </label>
+                <input type="radio" id="bd4" value="4" data-bind="checked: numberOfBed" name="badroomNo"
+                       disabled="disabled">
+                <label for="bd4" class="disable-btn">
+                    4+
+                </label>
+            </div>
+        </div>
+        <div class="filter-row">
+            <div class="filter-left-column">
+                Bathrooms:
+            </div>
+            <div class="filter-right-column badroom-label-btn">
+                <input type="radio" id="bth-any" name="bathroomNo" value="-1" checked="checked">
+                <label for="bth-any">
+                    Any
+                </label>
+                <input type="radio" id="bth1" name="bathroomNo" value="1" disabled="disabled">
+                <label for="bth1" class="disable-btn">
+                    1+
+                </label>
+                <input type="radio" id="bth2" name="bathroomNo" value="2" disabled="disabled">
+                <label for="bth2" class="disable-btn">
+                    2+
+                </label>
+                <input type="radio" id="bth3" name="bathroomNo" value="3" disabled="disabled">
+                <label for="bth3" class="disable-btn">
+                    3+
+                </label>
+                <input type="radio" id="bth4" name="bathroomNo" value="4" disabled="disabled">
+                <label for="bth4" class="disable-btn">
+                    4+
+                </label>
+            </div>
+        </div>
+        <div class="filter-row btn-row">
+            <input type="button" value="Clear" class="filter-btn" id="cancelFilter" />
+            <input type="button" value="Apply" class="filter-btn filter-apply-btn" id="applyFilter" />
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+﻿<h4>General Settings (These apply to both ISP 2.0 and Geospatial)</h4>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Partner Type <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Indicates if the Partner is using BDX Sales Navigator Application.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="isISP" value="true" data-bind="checked:IsISP" class="isp-radio" /><span class="isp-config">ISP Only</span>
+        <input type="radio" name="isISP" value="false" data-bind="checked:IsISP" class="isp-radio" /><span>ISP and Sales Navigator</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Secure Access? <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">“Yes”, all ISPs for this Partner require login/authentication against the Partner’s User List to access.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="isSecured" value="true" data-bind="checked:IsSecured" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="isSecured" value="false" data-bind="checked:IsSecured" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Display Available Plans in Pop-up <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Show All Plans list in Popup if no Plan is assigned to a Homesite.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="availablePlans" value="true" data-bind="checked:ShowAllPlans" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="availablePlans" value="false" data-bind="checked:ShowAllPlans" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Display Available Specs in Pop-up <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Show All Specs list in Popup if no Spec is assigned to a Homesite.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="availableSpecs" value="true" data-bind="checked:ShowAllSpecs" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="availableSpecs" value="false" data-bind="checked:ShowAllSpecs" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Display Pop-up on Hover or on Click <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Enable/Disable Hover functionality on ISP</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="isHoverAllowed" value="true" data-bind="checked:IsHoverAllowed" class="isp-radio" /><span class="isp-config">Hover</span>
+        <input type="radio" name="isHoverAllowed" value="false" data-bind="checked:IsHoverAllowed" class="isp-radio" /><span>Click</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Display Request Information Button <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Show Request Info Button on ISP Page for Lead Submission.</span></div></h5>
+
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="requestInfoModal" value="true" data-bind="checked:RequestInfoModal" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="requestInfoModal" value="false" data-bind="checked:RequestInfoModal" class="isp-radio" /><span>No</span>
+    </div>
+    <div style="display: none; margin-top: 5px; color:red; " id="requestInfoError">
+        You cannot enable this feature until this Partner has been linked to BDXLive.
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Send Lot IDs with Leads <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Send lot id’s clicked by the user in comment section of Lead.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="sendLotId" value="true" data-bind="checked:SendLotId" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="sendLotId" value="false" data-bind="checked:SendLotId" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Selected Lot Outline Color <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">This color will determine the outline color for selected lots on the map.</span></div></h5>
+    </div>
+    <div class="color-selection clearfix">
+        <div class="colorpicker-input" style="cursor:pointer;">
+            <div></div>
+        </div>
+        <div style="margin-top: 8px; padding-left: 50px; color: #0073e6; cursor: pointer; width:35px;" id="resetLotOutline">Reset</div>
+        <input class="colorpicker-text" type="text" id="lotOutlineColor" data-bind="value:LotOutlineColor" />
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Lot Premium Optional Display <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, this will modify pricing display. 2 or more plans assigned to a lot will display premium + base in the right rail as ‘Starting at’. A single plan assigned to a lot will display Lot Premium value as ‘Priced at’.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="lotPremiumOptionalDisplay" value="true" data-bind="checked:LotPremiumOptionalDisplay" class="isp-radio" /><span class="isp-config">On</span>
+        <input type="radio" name="lotPremiumOptionalDisplay" value="false" data-bind="checked:LotPremiumOptionalDisplay" class="isp-radio" /><span>Off</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Suppress Top Left Builder Logo <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, this will hide the builder logo at the top left of the ISP.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="suppressBuilderLogo" value="true" data-bind="checked:SuppressBuilderLogo" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="suppressBuilderLogo" value="false" data-bind="checked:SuppressBuilderLogo" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Suppress Bottom Bar Community Name <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, this will hide the Community Name from the bottom bar.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="suppressBottomCommunityName" value="true" data-bind="checked:SuppressBottomCommunityName" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="suppressBottomCommunityName" value="false" data-bind="checked:SuppressBottomCommunityName" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Suppress Top Left Community Name <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, this will hide the Community Name from the top left of the ISP.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="suppressTopCommunityName" value="true" data-bind="checked:SuppressTopCommunityName" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="suppressTopCommunityName" value="false" data-bind="checked:SuppressTopCommunityName" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Display Lot List in Right Rail <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, this will display all available lots for each plan in the right rail.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="displayLotList" value="true" data-bind="checked:DisplayLotList" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="displayLotList" value="false" data-bind="checked:DisplayLotList" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Display Spec Address Under Plan Name <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">This will display the address assigned to a spec.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="displaySpecAddress" value="true" data-bind="checked:DisplaySpecAddress" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="displaySpecAddress" value="false" data-bind="checked:DisplaySpecAddress" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Add Model Home Banner Icon for model homes <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, this will provide new configuration options to display a Model Homes banner for model homes.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="addModelHomesBanner" value="true" data-bind="checked:AddModelHomesBanner" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="addModelHomesBanner" value="false" data-bind="checked:AddModelHomesBanner" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Replace Key Icon for Spec homes <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, this provides an editable banner to replace the key Icon for spec homes.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="replaceKeyIcon" value="true" data-bind="checked:ReplaceKeyIcon" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="replaceKeyIcon" value="false" data-bind="checked:ReplaceKeyIcon" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Open Spec Details by Default <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, on mouse over or clicking a lot with an assigned Spec, when updating the content in the right rail, have the content display by default.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="openSpecDefault" value="true" data-bind="checked:OpenSpecDefault" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="openSpecDefault" value="false" data-bind="checked:OpenSpecDefault" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Show Exterior Color Scheme <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">When enabled, the ISP will attempt to match an Envision Exterior Color Option based on a Lot’s External Reference number and display in popup.</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="showExteriorColorScheme" value="true" data-bind="checked:ShowExteriorColorScheme" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="showExteriorColorScheme" value="false" data-bind="checked:ShowExteriorColorScheme" class="isp-radio" /><span>No</span>
+    </div>
+    <div style="display: none; margin-top: 5px; color:red; " id="colorSchemeError">
+        You must set the Envision NHT Builder Number to use this feature.
+    </div>
+</div>
+<br /><br />
+<h4>ISP 2.0 Only</h4>
+@*<div class="row-fluid">
+        <div class="head-div">
+           <h5>ISP: Builder Logo <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Show Builder Logo on ISP Page for ISP 1.0</span></div></h5>
+        </div>
+        <div class="radio-div">
+            <input type="radio" name="builderLogo" value="true" data-bind="checked:BuilderLogo" /><span>Yes</span>
+            <input type="radio" name="builderLogo" value="false" data-bind="checked:BuilderLogo" /><span>No</span>
+        </div>
+    </div>*@
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Display Homesite Status Filter <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Show Filter by Lot Status on ISP 2.0</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="showHomesiteFilter" value="true" data-bind="checked:ShowHomesiteFilter" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="showHomesiteFilter" value="false" data-bind="checked:ShowHomesiteFilter" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Show Bottom Bar <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Show/Hide Bottom Bar on ISP 2.0</span></div></h5>
+    </div>
+    <div class="radio-div">
+        <input type="radio" name="ShowBottomBar" value="true" data-bind="checked:ShowBottomBar" class="isp-radio" /><span class="isp-config">Yes</span>
+        <input type="radio" name="ShowBottomBar" value="false" data-bind="checked:ShowBottomBar" class="isp-radio" /><span>No</span>
+    </div>
+</div>
+<div class="form-actions">
+    <input type="button" class="btn btn-primary " value="Save Changes" data-bind="click:saveConfiguration" />
+    <input type="button" class="btn " value="Cancel" data-bind="click:getConfiguration" />
+</div>

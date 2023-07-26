@@ -1,0 +1,94 @@
+﻿@using System.Web.Optimization
+@model BHI.SalesArchitect.WebAdmin.Models.SiteOverview
+@{
+    Layout = null;
+    //Demo GA Id used for GA Initialization -- Bug in Plugin version where GA doesn't get initialized automatically 
+    ViewBag.GoogleAnalyticsID = "UA-177093283-1";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.CommunityName</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta id="metaviewport" name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="MobileOptimized" content="1800">
+    @if (ViewBag.v != String.Empty)
+    {
+        <script src="@System.Configuration.ConfigurationManager.AppSettings.Get("PluginAssetsBaseURL")/loader/scripts/@ViewBag.v/bdx-media-loader-min.js?key=@ViewBag.apiKey"></script>
+    }
+    else
+    {
+        <script src="@System.Configuration.ConfigurationManager.AppSettings.Get("PluginAssetsBaseURL")/loader/scripts/bdx-media-loader-min.js?key=@ViewBag.apiKey"></script>
+    }
+    @Html.Partial("Partials/_googleAnalytics")
+</head>
+
+<body>
+    <div id="plugin-container" style="height:100%;position:fixed;top:0;left:0;width:100%">
+    </div>
+    <script>
+        var isDownloadEnabled = true;
+        if (getQueryString("isDownloadEnabled").length > 0) {
+            isDownloadEnabled = getQueryString("isDownloadEnabled")[0].toLowerCase();
+        }
+        var isViewMoreDetailsBtn = true;
+        if (getQueryString("isViewMoreDetailsBtn").length > 0) {
+            isViewMoreDetailsBtn = getQueryString("isViewMoreDetailsBtn")[0].toLowerCase();
+        }
+        var isHotspotBtn = true;
+        if (getQueryString("DisplayHotspotsOnKiosks").length > 0) {
+            isHotspotBtn = getQueryString("DisplayHotspotsOnKiosks")[0].toLowerCase();
+        }
+        var openLinkInModal = false;
+        if (getQueryString("openLinkInModal").length > 0) {
+            openLinkInModal = getQueryString("openLinkInModal")[0].toLowerCase();
+        }
+        var suppressMasterInfo = false;
+        if (getQueryString("suppressMasterInfo").length > 0) {
+            suppressMasterInfo = getQueryString("suppressMasterInfo")[0].toLowerCase();
+        }
+        var masterPlan = false;
+        if (getQueryString("masterPlan").length > 0) {
+            masterPlan = getQueryString("masterPlan")[0].toLowerCase();
+        }
+        var lotId = '';
+        if (getQueryString("lotId").length > 0) {
+            lotId = getQueryString("lotId")[0];
+        }
+        var lotExternalReference = "";
+        if (getQueryString("lotExternalReference").length > 0) {
+            lotExternalReference = getQueryString("lotExternalReference")[0];
+        }
+
+        MediaLoader.initSitePlan({
+            communityId: @ViewBag.CommunityID,
+            container: "plugin-container",
+            allowListings: true,
+            allowPopup: @Html.Raw(Json.Encode(ViewBag.allowPopup)),
+            apiKey: @Html.Raw(Json.Encode(ViewBag.apiKey)),
+            communityNumber: @Html.Raw(Json.Encode(ViewBag.CommunityNumber)),
+            ispVersion: 2,
+            masterPlan: masterPlan,
+            masterPlanId: null,
+            displayHotspotsOnKiosks: isHotspotBtn,
+            suppressMasterInfo: suppressMasterInfo,
+            openLinkInModal: openLinkInModal,
+            isDownloadEnabled: isDownloadEnabled,
+            isViewMoreDetailsBtn: isViewMoreDetailsBtn,
+            lotId: lotId,
+            lotExternalReference: lotExternalReference,
+            isFrameInstance: true,
+            internalCommunityId: @ViewBag.InternalCommunityId
+        });
+
+        function getQueryString(key) {
+            var re = new RegExp('(?:\\?|&)' + key + '=(.*?)(?=&|$)', 'gi');
+            var r = [],
+                m;
+            while ((m = re.exec(document.location.search)) != null) r.push(m[1]);
+            return r;
+        }
+
+    </script>
+</body>
+</html>

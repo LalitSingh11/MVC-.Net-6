@@ -1,0 +1,134 @@
+﻿@using MvcJqGrid
+@using MvcJqGrid.Enums
+@using System.Web.Optimization;
+
+@{
+    var COMMUNITIES_GRID = "Communities";
+}
+<div id="communitiesDwStatus">
+    <div class="row-fluid">
+        <div class="head-div">
+            <h5>Dreamweaver Client <div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">NO plans are available on all lots with exclusions.</span></div></h5>
+        </div>
+        <div class="radio-div">
+            <input type="radio" name="isDW" value="true" data-bind="checked:IsDW,event:{change:hideDWDiv}" class="isp-radio" /><span class="isp-config">Yes</span>
+            <input type="radio" name="isDW" value="false" data-bind="checked:IsDW,event:{change:hideDWDiv}" class="isp-radio" /><span>No</span>
+        </div>
+    </div>
+    <div id="DWDiv" data-bind="visible:isDWDiv">
+        <div class="row">
+            <div class="span12 search" style="width: 97.9%; margin-bottom: 10px;">
+                <a href="javascript:void(0)" class="clear disable" onclick="clearSearch()" id="clear-search">Clear Search</a> <div class="searchbox"><input type="text" placeholder="Search by Community name, builder/brand" size="40"  id="searchBox" style="font-size:14px!important;"> <a href="javascript:void(0)" class="icon-search" onclick="searchCommunityGrid()" id="searchButton"></a></div>
+            </div>
+            <div class="span12 table-fixed-head-container">
+                <table id="Communities"></table><div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-actions">
+    <input type="button" class="btn btn-primary " value="Save Changes" data-bind="click:saveDWConfiguration" />
+    <input type="button" class="btn " value="Cancel" data-bind="click:getDWConfiguration" />
+</div>
+<script type="text/javascript">
+    var commArray = [];
+    jQuery(document).ready(function () {
+        jQuery('#Communities').jqGrid({
+            width: null,
+            datatype: 'json',
+            height: '100%',
+            pager: '#pager',
+            mtype: 'post',
+            rowList: [10, 15, 20, 50],
+            rowNum: 10,
+            url: '/Communities/GetCommunities',
+            viewrecords: true,
+            emptyrecords: 'No Communities Found',
+            colModel: [
+                {
+                    name: 'ID',
+                    hidden: true,
+                    index: 'ID'
+                }, {
+                    align: 'center',
+                    name: 'cell.DWStatus',
+                    label: 'DW Status',
+                    sortable: true,
+                    formatter: formatStatus
+                }
+                , {
+                    align: 'center',
+                    name: 'cell.Name',
+                    label: 'Community',
+                    sortable: true,
+                    index: 'cell.Name'
+                }, {
+                    align: 'center',
+                    name: 'cell.Brand',
+                    label: 'Brands',
+                    sortable: true,
+                    index: 'cell.Brand'
+                }, {
+                    align: 'center',
+                    name: 'cell.Market',
+                    label: 'Market',
+                    sortable: true,
+                    index: 'cell.Market'
+                }
+            ],
+            loadComplete: function () {
+                $("#Communities").jqGrid('setGridWidth', $('.tab-content').width() - 2, true);
+            }
+        });
+        $(document).on('click', '.dwRadio', function (a) {
+            var commId = $(this).data('commid');
+            var val = $(this).val();
+            commArray = commArray.filter(function (e) {
+                if (commId !== e.commId) {
+                    return e;
+                }
+            });
+            commArray.push({ commId: commId, val: val });
+        });
+        $(document).on('keyup','#searchBox',function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                $("#searchButton").click();
+            }
+        });
+    });
+
+    function formatStatus(a, b, c) {
+        var active = a === 'Active' ? true : false;
+        var inactive = a === 'Inactive' ? true : false;
+        var pending = a === 'Pending' ? true : false;
+        var activateRadioButton = active ? "<input class='dwRadio' type='radio' checked data-commId='" + c[0] + "' name='dwStatus_" + c[0] + "' value='1' /><label>Active</label>" : "<input class='dwRadio' type='radio' data-commId='" + c[0] + "' name='dwStatus_" + c[0] + "' value='1' /><label>Active</label>";
+        var inactivateRadioButton = inactive ? "<input class='dwRadio' type = 'radio' checked data-commId='" + c[0] + "' name = 'dwStatus_" + c[0] + "' value = '2' /> <label>Inactive</label>" : "<input class='dwRadio' type = 'radio' data-commId='" + c[0] + "' name = 'dwStatus_" + c[0] + "' value = '2' /> <label>Inactive</label>";
+        var pendingButton = pending ? "<input class='dwRadio' type='radio' checked name='dwStatus_" + c[0] + "' data-commId='" + c[0] + "' value='3' /><label>Pending</label>" : "<input class='dwRadio' type='radio' name='dwStatus_" + c[0] + "' data-commId='" + c[0] + "' value='3' /><label>Pending</label>";
+        return activateRadioButton + inactivateRadioButton + pendingButton;
+    }
+
+    @*function saveDWConfiguration() {
+        $.post("@Url.Action("saveDwCommunityConfiguration")", commArray, function (data) {
+                        saveSuccessful();
+                    }).fail(function () {
+                        saveUnsuccessful();
+                    });
+    }*@
+    function clearSearch() {
+            if (!$('#clear-search').hasClass('disable')) {
+                $('#searchBox').val("");
+                jQuery("#@(COMMUNITIES_GRID)").jqGrid().setGridParam({ postData: { searchTerm: null }, page: 1 }).trigger('reloadGrid');
+                $('#clear-search').addClass('disable');
+            }
+    }
+
+    function searchCommunityGrid() {
+            var searchTerm = $('#searchBox').val().trim();
+            if (searchTerm != null && searchTerm != "") {
+                jQuery("#@(COMMUNITIES_GRID)").jqGrid().setGridParam({ postData: { searchTerm: searchTerm }, page: 1 }).trigger('reloadGrid');
+                $('#clear-search').removeClass('disable');
+            }
+    }
+
+</script>

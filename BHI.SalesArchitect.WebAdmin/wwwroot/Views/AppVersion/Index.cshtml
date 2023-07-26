@@ -1,0 +1,285 @@
+﻿@model BHI.SalesArchitect.Model.ConsumerAppVersion
+@using BHI.SalesArchitect.WebAdmin.Lib.Extensions
+@using System.Web.Optimization;
+@using MvcJqGrid
+@{
+    ViewBag.Title = "App Version";
+    var GRID = "Grid";
+    var GRID_COMM = "GridComm";
+    var FORM = "#FormValidation";
+}
+@section header {
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/jqGrid")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/generalHelper")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/generalHelperKO")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/jqGrid")
+    @Scripts.Render("~/bundles/bootstrap")
+
+}
+<script type="text/javascript" src="../../Scripts/validate_additional.js"></script>
+<fieldset id="FieldSet2Bind">
+    <legend>Add App Version</legend>
+    <form id="FormValidation" action="javascript:void(0);">
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="control-group">
+                    @Html.LabelFor(m => m.Version, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.Version, new { @class = "input-block-level", @placeholder = "Version", data_bind = "value: Version" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(m => m.IsMajorUpdate, new { @class = "control-label" })
+                    <div class="controls" style="text-align:inherit">
+                        @Html.CheckBoxFor(m => m.IsMajorUpdate, new { @class = "input-blockZA-level IsMajorUpdate", data_bind = "checked: IsMajorUpdate" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</fieldset>
+
+<div class="form-actions">
+    <button type="button" class="btn btn-primary " onclick="SaveVersion();">Save changes</button>
+    <button type="button" class="btn" onclick="reloadUser();">Cancel</button>
+</div>
+
+<div class="row">
+    <div class="span6 section-heading" id="HeaderDiv">
+        <h1>Manage App Versions</h1>
+    </div>
+    <div class="span6">
+        <div class="page-header-btn-group btn-group pull-right">
+            @*<button class="btn" onclick="location.href='/Communities'">Manage Communities</button>
+                <button class="btn" onclick="location.href='/Prospects'">Manage Prospects</button>*@
+        </div>
+        @if (!Roles.IsUserInRole("PARTNERREADONLY"))
+        {
+            <div class="page-header-btn-group pull-right">
+                <a class="delete-selected" href="Javascript:void(0);" onclick="deleteSelected();">Delete Selected</a>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="alert alert-error" id="ErrorMessage" style="display:none">   </div>
+<div class="row">
+    <div class="span12 table-fixed-head-container">
+
+        @(Html.Grid(GRID)
+                        .AddColumn(new Column("ID").SetHidden(true))
+                        .AddColumn(new Column("Version").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(100).SetLabel("Version"))
+                        .AddColumn(new Column("IsMajorUpdate").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(100).SetLabel("Major Update"))
+                        .SetUrl(Url.Action("GetVersions"))
+                        .SetRequestType(MvcJqGrid.Enums.RequestType.Post)
+                        .SetAutoWidth(true)
+                        .SetSortName("UserName")
+                        .SetSortOrder(MvcJqGrid.Enums.SortOrder.Asc)
+                        .SetRowNum(10000)
+                        .SetMultiSelect(true)
+                        .SetMultiBoxOnly(true)
+                        .SetViewRecords(true)
+                        .OnSelectRow("onRowSelected(rowid, status)"))
+
+    </div><!-- .table-fixed-head-container -->
+</div>
+
+
+<script type="text/javascript">
+    var viewUser = {};
+    currentRowId = -1;
+    var selectedIds = "";
+    $(document).ready(function () {
+        $('#salesRepButton , #communityAdminButton').attr('disabled', true);
+        $("@FORM").validate({
+            onkeyup: function (element, event) {
+                if (event == "keypress" && this.elementValue(element) === "") {
+                    return;
+                }
+                else {
+                    this.element(element);
+                }
+            },
+            rules: {
+                Version: {
+                    required: true
+                }
+            }
+        });
+
+    });
+    function onRowSelected(rowid, status) {
+        if (currentRowId != rowid) {
+            currentRowId = rowid;
+            $(".input-block-level").next("span").remove();
+            $('#salesRepButton , #communityAdminButton').attr('disabled', false);
+            BindControls(rowid);
+        }
+        else if (status == false) {
+            $('#salesRepButton , #communityAdminButton').attr('disabled', true);
+            UnBindControls(rowid);
+            $(".input-block-level").next("span").remove();
+            currentRowId = -1;
+        }
+    }
+    function deleteSelected() {
+        $("#ErrorMessage").hide();
+        var selectedIds = jQuery("#@GRID").jqGrid('getGridParam', 'selarrrow');
+        console.log(selectedIds);
+        if (selectedIds.length == 0) {
+            $("#ErrorMessage").show();
+            $("#ErrorMessage").html("Please select version(s) to delete");
+            //goToByScroll("ErrorMessage");
+            $("#@(GRID_COMM)").jqGrid('resetSelection');
+            currentRowId = -1;
+            cleanModel();
+            //  goToByScroll("HeaderDiv");
+        }
+        else {
+            $.ajax('@Url.Action("DeleteVersions")', {
+                data: JSON.stringify({
+                    versionsId: selectedIds
+                }),
+                type: "post",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    if (data.Success == "false") {
+                        saveUnsuccessful();
+                        $("#ErrorMessage").show();
+                        $("#ErrorMessage").html(data.Error);
+                        goToByScroll("ErrorMessage");
+                    }
+                    else {
+                        saveSuccessful();
+                        $("#ErrorMessage").hide();
+                        jQuery("#@(GRID)").trigger('reloadGrid');
+                        $("#@(GRID_COMM)").jqGrid('resetSelection');
+                        currentRowId = -1;
+                        cleanModel();
+                        goToByScroll("confirmationMessage");
+                    }
+
+                }
+            });
+        }
+    }
+
+    function BindControls(rowId) {
+        $("#ErrorMessage").hide();
+        viewUser.Version = getColumnData("#@(GRID)", rowId, "Version");
+        viewUser.IsMajorUpdate = getColumnData("#@(GRID)", rowId, "IsMajorUpdate") == "True" || getColumnData("#@(GRID)", rowId, "IsMajorUpdate") == "true" ? true : false;
+        ko.cleanNode($("#FieldSet2Bind")[0]);
+        ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+        $("#@(GRID_COMM)").jqGrid('resetSelection');
+        @*selectedIds = viewUser.AssociationIds.split(",");
+        for (i = 0, count = selectedIds.length; i < count; i++) {
+            if (selectedIds[i] != "") {
+                $("#@GRID_COMM").jqGrid('setSelection', selectedIds[i], true);
+            }
+        }*@
+
+        //ko.applyBindings(viewUser, $("#test46")[0]);
+    }
+
+    function UnBindControls(rowId) {
+        $("#ErrorMessage").hide();
+        viewUser.UserName = getColumnData("#@(GRID)", rowId, "");
+        viewUser.FirstName = getColumnData("#@(GRID)", rowId, "");
+        viewUser.LastName = getColumnData("#@(GRID)", rowId, "");
+        viewUser.PhoneNumber = getColumnData("#@(GRID)", rowId, "");
+        viewUser.Email = getColumnData("#@(GRID)", rowId, "");
+        viewUser.IsAdministrator = getColumnData("#@(GRID)", rowId, "");
+        viewUser.AssociationIds = getColumnData("#@(GRID)", rowId, "");
+        viewUser.CssAdministrator = "";
+        viewUser.CssSales = "";
+        $(".userActive").prop("checked", false);
+        viewUser.Password = "";
+        viewUser.ConfirmPassword = "";
+        ko.cleanNode($("#FieldSet2Bind")[0]);
+        ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+        $("#@(GRID_COMM)").jqGrid('resetSelection');
+    }
+    function SaveVersion() {
+        //if (currentRowId != -1) {
+        if ($("@FORM").valid()) {
+            if ($(".IsMajorUpdate").prop("checked")) {
+                viewUser.IsMajorUpdate = "true";
+            }
+            else {
+                viewUser.IsMajorUpdate = "false";
+            }
+            if ($('#Version').val() != '') {
+                viewUser.Version = $('#Version').val();
+            }
+            console.log(viewUser);
+            if (typeof (currentRowId) == "undefined" || currentRowId == -1) {
+                currentRowId = 0;
+            }
+            var columndata = typeof (getColumnData("#@(GRID)", currentRowId, "ID")) != "undefined" ? getColumnData("#@(GRID)", currentRowId, "ID") : 0;
+            console.log("{ model: " + ko.toJSON(viewUser) + ", appVersionId: " + getColumnData("#@(GRID)", currentRowId, "ID") + "}");
+            $.ajax('@Url.Action("UpdateVersion")', {
+                data: "{ model: " + ko.toJSON(viewUser) + ", appVersionId: " + columndata + "}",
+                type: "post",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data, textStatus, xhr) {
+                    if (data.Success == "false") {
+                        saveUnsuccessful();
+                        $("#ErrorMessage").show();
+                        $("#ErrorMessage").html(data.Error);
+                        //   goToByScroll("ErrorMessage");
+                    }
+                    else {
+                        jQuery("#@(GRID)").trigger('reloadGrid');
+                        $("#ErrorMessage").hide();
+                        saveSuccessful();
+                        $('#salesRepButton , #communityAdminButton').attr('disabled', true);
+                        jQuery("#@(GRID)").trigger('reloadGrid');
+                        $("#@(GRID_COMM)").jqGrid('resetSelection');
+                        currentRowId = -1;
+                        goToByScroll("confirmationMessage");
+                        currentRowId = data.Id;
+                    }
+
+                }
+            });
+        }
+        //}
+    }
+    function cleanModel() {
+        viewUser = {};
+        viewUser.Version = "";
+        viewUser.IsMajorUpdate = ko.observable();
+        ko.cleanNode($("#FieldSet2Bind")[0]);
+        ko.applyBindings(viewUser, $("#FieldSet2Bind")[0]);
+    }
+    function reloadUser() {
+        cleanModel();
+        currentRowId = -1;
+    }
+    function saveSuccessful() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("sucessfully-alert");
+        $("#confirmationMessage").text("Changes saved");
+        $("#confirmationMessage").show();
+        $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+    }
+    function saveUnsuccessful() {
+        resetSaveLabel();
+        $("#confirmationMessage").addClass("unsucessfully-alert");
+        $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+        $("#confirmationMessage").text("Save operation not completed");
+        $("#confirmationMessage").show();
+    }
+    function resetSaveLabel() {
+        $("#confirmationMessage").removeClass("sucessfully-alert");
+        $("#confirmationMessage").removeClass("unsucessfully-alert");
+        $("#confirmationMessage").text("");
+    }
+</script>

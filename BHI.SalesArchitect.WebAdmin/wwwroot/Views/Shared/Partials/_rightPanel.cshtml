@@ -1,0 +1,218 @@
+﻿<div id="flyoutPanel" style="top:0px">
+    <a class="toggle-sidebar-btn" onclick="ToggleRightPanel();">
+        <i class="fa fa-bars" id="listIcon"></i>
+    </a>
+    <div class="panelCarousel">
+        
+        <div class="right-sidebar" id="rightSideBar">
+            @*Refine Filter popup*@
+            <div class="carouselButtonPanel">
+                <div class="refine">
+                    <button type="button" id="filter-btn" class="filter-main-btn refine-new">
+                        <i class="fa fa-filter" style="font-size:16px;"></i> Plan Details
+                    </button>
+                    <button type="button" id="request-info-btn" class="filter-main-btn refine-new">
+                        <i class="fa fa-envelope"></i> Request Info
+                    </button>
+                    <button title="Download Pdf" type="button" id="print-btn" class="filter-main-btn refine-new">
+                        <i title="Download Pdf" class="fa fa-file-pdf-o"></i>
+                    </button>
+                </div>
+                <div class="filter-main-container filter-main-container-2" role="menu" id="filterBox" aria-labelledby="dLabel" style="display:none;">
+                    <div class="filter-row">
+                        <div class="filter-left-column inventory">Inventory:</div>
+                        <div class="filter-right-column  inventory-check custom-checkbox">
+                            <input type="checkbox" class="isSpecHome" name="isSpecHome" id="isSpecHome" />
+                            <label for="isSpecHome">
+                            </label>
+                            <img src="../../Content/images/key-icon.png" width="16" />
+                        </div>
+                    </div>
+                    <div class="filter-row " id="isp-filter-price">
+                        <div class="filter-left-column price-row">
+                            Price:
+                        </div>
+                        <div class="filter-right-column filter-price-range" style="margin-left: 0;">
+                            <div id="slider-range">
+                            </div>
+                            <input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;">
+                        </div>
+                    </div>
+                    <div class="filter-row ">
+                        <div class="filter-left-column">
+                            Bedrooms:
+                        </div>
+                        <div class="filter-right-column badroom-label-btn">
+                            <input type="radio" id="bd-any" value="-1" data-bind="checked: numberOfBed" name="badroomNo"
+                                   checked="checked">
+                            <label for="bd-any">
+                                Any
+                            </label>
+                            <input type="radio" id="bd1" value="1" data-bind="checked: numberOfBed" name="badroomNo"
+                                   disabled="disabled">
+                            <label for="bd1" class="disable-btn">
+                                1+
+                            </label>
+                            <input type="radio" id="bd2" value="2" data-bind="checked: numberOfBed" name="badroomNo"
+                                   disabled="disabled">
+                            <label for="bd2" class="disable-btn">
+                                2+
+                            </label>
+                            <input type="radio" id="bd3" value="3" data-bind="checked: numberOfBed" name="badroomNo"
+                                   disabled="disabled">
+                            <label for="bd3" class="disable-btn">
+                                3+
+                            </label>
+                            <input type="radio" id="bd4" value="4" data-bind="checked: numberOfBed" name="badroomNo"
+                                   disabled="disabled">
+                            <label for="bd4" class="disable-btn">
+                                4+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-left-column">
+                            Bathrooms:
+                        </div>
+                        <div class="filter-right-column badroom-label-btn">
+                            <input type="radio" id="bth-any" name="bathroomNo" value="-1" checked="checked">
+                            <label for="bth-any">
+                                Any
+                            </label>
+                            <input type="radio" id="bth1" name="bathroomNo" value="1" disabled="disabled">
+                            <label for="bth1" class="disable-btn">
+                                1+
+                            </label>
+                            <input type="radio" id="bth2" name="bathroomNo" value="2" disabled="disabled">
+                            <label for="bth2" class="disable-btn">
+                                2+
+                            </label>
+                            <input type="radio" id="bth3" name="bathroomNo" value="3" disabled="disabled">
+                            <label for="bth3" class="disable-btn">
+                                3+
+                            </label>
+                            <input type="radio" id="bth4" name="bathroomNo" value="4" disabled="disabled">
+                            <label for="bth4" class="disable-btn">
+                                4+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="filter-row btn-row">
+                        <input type="button" value="Clear" class="filter-btn" id="cancelFilter" />
+                        <input type="button" value="Apply" class="filter-btn filter-apply-btn" id="applyFilter" />
+                    </div>
+                </div>
+            </div>
+            
+            <a class="arrowslide" id="arrowslide">
+                <i class="fa fa-chevron-up" aria-hidden="true" id="listingArrow"></i>
+            </a>
+            <ul class="nav nav-tabs" id="rightPanelHeader">
+                <li style="display:none;"><a data-toggle="tab" id="avaibalblePlansTab" href="#menu1">Available Plans on <span>this Homesite</span></a></li>
+                <li class="active"><a data-toggle="tab" id="allPlansTab" data-tabhref="menu2">All Plans in <span>this Community</span> </a></li>
+            </ul>
+            <div class="tab-content" id="tab-content-id">
+                <div id="menu2" class="tab-pane fade in active">
+                    <div class="filter-no-result2" id="filter-no-result2-allTab">
+                        No results found
+                        <br>
+                        <button class="show-result2">
+                            Show All Results
+                        </button>
+                    </div>
+                    <div class="panel-group" id="allPlans">
+
+                    </div>
+                </div>
+                <div id="menu1" class="tab-pane fade ">
+                    <div class="filter-no-result2" id="filter-no-result2-availableTab">
+                        No results found
+                        <br>
+                        <button class="show-result2">
+                            Show All Results
+                        </button>
+                    </div>
+                    <div class="panel-group" id="availablePlans">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>  
+    var panelOpen = false;
+    var rightPanelPosition = GetElementStyleAttribute('flyoutPanel', 'right');
+    rightPanelPosition = rightPanelPosition.replace('px', '');
+    function ToggleRightPanel() {
+        if (SVGGeospatial) {
+            isClicked = true;
+        }
+        var newWindowWidth = window.outerWidth;
+        if (newWindowWidth < 850 && (this.window.outerWidth > this.window.outerHeight)) {
+            rightPanelPosition = -245;
+        }
+        var mapWidth = GetElementStyleAttribute('map', 'width');
+        mapWidth = mapWidth.replace('px', '');
+        if (panelOpen) {
+            document.getElementById("flyoutPanel").style.right = parseInt(rightPanelPosition) + "px";
+            document.getElementById('map').style.width = (parseInt(mapWidth) - parseInt(rightPanelPosition)) + 'px';
+            document.getElementById('listIcon').classList.remove('fa-angle-right');
+            document.getElementById('listIcon').classList.add('fa-bars');
+            document.getElementById('pointOfInterest').style.overflow = 'auto';
+            document.getElementById('pointOfInterest').style.display = 'flex';
+            document.getElementById('pointOfInterest').style.maxWidth = '100%';
+            panelOpen = false;
+        }
+        else {
+            document.getElementById("flyoutPanel").style.right = "0";
+            document.getElementById('map').style.width = (parseInt(mapWidth) + parseInt(rightPanelPosition)) + 'px';
+            document.getElementById('listIcon').classList.remove('fa-bars');
+            document.getElementById('listIcon').classList.add('fa-angle-right');
+            document.getElementById('pointOfInterest').style.overflow = 'auto';
+            document.getElementById('pointOfInterest').style.display = 'flex';
+            document.getElementById('pointOfInterest').style.maxWidth = (parseInt(mapWidth) + parseInt(rightPanelPosition) - 65) + 'px';
+            panelOpen = true;
+        }
+        resizeStreetView();
+        if (SVGGeospatial) {
+            setTimeout(function () {
+                isClicked = false;
+            }, 500)
+            document.getElementById(Ids.popup).classList.add(Classes.ispHide);
+            if (document.getElementById(Ids.videoIframe)) {
+                document.getElementById(Ids.videoIframe).setAttribute(Attributes.source, '');
+            }
+        }
+    }
+
+
+    function GetElementStyleAttribute(elementId, attribute) {
+        var element = document.getElementById(elementId),
+            style = window.getComputedStyle(element),
+            value = style.getPropertyValue(attribute);
+        return value;
+    }
+
+    document.getElementById('allPlansTab').addEventListener('click', function () {
+        document.getElementById('allPlansTab').parentElement.classList.add('active');
+        document.getElementById('avaibalblePlansTab').parentElement.classList.remove('active');
+        document.getElementById('menu2').classList.add('active');
+        document.getElementById('menu2').classList.add('in');
+        document.getElementById('menu1').classList.remove('active');
+        document.getElementById('menu1').classList.remove('in');
+    });
+
+    document.getElementById('avaibalblePlansTab').addEventListener('click', function () {
+        document.getElementById('avaibalblePlansTab').parentElement.classList.add('active');
+        document.getElementById('allPlansTab').parentElement.classList.remove('active');
+        document.getElementById('menu1').classList.add('active');
+        document.getElementById('menu1').classList.add('in');
+        document.getElementById('menu2').classList.remove('active');
+        document.getElementById('menu2').classList.remove('in');
+    });
+
+
+</script>

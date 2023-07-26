@@ -1,0 +1,95 @@
+﻿@using System.Web.Optimization
+@using BHI.SalesArchitect.WebAdmin.Lib.Extensions
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+    <title>@ViewBag.Title - salesArchitect</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <meta name="serverName" content="@System.Environment.MachineName" />
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/bootstrap.css")
+    @Styles.Render("~/Content/main.css?v=1.6.3.0")
+    @RenderSection("header", required: false)
+    <style>
+        .custom-alert-card-wrapper {
+            background: rgba(0,0,0,0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="sa-loading-bar" style="display:none">
+        <div class="sa-loading-info">
+            <img src="/Content/images/pdfloading.svg">
+            <p class="loading-text">Loading builders...</p>
+        </div>
+    </div>
+    <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+    <div id="confirmationMessage" class="save-result"></div>
+    <div id="confirmationuploadMessage" class="upload-result"></div>
+    <div class="wrapper">
+        <header id="header" class="container">
+            <div class="row" style="margin-left:0;">
+                <div class="span3" style="width: 200px; margin-left:0;">
+                    <h1 class="branding"><a class="ir logo" href="/">Sales Architect</a></h1>
+                </div>
+                <div class="span9 pull-right" style="width:740px; margin-left:0;">
+                    <nav>
+                        <ul class="header-nav">
+                            @Html.Partial("_LoginPartial")
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div class="content container">
+            @RenderBody()
+            @RenderSection("scripts", required: false)
+        </div>
+    </div>
+    @RenderSection("modal", required: false)
+    <script type="text/javascript" language="javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-61153339-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script type="text/javascript">
+        if (window.jQuery) {
+            $(function () {
+                $(document).ajaxError(function (e, xhr, settings) {
+                    if (xhr.status == 401) {
+                        location = '@Url.Action( "login", "account" )';
+                    }
+                });
+            });
+        }
+    </script>
+    @Html.Partial("Partials/_sessionDialog");
+    @Scripts.Render("~/bundles/defferredSessionScripts")
+</body>
+</html>

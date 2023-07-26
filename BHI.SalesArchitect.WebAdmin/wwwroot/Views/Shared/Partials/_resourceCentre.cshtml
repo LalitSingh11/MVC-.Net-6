@@ -1,0 +1,63 @@
+﻿@using MvcJqGrid
+@model IEnumerable<BHI.SalesArchitect.Model.ConsumerAppResource>
+
+<div class="row " id="botttom-nav">
+    <div class="span12">
+        <ul style="float:right">
+            <li><a href="javascript:void(0);" role="button" data-toggle="modal" onclick="deleteSelected();" id="lnkDeleteProspect">Delete Selected</a></li>
+        </ul>
+    </div>
+</div>
+<div id="resourceCentreGrids">
+    @if (ViewBag.Grids != false)
+    {
+        Html.Partial("Partials/_resourceCentreGrids");
+    }
+</div>
+<div class="row">
+    <div class="span12">
+        <div class="user-select">
+            <form id="FormValidation" action="javascript:void(0);">
+                <fieldset id="FieldSet2Bind">
+                    <legend>Resource Information</legend>
+                    <input type="hidden" id="resourceId" name="ID" data-bind="value: ID" />
+                    <input type="hidden" id="BDXID" name="BDXID" data-bind="value: BDXID" />
+                    <input type="hidden" id="Name" name="Name" data-bind="value: Name" />
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <div class="control-group">
+                                <label class="control-label">Resource Title</label>
+                                <div class="controls">
+                                    <input class="input-block-level" type="text" id="resourceTitle" name="Title" placeholder="Resource Title" data-bind="value: resourceTitle" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Resource URL</label>
+                                <div class="controls">
+                                    <input class="input-block-level" type="text" id="resourceUrl" name="Url" placeholder="Resource URL" data-bind="value: resourceUrl" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Resource Section</label>
+                                <div class="controls">
+                                    <select class="input-block-level" name="ParentId" id="parentId" data-bind="value: parentId">
+                                        <option>Select Section</option>
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.ID">@item.Title</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <input type="button" class="btn btn-primary " id="resourceSaveChanges" value="Add new" />
+                        <input type="button" class="btn " value="Cancel" id="resourceCancelChanges" />
+                    </div>
+                </fieldset>
+
+            </form>
+        </div>
+    </div>
+</div>

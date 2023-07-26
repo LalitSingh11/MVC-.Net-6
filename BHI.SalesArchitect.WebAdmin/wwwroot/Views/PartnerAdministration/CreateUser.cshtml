@@ -1,0 +1,156 @@
+﻿@model BHI.SalesArchitect.WebAdmin.Models.RegisterModel
+@using System.Web.Optimization;
+
+@{
+    ViewBag.Title = "Create User";
+    var GRID = "Grid";
+}
+@section header {
+
+
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/jqGrid")
+    @Scripts.Render("~/bundles/generalHelper")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/jqGrid") 
+}
+@using MvcJqGrid
+<section>
+
+    <div class="row">
+	    <div class="span6 section-heading">
+		    <h1>New Administrator User</h1>
+	    </div>
+	    <div class="span6">
+	        <div class="page-header-btn-group btn-group pull-right">
+			    <button class="btn" onclick="location.href='/PartnerAdministration'">Manage Users</button>
+		    </div>
+	    </div>
+    </div>
+    <div class="row">
+    <div class="span12">
+    <div class="user-select">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        if (!ViewData.ModelState.IsValid)
+        {
+                           <div class="alert alert-error">
+                                @Html.ValidationSummary()
+                            </div>
+        } 
+    
+
+    <fieldset>
+        <legend>User Information</legend>
+                <div class="row-fluid">
+			<div class="span6">
+				<div class="control-group">
+					@Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.FirstName, new { @class = "input-block-level", @placeholder = "First Name" })
+					</div>
+                    @* <span class="help-inline">@Html.ValidationMessageFor(m => m.FirstName)</span>*@
+				</div>
+                <div class="control-group">
+					@Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.LastName, new { @class = "input-block-level", @placeholder = "Last Name" })
+					</div>
+                    @*<span class="help-inline">@Html.ValidationMessageFor(m => m.LastName)</span>*@
+				</div>
+				<div class="control-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
+					<div class="controls">
+					    @Html.TextBoxFor(m => m.UserName, new { @class = "input-block-level", @placeholder = "User Name" })
+					</div>
+                    @*<span class="help-inline">@Html.ValidationMessageFor(m => m.UserName)</span>*@
+				</div>        
+                <div class="control-group">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+					<div class="controls">
+					    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "input-block-level", @placeholder = "Phone Number", @id = "txtPhoneNumber" })
+					</div>
+                   
+				</div>     
+                 <div class="control-group">
+                    <div class="row custom-row1 newuser-checkbox">
+                     @Html.CheckBoxFor(m => m.IsPartnerSuperAdmin)      
+                @Html.LabelFor(m => m.IsPartnerSuperAdmin, new { @class = "control-label" })   
+                                        </div>
+										</div>        
+			</div>
+			<div class="span6">
+				<div class="control-group">
+					@Html.LabelFor(m => m.Email, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.Email, new { @class = "input-block-level", @placeholder = "Email Address" })
+					</div>
+                    @*<span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>*@
+				</div> 
+                <div class="control-group">
+					@Html.LabelFor(m => m.Password, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.Password, new { @class = "input-block-level", @placeholder = "Password" })
+					</div>
+                   @* <span class="help-inline">@Html.ValidationMessageFor(m => m.Password)</span>*@
+				</div> 
+                <div class="control-group">
+					@Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+					<div class="controls">
+						@Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "input-block-level", @placeholder = "Password" })
+					</div>
+                  @*  <span class="help-inline">@Html.ValidationMessageFor(m => m.ConfirmPassword)</span>*@
+                    
+				</div>                                    
+			</div>
+            @Html.HiddenFor(m => m.AssociationIds)        
+    </fieldset>
+   
+    <fieldset>
+    <legend>Partner for User</legend>
+        @(Html.Grid(GRID)
+        .AddColumn(new Column("ID").SetHidden(true))
+        .AddColumn(new Column("Partner Label").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center))
+        .AddColumn(new Column("Partner").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center))
+        .AddColumn(new Column("Partner Brands").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center))
+            .SetUrl(Url.Action("GetPartner", new { partnerStatusType = 2 } ))
+        .SetRequestType(MvcJqGrid.Enums.RequestType.Post)
+        .SetAutoWidth(true)
+        .SetRowNum(10000)
+        .SetViewRecords(true)
+        .SetMultiSelect(true)
+        .SetMultiBoxOnly(true)                
+        .OnSelectRow("onRowSelected(rowid, status)")
+        .OnLoadComplete("load()")
+        )
+    </fieldset>
+        @* <span class="help-inline">@Html.ValidationMessageFor(m => m.AssociationIds)</span>*@
+        <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="btnRegister">Register</button> 
+    </div>	  
+    }
+    </div>
+    </div>
+
+    </div>
+</section>
+<script type="text/javascript">
+    function onRowSelected(rowid, status) {
+        $('input[name="AssociationIds"]').val(rowid);
+    }
+    function load() {
+        $("#@GRID").jqGrid('hideCol', 'cb');
+        $("#@GRID").jqGrid('setSelection', $('input[name="AssociationIds"]').val(), true);
+
+    }
+
+    $(document).ready(function () {
+        $("#btnRegister").on('click', function () {
+            var phoneNumber = $("#txtPhoneNumber").val();
+            phoneNumber = phoneNumber.replace(/\s+/g, "");
+            $("#txtPhoneNumber").val(phoneNumber);
+        });
+    });
+</script>

@@ -1,0 +1,542 @@
+﻿@using System.Web.Optimization
+@model BHI.SalesArchitect.WebAdmin.Models.ProspectViewModel
+@{
+    ViewBag.Title = "Add Prospect";
+    var configuration = (BHI.SalesArchitect.Model.ProspectConfiguration)ViewBag.Configuration;
+    var chckdCommunities = (List<int>)ViewBag.CheckedCommunities;
+    var referralDetails = (List<BHI.SalesArchitect.Model.ReferralSources>)ViewBag.referralDetails;
+}
+@section header {
+    @Scripts.Render("~/bundles/jquery-2.0.2")
+    @Scripts.Render("~/bundles/jqueryui-1.10.3")
+    @Scripts.Render("~/bundles/jqGrid")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/sortable")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/communities")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/jqGrid")
+    @Styles.Render("~/Content/fineuploader")
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<style>
+    body {
+        margin: 0 auto;
+    }
+
+    span.field-validation-error {
+        color: red;
+    }
+
+    .reg-left h5, .reg-right h5, .referral-full h5 {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-top: 0;
+    }
+
+    .media-wrap label:last-child {
+        padding: 0;
+    }
+
+    .form-button h3 {
+        margin: 0;
+    }
+
+    .form-button {
+        background: rgba(211, 211, 211, 0.41);
+        padding: 10px 0;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .form-wrap {
+        border: 1px solid #ddd;
+        padding: 15px 0;
+    }
+
+    .form-wrap {
+        display: block;
+        border-top: none;
+    }
+
+    .inline-radio .form-control {
+        width: 91%;
+        display: inline-block;
+    }
+
+    .reg-left h5, .reg-right h5 {
+        font-size: 13px;
+        text-transform: capitalize;
+    }
+
+    .media-wrap label {
+        padding-right: 55px;
+        display: inline-block;
+    }
+
+    .inline-radio label {
+        display: inline-block;
+    }
+
+    .form-title {
+        display: inline-block;
+        width: 46.5%;
+        padding: 0 15px;
+    }
+
+    .button-wrap {
+        display: inline-block;
+        width: 46.5%;
+        padding: 0 15px;
+        text-align: right;
+        height: 40px;
+        line-height: 40px;
+        vertical-align: top;
+    }
+
+    .reg-left, .reg-right {
+        display: inline-block;
+        width: 46.6%;
+        vertical-align: top;
+        padding: 0 15px;
+    }
+
+    .first-name, .last-name {
+        display: inline-block;
+        width: 47.1%;
+        vertical-align: top;
+    }
+
+    .guest-form .field-validation-error {
+        margin: 0 0 10px;
+        display: block;
+    }
+
+    .form-control {
+        width: 97%;
+    }
+
+    .first-name {
+        padding-right: 15px;
+    }
+
+    .city, .state, .zip {
+        display: inline-flex;
+        width: 29.9%;
+    }
+
+        .city > .form-group, .state > .form-group, .zip > .form-group {
+            width: 100%;
+        }
+
+    .city, .state {
+        padding-right: 15px;
+    }
+
+    /*.left-inner, .right-inner {
+        display: inline-block;
+        vertical-align: top;
+        width: 47.9%;
+    }*/
+    .form-border {
+        display: inline-block;
+        vertical-align: top;
+        width: 49.8%;
+    }
+
+    .left-inner, .right-inner {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+        min-height: 184px;
+    }
+
+    .left-inner {
+        margin-right: 15px;
+    }
+
+    .other .form-group {
+        display: inline-block;
+        margin-right: 30px;
+    }
+
+    .border-none {
+        border-bottom: none;
+        min-height: initial;
+    }
+
+    .referral-full input[type="radio"], .referral-full input[type="checkbox"], .reg-right input[type="checkbox"], .reg-right input[type="radio"] {
+        margin: 0 4px 2px 0;
+    }
+
+    .reg-right label {
+        margin-bottom: 15px;
+    }
+
+    .reg-right h6 {
+        font-size: 13px;
+    }
+
+    .referral-full {
+        padding: 0 15px;
+    }
+
+    .guest-form .nav-tabs {
+        padding: 0 10px;
+    }
+</style>
+<div class="guest-form">
+    <div class="form-button">
+        <div class="form-title">
+            <h3>Guest Registration</h3>
+        </div>
+        <div class="button-wrap">
+            <button class="btn btn-primary" id="cancelButton" type="button">Cancel</button>
+            <button class="btn btn-primary" id="SaveButton" type="button">Save</button>
+        </div>
+    </div>
+    <div class="form-wrap">
+        <div class="tabber">
+            <ul id="optionsSelectTabs" class="nav nav-tabs">
+                <li class="active"><a href="#guest" id="guestTab" data-toggle="tab">Guest details</a></li>
+                @if (configuration.ReferralSources)
+                {
+                    <li><a href="#reffral" data-toggle="tab">Referral details</a></li>
+                }
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="guest">
+                <div class="reg-left">
+                    <h5>Please provide your guest information below</h5>
+                    <form method="post" id="guestForm" autocomplete="off">
+                        @Html.HiddenFor(x => x.ID)
+                        @if (configuration.GuestCardNumber)
+                        {
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="gust-id">Guest Card #</label>
+                                    @Html.TextBoxFor(x => x.CardNumber, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.CardNumber)
+                                </div>
+                            </div>
+                        }
+                        <div class="first-name">
+                            <div class="form-group">
+                                <label for="first-name">First Name *</label>
+                                @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.FirstName)
+                            </div>
+                        </div>
+                        <div class="last-name">
+                            <div class="form-group">
+                                <label for="last-name">Last Name *</label>
+                                @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.LastName)
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.Email)
+                            </div>
+                        </div>
+                        @if (configuration.Phone)
+                        {
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    @Html.TextBoxFor(x => x.Phone, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Phone)
+                                </div>
+                            </div>
+                        }
+                        @if (configuration.MailingAddress)
+                        {
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="phone">Address</label>
+                                    @Html.TextBoxFor(x => x.Address, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Address)
+                                </div>
+                            </div>
+                        }
+                        @if (configuration.MailingAddress)
+                        {
+                            <div class="city">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.City)
+                                </div>
+                            </div>
+                        }
+                        @if (configuration.MailingAddress)
+                        {
+                            <div class="state">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    @Html.TextBoxFor(x => x.State, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        }
+                        @if (configuration.ZipCode)
+                        {
+                            <div class="zip">
+                                <div class="form-group">
+                                    <label for="ZipCode">Zip Code</label>
+                                    @Html.TextBoxFor(x => x.ZipCode, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.ZipCode)
+                                </div>
+                            </div>
+                        }
+                    </form>
+                </div>
+                <div class="reg-right" id="communityCheckboxes">
+                    <h5>Select Communities</h5>
+                    @foreach (var item in Model.Communities)
+                    {
+                        <label>
+                            @Html.CheckBox("chckboxes", chckdCommunities.Contains(item.ID), new { @class = "communityCheckBox", id = item.ID, autocomplete = "off" })
+                            @*<input type="checkbox" @(chckdCommunities.Contains(item.ID)?"checked=\"checked\"":"") class="communityCheckBox" id="@item.ID" />*@
+                            @item.Name
+                        </label>
+                    }
+                </div>
+            </div>
+            <div class="tab-pane" id="reffral">
+                <div class="referral-full" id="referralsources">
+                    <h5>Which referral source(s) prompted your decision to visit us today ?</h5>
+                    @{var status = true; }
+                    @foreach (var group in Model.ReferralSources.GroupBy(x => x.Title))
+                    {
+                        <div class="form-border">
+                            <div class="@(status ? "left-inner" : "right-inner")">
+                                @{status = status ? false : true;}
+                                <h6>@group.Key</h6>
+                                @foreach (var item in group.ToList())
+                                {
+                                    var referralSource = referralDetails.FirstOrDefault(x => x.ID == item.ID);
+                                    bool refer = false;
+                                    if (referralSource != null)
+                                    {
+                                        refer = true;
+                                    }
+                                    <div class="form-group @(string.IsNullOrEmpty(item.SubTitle)?"inline-radio":"")">
+                                        <label>
+                                            @Html.CheckBox(item.Title, refer, new { fieldType = item.FieldType, id = item.ID, autocomplete = "off" })
+                                            @item.SubTitle
+                                        </label>
+                                        @if (item.FieldType == 2)
+                                        {
+                                            <input type="text" radio="@item.Title" class="form-control" value="@(referralSource!= null?referralSource.CustomValue:"")" id="@item.ID" placeholder="@item.PlaceholderText" autocomplete="off">
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                                    }
+
+
+
+                    @*<div class="form-border">
+                            <div class="left-inner">
+                                <h6>internet</h6>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">individual search</label>
+                                    <input type="text" class="form-control" id="website" placeholder="website">
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">on-line sale counselor appt.</label>
+                                </div>
+                            </div>
+                            <div class="left-inner inline-radio">
+                                <h6>realtor</h6>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio"></label>
+                                    <input type="text" class="form-control" id="name" placeholder="name">
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio"></label>
+                                    <input type="text" class="form-control" id="office" placeholder="office">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-border">
+                            <div class="left-inner">
+                                <h6>signs</h6>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">billboards</label>
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">saw model while driving by</label>
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">street directionals</label>
+                                </div>
+                            </div>
+                            <div class="left-inner">
+                                <h6>print</h6>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">mailer</label>
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">paper</label>
+                                    <input type="text" class="form-control" id="news" placeholder="newspaper name">
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">magazine</label>
+                                    <input type="text" class="form-control" id="magzine" placeholder="magazine name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-border">
+                            <div class="left-inner">
+                                <h6>referral</h6>
+                                <div class="form-group">
+                                    <label><input type="radio" name="optradio">name</label>
+                                    <input type="text" class="form-control" id="name">
+                                </div>
+                            </div>
+                            <div class="left-inner media-wrap">
+                                <h6>media</h6>
+                                <label><input type="radio" name="optradio">tv</label>
+                                <label><input type="radio" name="optradio">radio</label>
+                                <label><input type="radio" name="optradio">other</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h6>other</h6>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="other">
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $('#guestForm').submit(function (e) {
+            e.preventDefault();
+        });
+        $('#cancelButton').on('click', function () {
+            window.location.href = '/prospects';
+        });
+        $('#SaveButton').on('click', function () {
+            $(this).attr('disabled', true);
+            if ($('#guestForm').valid() && $('#Email').val() != '') {
+                $.ajax({
+                    url: 'CheckIfEmailExists',
+                    type: 'POST',
+                    data: { Email: $('#Email').val().trim(), Id: $('#ID').val() },
+                    success: function (data) {
+                        if ($('#guestForm').valid() && (data == true)) {
+                            var comArray = [];
+                            $('.communityCheckBox:checked').each(function (e, i) {
+                                var commId =  parseInt($(i).attr('id')); 
+                                comArray.push(commId);
+                            });
+                            if (comArray.length <= 0) {
+                                saveUnsuccessfulMessage("Please select atleast one community");
+                                $('#SaveButton').removeAttr('disabled');
+                                return false;
+                            }
+                            var refArray = [];
+                            var referralSourcesValue = $('#referralsources').find('[type=checkbox]:checked').each(function (e, i) {
+                                var refObject = {};
+                                refObject.ReferralSourceId = $(i).attr('id');
+                                refObject.CustomValue = $(i).parent().next().val();
+                                refObject.FieldType = $(i).attr("fieldType")
+                                refArray.push(refObject);
+                            });
+                            var formData = $('#guestForm').serializeArray();
+                            var obj = {};
+                            obj.name = 'JsonReferralSource';
+                            obj.value = JSON.stringify(refArray);
+                            var comObj = {};
+                            comObj.name = 'jsonCommunities';
+                            comObj.value = JSON.stringify(comArray);
+                            var platformType = {};
+                            platformType.name = 'Platform';
+                            platformType.value = JSON.stringify(4);
+                            formData.push(obj);
+                            formData.push(comObj);
+                            formData.push(platformType);
+                            console.log(comObj)
+                            $.ajax({
+                                url: 'SaveProspect',
+                                type: 'POST',
+                                data: formData,
+                                success: function (data) {
+                                    if (data == "Successfull") {
+                                        saveSuccessful();
+                                        setTimeout(function () {
+                                            window.location.href = "/Prospects";
+                                        }, 2000);
+
+                                        $('#SaveButton').removeAttr('disabled');
+                                    } else {
+                                        saveUnsuccessful();
+                                        $('#SaveButton').removeAttr('disabled');
+                                    }
+                                },
+                                error: function (data) {
+                                    saveUnsuccessful();
+                                    $('#SaveButton').removeAttr('disabled');
+                                }
+                            });
+                        } else if (data == false) {
+                            $('#guestTab').trigger('click');
+                            $('#SaveButton').removeAttr('disabled');
+                            saveUnsuccessfulMessage("Email Already Exists");
+
+                        } else {
+                            $('#guestTab').trigger('click');
+                            $('#SaveButton').removeAttr('disabled');
+                        }
+                    },
+                    error: function (data) {
+                        saveUnsuccessful();
+                        $('#SaveButton').removeAttr('disabled');
+                    }
+                });
+            } else {
+                $('#guestTab').trigger('click');
+                $('#SaveButton').removeAttr('disabled');
+            }
+
+        });
+        function saveSuccessful() {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("sucessfully-alert");
+            $("#confirmationMessage").text("Changes saved");
+            $("#confirmationMessage").show();
+            $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+        }
+        function saveUnsuccessful() {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("unsucessfully-alert");
+            $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+            $("#confirmationMessage").text("Save operation not completed");
+            $("#confirmationMessage").show();
+        }
+        function resetSaveLabel() {
+            $("#confirmationMessage").removeClass("sucessfully-alert");
+            $("#confirmationMessage").removeClass("unsucessfully-alert");
+            $("#confirmationMessage").text("");
+        }
+        function saveUnsuccessfulMessage(message) {
+            resetSaveLabel();
+            $("#confirmationMessage").addClass("unsucessfully-alert");
+            $("#confirmationMessage").fadeIn("1000").delay(2000).fadeOut('1500').hide(0);
+            $("#confirmationMessage").text(message);
+            $("#confirmationMessage").show();
+        }
+    </script>
+}

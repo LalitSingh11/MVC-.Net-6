@@ -1,0 +1,28 @@
+﻿
+<div class="row-fluid">
+    <div class="head-div">
+        <h5>Geospatial PDF Disclaimer<div class="tool-tip"><img src="~/Content/images/help-icon.png" style="width:16px;" /><span class="tooltiptext">Geospatial PDF Disclaimer</span></div></h5>
+    </div>
+    
+</div>
+<br>
+<div id="builderDetailsDiv">
+    <div class="alert alert-error" id="holdALotErrorDiv" style="display:none;">
+        <ul id="holdALotError">
+        </ul>
+    </div>
+    <div class="row-fluid">
+        <div class="span4">
+            <div class="control-group">
+                @*<label class="control-label">PDF Disclaimer</label>*@
+                <div class="controls">
+                    <textarea class="input-block-level" cols="1" rows="12" id="pdfDisclaimer" name="pdfDisclaimer" data-bind="value:pdfDisclaimer" style="width:187%;" maxlength="2000"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-actions">
+    <input type="button" class="btn btn-primary " value="Save Changes" data-bind="click:savePDFDisclaimer" />
+    <input type="button" class="btn " value="Cancel" data-bind="click:getPDFSettings" />
+</div>

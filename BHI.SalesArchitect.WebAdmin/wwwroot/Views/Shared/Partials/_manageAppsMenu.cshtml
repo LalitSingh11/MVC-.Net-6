@@ -1,0 +1,6 @@
+﻿@using BHI.SalesArchitect.Core.Enumerations;
+@model bool
+    @if (!Model && (ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVG || ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVGGeoSpatial))
+    {
+<button class="btn" onclick="location.href='/Apps'" type="button">Manage Apps</button>
+    }

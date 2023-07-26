@@ -1,0 +1,131 @@
+﻿@using System.Web.Optimization;
+@model BHI.SalesArchitect.Model.GeospatialISPRequest
+@{
+    Layout = null;
+    //Demo GA Id used for GA Initialization -- Bug in Plugin version where GA doesn't get initialized automatically 
+    ViewBag.GoogleAnalyticsID = "UA-177093283-1";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>@ViewBag.CommunityName</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="">
+    <meta id="metaviewport" name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="serverName" content="@System.Environment.MachineName" />
+    <script src="https://greggman.github.io/webgl-helpers/webgl-force-preservedrawingbuffer.js"></script>
+    @if (ViewBag.v != String.Empty)
+    {
+        <script src="@System.Configuration.ConfigurationManager.AppSettings.Get("PluginAssetsBaseURL")/loader/scripts/@ViewBag.v/bdx-media-loader-min.js?key=@Model.apiKey"></script>
+    }
+    else
+    {
+        <script src="@System.Configuration.ConfigurationManager.AppSettings.Get("PluginAssetsBaseURL")/loader/scripts/bdx-media-loader-min.js?key=@Model.apiKey"></script>
+    }
+    @Html.Partial("Partials/_googleAnalytics")
+</head>
+<body>
+    <div id="plugin-container" style="height:100%;position:fixed;top:0;left:0;width:100%">
+    </div>
+    <script>
+        var isDownloadEnabled = true;
+        if (getQueryString("isDownloadEnabled").length > 0) {
+            isDownloadEnabled = getQueryString("isDownloadEnabled")[0].toLowerCase();
+        }
+        var isViewMoreDetailsBtn = true;
+        if (getQueryString("isViewMoreDetailsBtn").length > 0) {
+            isViewMoreDetailsBtn = getQueryString("isViewMoreDetailsBtn")[0].toLowerCase();
+        }
+        var isHotspotBtn = true;
+        if (getQueryString("DisplayHotspotsOnKiosks").length > 0) {
+            isHotspotBtn = getQueryString("DisplayHotspotsOnKiosks")[0].toLowerCase();
+        }
+        var suppressMasterInfo = false;
+        if (getQueryString("suppressMasterInfo").length > 0) {
+            suppressMasterInfo = getQueryString("suppressMasterInfo")[0].toLowerCase();
+        }
+        var globalCommunityMap = false;
+        if (getQueryString("globalCommunityMap").length > 0) {
+            globalCommunityMap = getQueryString("globalCommunityMap")[0].toLowerCase();
+        }
+        var hasMultipleMapInstance = false;
+        if (getQueryString("hasMultipleMapInstance").length > 0) {
+            hasMultipleMapInstance = getQueryString("hasMultipleMapInstance")[0].toLowerCase();
+        }
+        var lotId = '';
+        if (getQueryString("lotId").length > 0) {
+            lotId = getQueryString("lotId")[0];
+        }
+        var lotExternalReference = "";
+        if (getQueryString("lotExternalReference").length > 0) {
+            lotExternalReference = getQueryString("lotExternalReference")[0];
+        }
+        var geoZoom = "";
+        if (getQueryString("geoZoom").length > 0) {
+            geoZoom = getQueryString("geoZoom")[0];
+        }
+
+        MediaLoader.initSitePlan({
+            communityId: @Model.bdxCommunityID,
+            container: "plugin-container",
+            allowListings: @Html.Raw(Json.Encode(Model.showListings)),
+            allowPopup: @Html.Raw(Json.Encode(Model.allowPopup)),
+            apiKey: @Html.Raw(Json.Encode(Model.apiKey)),
+            communityNumber: @Html.Raw(Json.Encode(Model.communityNumber)),
+            amenities:@Html.Raw(Json.Encode(Model.showAmenities.ToString())),
+            ispVersion: 3,
+            displayHotspotsOnKiosks: isHotspotBtn,
+            openLinkInModal: @Html.Raw(Json.Encode(Model.openLinkInModal.ToString())),
+            isDownloadEnabled: isDownloadEnabled,
+            isViewMoreDetailsBtn: isViewMoreDetailsBtn,
+            allowPointOfInterests: @Html.Raw(Json.Encode(Model.allowPointOfInterests)),
+            allowLegends: @Html.Raw(Json.Encode(Model.allowPointOfInterests)),
+            isPdf: @Html.Raw(Json.Encode(Model.isPdf.ToString())),
+            masterPlan: @Html.Raw(Json.Encode(Model.masterPlan.ToString())),
+            suppressMasterInfo: suppressMasterInfo,
+            globalCommunityMap: globalCommunityMap,
+            lotId: lotId,
+            lotExternalReference: lotExternalReference,
+            hasMultipleMapInstance: hasMultipleMapInstance,
+            isFrameInstance: true,
+            geoZoom: geoZoom,
+            internalCommunityId: @Model.communityID
+        });
+
+        function getQueryString(key) {
+            var re = new RegExp('(?:\\?|&)' + key + '=(.*?)(?=&|$)', 'gi');
+            var r = [],
+                m;
+            while ((m = re.exec(document.location.search)) != null) r.push(m[1]);
+            return r;
+        }
+
+        function hihglightLot(internalReference) {
+            if (SVGGeospatial) {
+                if (internalReference && internalReference !== '') {
+                    var svgLot = document.querySelector('#' + internalReference);
+                    if (svgLot) {
+                        svgLot.style.strokeWidth = 5;
+                        svgLot.style.stroke = '#0375ee';
+                    }
+                }
+            }
+            else {
+                googleMap.data.revertStyle();
+                googleMap.data.forEach(function (feature) {
+                    if (feature.getProperty('Lot_') !== "" && feature.getProperty('Lot_') !== undefined && feature.getGeometry().getType() === 'Polygon' && feature.getProperty('Lot_') === internalReference) {
+                        googleMap.data.overrideStyle(feature, { strokeWeight: 5, strokeColor: '#0375ee', strokeOpacity: 1 });
+                    }
+                });
+            }
+        }
+
+        function gm_authFailure() {
+            MediaLoader.showISPNotAvailable('plugin-container', 'Invalid Google API key or Client ID.');
+        }
+    </script>
+</body>
+</html>
