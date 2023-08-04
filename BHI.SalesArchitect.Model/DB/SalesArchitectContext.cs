@@ -165,6 +165,8 @@ public partial class SalesArchitectContext : DbContext
 
     public virtual DbSet<UupuserLot> UupuserLots { get; set; }
 
+    public virtual DbSet<GridCommunityResult> CommunityResults { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Server=172.17.1.100;Database=SalesArchitect;uid=sa;pwd=Master@123;TrustServerCertificate=True;");
 

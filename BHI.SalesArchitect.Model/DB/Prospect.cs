@@ -33,7 +33,7 @@ public partial class Prospect
 
     public int? PartnerId { get; set; }
 
-    public int? CreatedByPartnerId { get; set; }
+    public int CreatedByPartnerId { get; set; }
 
     public virtual ICollection<ProspectAsset> ProspectAssets { get; set; } = new List<ProspectAsset>();
 

@@ -1,0 +1,33 @@
+﻿@using System.Security.Claims;
+<div class="span12 search-filter-container">
+    <div class="community-status-filter-container">
+        <label class="community-status-filter-label">Type</label>
+        <select class="community-status-filter" id="commTypeFilter" onchange="onCommunityTypeChange(this.value);">
+            <option value="0">BDXLive Connected</option>
+            <option value="1">Standalone</option>
+            <option value="2">All</option>
+        </select>
+        <div class="tool-tip"><img src="/content/images/help-icon.png" ><span class="tooltiptext">Standalone Communities are not linked to BDXLive data.</span></div>
+    </div>
+    @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+    {
+        <div class="community-status-filter-container" >
+            <label class="community-status-filter-label">Status</label>
+            <select class="community-status-filter" id="commStatusFilter" onchange="onCommunityStatusChange(this.value);" >
+                <option value="0">Active</option>
+                <option value="1">Inactive</option>
+                <option value="2">All</option>
+            </select>
+            <div class="tool-tip" ><img src="/content/images/help-icon.png" ><span class="tooltiptext" >Active/Inactive Community Status from BDXLive.</span></div>
+        </div>
+    }
+    <div class="search">
+        <div class="searchbox">
+            <input type="text" placeholder="Search by Community name, builder/brand" size="40" id="searchBox">
+            <a href="javascript:void(0)" class="icon-search" onclick="searchCommunityGrid()" id="searchButton">
+                <img src="/content/images/icon-search.png">
+            </a>
+        </div>
+        <a href="javascript:void(0)" class="clear disable" onclick="clearSearch()" id="clear-search">Clear Search</a>
+    </div>
+</div>
