@@ -1,0 +1,97 @@
+﻿/* CSS for the container holding the filters and search bar */
+.span12.search-filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* CSS for the filter containers */
+.community-status-filter-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Add a little gap between label and dropdown */
+}
+
+/* CSS for the search bar */
+.search {
+    display: flex;
+    align-items: center;
+}
+
+/* Styling for the select dropdowns */
+.community-status-filter,
+#commTypeFilter {
+    /* Add your own styles here to make them visually appealing */
+    /* For example, you can add custom background, border, font, etc. */
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: auto; /* Set the width to auto to adjust based on content */
+    max-width: 200px; /* Add a max-width to prevent overly wide dropdowns */
+}
+
+/* Styling for the search box */
+.searchbox {
+    display: flex;
+    align-items: center;
+    position: relative; /* Added for tooltip positioning */
+    border: 1px solid #ccc; /* Add border to search box */
+    border-radius: 6px; /* Add border radius to search box */
+    padding: 5px; /* Add padding to search box */
+}
+
+    /* Styling for the search input field */
+    .searchbox input[type="text"] {
+        /* Add your own styles here to make it visually appealing */
+        /* For example, you can add custom background, border, font, etc. */
+        border: none; /* Remove border from search input field */
+        margin-left: 5px; /* Add left margin for spacing between icon and input */
+    }
+
+/* Styling for the search icon */
+.icon-search img {
+    /* Add your own styles here to make the icon visually appealing */
+    width: 16px;
+    cursor: pointer;
+}
+
+/* Styling for the clear search link */
+#clear-search {
+    /* Add your own styles here to make the link visually appealing */
+}
+
+/* Styling for the tooltip text */
+.tool-tip {
+    position: relative;
+}
+
+    .tool-tip .tooltiptext {
+        visibility: hidden;
+        white-space: nowrap; /* Prevent tooltip text from wrapping to the next line */
+        width: auto; /* Set width to auto for one-line text */
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        top: -50px;
+        left: calc(100% + 10px); /* Adjust the positioning for better visibility */
+    }
+
+    .tool-tip:hover .tooltiptext {
+        visibility: visible;
+    }
+
+    /* Styling for the info icons */
+    .tool-tip img {
+        margin-top: -5px;
+        cursor: pointer;
+        width: 16px;
+    }
+
+/* Styling for the disable class */
+.disable {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6; /* Added for a disabled look */
+}

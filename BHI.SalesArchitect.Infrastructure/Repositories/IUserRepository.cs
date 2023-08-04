@@ -6,5 +6,6 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
     {
         Task<User> GetByUserName(string userName);
         Task<User> GetByEmail(string userEmail);
+        IEnumerable<User> GetCommunityAdminsByCommunityID(List<int> communityIDs);
     }
 }

@@ -1,1 +1,40 @@
-﻿
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@using BHI.SalesArchitect.Core.Enumerations;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title= "Communities";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+    <div class ="row"><div class="span12 section-heading"><h1>@ViewData["PartnerName"]</h1></div></div>
+    <partial name="Partials/_FilterAndSearch" />
+    <partial name="Partials/_CommunityGrid" />
+
+</body>
+</html>
+@section Scripts {
+    <script src="~/js/communities/searchandfilter.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>
+}
+@section Styles{
+    <link href="~/css/communities/searchandfilter.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/jqueryui/themes/smoothness/jquery-ui.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-utilities.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css" rel="stylesheet" asp-append-version="true" />
+}

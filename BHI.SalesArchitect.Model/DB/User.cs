@@ -17,17 +17,17 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public string? FirstName { get; set; }
+    public string FirstName { get; set; }
 
-    public string? LastName { get; set; }
+    public string LastName { get; set; }
 
-    public string? PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
     public virtual ActivityState ActivityState { get; set; } = null!;
 
     public virtual ICollection<CommunityUser> CommunityUsers { get; set; } = new List<CommunityUser>();
 
-    public virtual Partner? Partner { get; set; }
+    public virtual Partner Partner { get; set; }
 
     public virtual ICollection<ProspectCommunity> ProspectCommunities { get; set; } = new List<ProspectCommunity>();
 

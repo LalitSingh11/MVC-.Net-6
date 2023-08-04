@@ -11,17 +11,17 @@ public partial class MasterPlan
 
     public string MapData { get; set; } = null!;
 
-    public string? MapImage { get; set; }
+    public string MapImage { get; set; }
 
     public bool? ImageUpdate { get; set; }
 
-    public string? PdfImage { get; set; }
+    public string PdfImage { get; set; }
 
-    public bool? IsMasterGeoSvg { get; set; }
+    public bool IsMasterGeoSvg { get; set; }
 
-    public string? GeospatialMapImage { get; set; }
+    public string GeospatialMapImage { get; set; }
 
-    public string? GeospatialPdfImage { get; set; }
+    public string GeospatialPdfImage { get; set; }
 
     public virtual ICollection<Community> Communities { get; set; } = new List<Community>();
 

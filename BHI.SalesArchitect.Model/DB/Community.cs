@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BHI.SalesArchitect.Model.DB;
+﻿namespace BHI.SalesArchitect.Model.DB;
 
 public partial class Community
 {
@@ -15,47 +12,47 @@ public partial class Community
 
     public string Name { get; set; } = null!;
 
-    public string? Admins { get; set; }
+    public string Admins { get; set; }
 
-    public string? Address { get; set; }
+    public string Address { get; set; }
 
-    public string? City { get; set; }
+    public string City { get; set; }
 
-    public string? State { get; set; }
+    public string State { get; set; }
 
-    public string? Zip { get; set; }
+    public string Zip { get; set; }
 
-    public string? BrandLogoMedium { get; set; }
+    public string BrandLogoMedium { get; set; }
 
-    public string? BrandLogoSmall { get; set; }
+    public string BrandLogoSmall { get; set; }
 
     public decimal? Latitude { get; set; }
 
     public decimal? Longitude { get; set; }
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
-    public string? SubDescription { get; set; }
+    public string SubDescription { get; set; }
 
-    public string? Overview { get; set; }
+    public string Overview { get; set; }
 
     public bool Locked { get; set; }
 
-    public string? VendorReference { get; set; }
+    public string VendorReference { get; set; }
 
     public int? MasterPlanId { get; set; }
 
-    public string? CustomDescription { get; set; }
+    public string CustomDescription { get; set; }
 
-    public string? EnvisionDesignCenter { get; set; }
+    public string EnvisionDesignCenter { get; set; }
 
-    public string? Hours { get; set; }
+    public string Hours { get; set; }
 
     public int? PreferredCommunityAssetId { get; set; }
 
     public bool? NewIsp { get; set; }
 
-    public string? DisplayName { get; set; }
+    public string DisplayName { get; set; }
 
     public bool? IsOverwriteName { get; set; }
 
@@ -73,7 +70,7 @@ public partial class Community
 
     public int? UpdatedBy { get; set; }
 
-    public string? Ispname { get; set; }
+    public string Ispname { get; set; }
 
     public virtual ActivityState ActivityState { get; set; } = null!;
 
@@ -103,7 +100,7 @@ public partial class Community
 
     public virtual Market Market { get; set; } = null!;
 
-    public virtual MasterPlan? MasterPlan { get; set; }
+    public virtual MasterPlan MasterPlan { get; set; }
 
     public virtual ICollection<PartnerCommunity> PartnerCommunities { get; set; } = new List<PartnerCommunity>();
 

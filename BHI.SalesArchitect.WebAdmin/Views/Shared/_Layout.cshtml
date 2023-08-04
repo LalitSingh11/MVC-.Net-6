@@ -1,49 +1,57 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Authentication.Cookies;
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Mvc;
+@using System.Security.Claims;
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BHI.SalesArchitect.WebAdmin</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BHI.SalesArchitect.WebAdmin.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - SalesArchitect.Admin</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/header.css" />
+    @RenderSection("Styles", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BHI.SalesArchitect.WebAdmin</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <h1>Sales Architect</h1>
+    <ul class="header">
+@if(User.Identity.IsAuthenticated){
+    <li>Hello, @User.Identity.Name!</li>
+    <li><a href="/HelpDocuments">Help</a></li>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - BHI.SalesArchitect.WebAdmin - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+    {
+        <li ><a asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a></li>
+    }
+    @if (!User.HasClaim(ClaimTypes.Role, "PARTNERREADONLY") && !User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR") && !User.HasClaim(ClaimTypes.Role,"PARTNERADMIN"))
+    {
+        <li><a asp-controller="PartnerConfiguration" asp-action="Index">Partner Configuration</a></li>
+    }
+    @if (!User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR"))
+    {
+        <li><a asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
+    }
+    @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+    {
+        <li><a asp-controller="NewHomeNavigator" asp-action="Index">New Home Navigator</a></li>
+    }
+            <li>
+                <form asp-controller="Account" asp-action="LogOut" method="post" id="logoutForm" style="float:right;">
+                    @Html.AntiForgeryToken()
+                    <a asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a>
+                </form>
+            </li>
+
+}    </ul>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+    
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
+

@@ -3,10 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BHI.SalesArchitect.Adapters\BHI.SalesArchitect.Adapters.csproj" />
+    <ProjectReference Include="..\BHI.SalesArchitect.Core\BHI.SalesArchitect.Core.csproj" />
     <ProjectReference Include="..\BHI.SalesArchitect.Model\BHI.SalesArchitect.Model.csproj" />
   </ItemGroup>
 
