@@ -22,16 +22,6 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             throw new NotImplementedException();
         }
 
-        /*public IEnumerable<Lot> GetByCommunityID(int? communityID)
-        {
-            return _db.Lots.Where(x => x.communi == siteID).ToList();
-        }*/
-
-        /* public IEnumerable<Lot> GetByPartnerID(int? partnerID)
-         {
-             return _db.Lots.;
-         }*/
-
         public IEnumerable<Lot> GetBySiteID(int? siteID)
         {
             var query = from l in _dbContext.Lots

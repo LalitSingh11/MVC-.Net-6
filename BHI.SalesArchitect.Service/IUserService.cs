@@ -4,7 +4,9 @@ namespace BHI.SalesArchitect.Service
 {
     public interface IUserService
     {
-        Task<User> GetByUsernameAsync(string username);
+        Task<User> GetByUsername(string username);
+        Task<User> GetById(int id);
         IEnumerable<User> GetCommunityAdminsByCommunityIDs(List<int> communityIDs);
+        IEnumerable<User> GetSuperUsers();
     }
 }

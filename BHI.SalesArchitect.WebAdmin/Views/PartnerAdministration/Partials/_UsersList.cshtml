@@ -1,0 +1,38 @@
+﻿@{
+    var GRID_USER = "GridUsers";
+}
+<div class="container">
+    <h2>Users</h2>
+    <hr />
+    <div class="d-flex justify-content-center">
+        
+    @(Html.Grid(GRID_USER)
+        .AddColumn(new Column("ID").SetHidden(true))
+        .AddColumn(new Column("UserName").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(150).SetLabel("User"))
+        .AddColumn(new Column("FirstName").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(150).SetLabel("First Name"))
+        .AddColumn(new Column("LastName").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(150).SetLabel("Last Name"))
+        .AddColumn(new Column("Phone Number").SetHidden(true))
+        .AddColumn(new Column("Email").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(350))
+        .AddColumn(new Column("Partner").SetHidden(true))
+        .AddColumn(new Column("Role").SetHidden(true))
+        .SetUrl(Url.Action("GetUsers"))
+        .SetRequestType(MvcJqGrid.Enums.RequestType.Get)
+        .SetSortName("UserName")
+        .SetSortOrder(MvcJqGrid.Enums.SortOrder.Asc)
+        .SetRowNum(10000)
+        .SetWidth(1350)
+        .SetHeight(450)
+        .SetMultiSelect(true)
+        .SetViewRecords(true)
+        //.SetShrinkToFit(true)
+        //.SetAutoWidth(true)
+        .OnSelectRow("onUserRowSelected(rowid, status)")
+        //.OnLoadComplete("onPartnerLoadComplete(xhr)")
+        )
+    </div>
+    <br />
+    <partial name="Partials/_UserInformationForm" />
+    <br />
+    <partial name="Partials/_ResetPassword" />
+    <br />
+</div>

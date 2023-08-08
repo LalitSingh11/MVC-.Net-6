@@ -16,7 +16,7 @@ namespace BHI.SalesArchitect.Service.Implementations
 
         public async Task<(bool, User)> Authenticate(string userName, string password)
         {
-            var userDetails = await _userService.GetByUsernameAsync(userName);
+            var userDetails = await _userService.GetByUsername(userName);
             _sessionService.PartnerID = userDetails.PartnerId;
             if (userDetails != null && CheckPassword(password, userDetails.Password))
                 return (true, userDetails);

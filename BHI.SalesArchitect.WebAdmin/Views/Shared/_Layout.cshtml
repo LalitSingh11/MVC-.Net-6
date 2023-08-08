@@ -6,50 +6,51 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SalesArchitect.Admin</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/header.css" />
+    <title>@ViewData["Title"] - SalesArchitect</title>
     @RenderSection("Styles", required: false)
+    <link rel="stylesheet" href="~/css/header.css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/jqueryui/themes/smoothness/jquery-ui.min.css" rel="stylesheet" asp-append-version="true" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
 </head>
 <body>
-    <h1>Sales Architect</h1>
-    <ul class="header">
-@if(User.Identity.IsAuthenticated){
-    <li>Hello, @User.Identity.Name!</li>
-    <li><a href="/HelpDocuments">Help</a></li>
-
-    @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+    <h1 class="branding"><a class="ir logo" href="/">Sales Architect</a></h1>
+    <ul id="header">
+    @if(User.Identity.IsAuthenticated)
     {
-        <li ><a asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a></li>
-    }
-    @if (!User.HasClaim(ClaimTypes.Role, "PARTNERREADONLY") && !User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR") && !User.HasClaim(ClaimTypes.Role,"PARTNERADMIN"))
-    {
-        <li><a asp-controller="PartnerConfiguration" asp-action="Index">Partner Configuration</a></li>
-    }
-    @if (!User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR"))
-    {
-        <li><a asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
-    }
-    @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
-    {
-        <li><a asp-controller="NewHomeNavigator" asp-action="Index">New Home Navigator</a></li>
-    }
-            <li>
-                <form asp-controller="Account" asp-action="LogOut" method="post" id="logoutForm" style="float:right;">
-                    @Html.AntiForgeryToken()
-                    <a asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a>
-                </form>
-            </li>
-
-}    </ul>
+        <li>Hello, <span id="username">@User.Identity.Name</span></li>
+        <li><a href="/HelpDocuments">Help</a></li>
+        @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+        {
+            <li><a asp-controller="NewHomeNavigator" asp-action="Index">New Home Navigator</a></li>
+        }@if (!User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR"))
+        {
+            <li><a asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
+        }
+        @if (!User.HasClaim(ClaimTypes.Role, "PARTNERREADONLY") && !User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR") && !User.HasClaim(ClaimTypes.Role, "PARTNERADMIN"))
+        {
+            <li><a asp-controller="PartnerConfiguration" asp-action="Index">Partner Configuration</a></li>
+        }
+        @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+        {
+            <li ><a asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a></li>
+        } 
+        <li id="logoutLink">
+            <form asp-controller="Account" asp-action="LogOut" method="post" id="logoutForm" style="float:right;">
+                @Html.AntiForgeryToken()
+                <a asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a>
+            </form>
+        </li>
+    }    
+    </ul>
 
     <main role="main">
         @RenderBody()
-    </main>
-    
+    </main>   
 
     @RenderSection("Scripts", required: false)
 </body>

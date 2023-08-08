@@ -51,7 +51,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         [HttpGet]
         public IActionResult GetCommunitiesGrid(GridSettings gridSettings, string searchTerm, int commStatusType = 0, int commType = 0)
         {
-            var communities = _communityService.GetGridCommunitiesList(PartnerId, searchTerm, commStatusType, commType);            
+            var communities = _communityService.GetGridCommunitiesList(_sessionService.PartnerID ?? PartnerId, searchTerm, commStatusType, commType);            
             var communityAdmins = _userService.GetCommunityAdminsByCommunityIDs(communities.Select(p => p.Id).ToList());
             var communityUsers = _communityUserService.GetByCommunityIDs(communities.Select(p => p.Id).ToList()).ToList();
             var communitySites = _communitySiteService.GetActiveCommunitySites(communities.Select(p => p.Id).ToList()).ToList();
@@ -129,7 +129,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                                 y.cell.DateDeleted.ToString(),
                                 y.cell.DeletedBy.ToString()
                             }
-                        }).ToArray()/*.Skip((gridSettings.PageIndex - 1) * gridSettings.PageSize).Take(gridSettings.PageSize)*/
+                        }).ToArray().Skip((gridSettings.PageIndex - 1) * gridSettings.PageSize).Take(gridSettings.PageSize)
             };
             return new JsonResult(jsonData);
         

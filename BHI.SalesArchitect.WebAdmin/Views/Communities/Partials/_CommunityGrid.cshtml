@@ -3,33 +3,32 @@
 @{
     var COMMUNITIES_GRID = "Communities";
 }
-<div class="row">
-
-    <div>
+<div class="span12 table-fixed-head-container">
+    
         @if(User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
         {
             @(Html.Grid(COMMUNITIES_GRID)
                 .AddColumn(new Column("ID").SetHidden(true))
-                .AddColumn(new Column("cell.Brand").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Brand").SetWidth(120))
-                .AddColumn(new Column("cell.Market").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Market").SetFirstSortOrder(SortOrder.Desc).SetWidth(120))
-                .AddColumn(new Column("cell.ISPName").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Community Label").SetWidth(140))
-                .AddColumn(new Column("cell.Name").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Community").SetWidth(130))
-                .AddColumn(new Column("cell.LotsCount").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(50).SetLabel("# of Lots"))
-                .AddColumn(new Column("cell.ProspectCount").SetHidden(ViewBag.IsISPOnly).SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(73).SetLabel("# of Prospects"))
-                .AddColumn(new Column("cell.Admins").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(135).SetLabel("Community Admin"))
-                .AddColumn(new Column("cell.ISPVersion").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(65).SetLabel("ISP Version"))
-                .AddColumn(new Column("cell.ActivityState").SetHidden(ViewBag.IsISPOnly).SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Sales Navigator").SetWidth(125))
-                .AddColumn(new Column("cell.ID").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(95).SetLabel("ISP Community ID"))
-                .AddColumn(new Column("cell.Sites").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(85).SetLabel("ISP Site ID"))
-                .AddColumn(new Column("cell.BDXID").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(95).SetLabel("BDX Community ID"))
-                .AddColumn(new Column("cell.Type").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(135).SetLabel("Type"))
-                .AddColumn(new Column("cell.Status").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(65).SetLabel("Sync Status"))
-                .AddColumn(new Column("cell.DWStatus").SetHidden(!ViewBag.showDreamweaver).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(65).SetLabel("DW Status"))
-                .AddColumn(new Column("cell.DateDeleted").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Date Deleted").SetWidth(90))
-                .AddColumn(new Column("cell.DeletedBy").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Deleted By").SetWidth(90))
+                .AddColumn(new Column("cell.Brand").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Brand").SetWidth(145))
+                .AddColumn(new Column("cell.Market").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Market").SetFirstSortOrder(SortOrder.Desc).SetWidth(145))
+                .AddColumn(new Column("cell.ISPName").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Community Label").SetWidth(150))
+                .AddColumn(new Column("cell.Name").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Community").SetWidth(170))
+                .AddColumn(new Column("cell.LotsCount").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(90).SetLabel("# of Lots"))
+                .AddColumn(new Column("cell.ProspectCount").SetHidden(ViewBag.IsISPOnly).SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(95).SetLabel("# of Prospects"))
+                .AddColumn(new Column("cell.Admins").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(155).SetLabel("Community Admin"))
+                .AddColumn(new Column("cell.ISPVersion").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(125).SetLabel("ISP Version"))
+                .AddColumn(new Column("cell.ActivityState").SetHidden(ViewBag.IsISPOnly).SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Sales Navigator").SetWidth(145))
+                .AddColumn(new Column("cell.ID").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(125).SetLabel("ISP Community ID"))
+                .AddColumn(new Column("cell.Sites").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(115).SetLabel("ISP Site ID"))
+                .AddColumn(new Column("cell.BDXID").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(145).SetLabel("BDX Community ID"))
+                .AddColumn(new Column("cell.Type").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(185).SetLabel("Type"))
+                .AddColumn(new Column("cell.Status").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(95).SetLabel("Sync Status"))
+                .AddColumn(new Column("cell.DWStatus").SetHidden(!ViewBag.showDreamweaver).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(85).SetLabel("DW Status"))
+                .AddColumn(new Column("cell.DateDeleted").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Date Deleted").SetWidth(110))
+                .AddColumn(new Column("cell.DeletedBy").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Deleted By").SetWidth(110))
                 .SetUrl(Url.Action("GetCommunitiesGrid"))
                 .SetAutoWidth(true)
-                .SetHeight(255)
+                .SetHeight(230)
                 .SetRowNum(20)
                 .SetAutoEncode(true)
                 .SetScrollRows(true)
@@ -39,7 +38,8 @@
                 .SetViewRecords(true)
                 .SetRowNumbers(true)
                 .SetRowNumWidth(35)
-                .SetShrinkToFit(false)
+                //.SetShrinkToFit(false)
+                .SetForceFit(true)
                 .SetLoadText("Communities loading...")
                 .SetEmptyRecords("<b>No Communities Found.<b>")
             )
@@ -76,7 +76,7 @@
                 .SetRowList(new int[] { 20, 30, 40, 50 })
                 .SetPager("pager")
                 .SetViewRecords(true)
-                .SetShrinkToFit(false)
+                .SetShrinkToFit(true)
                 .SetLoadText("Communities loading...")
                 .SetEmptyRecords("<b>No Communities Found.<b>")
                 )
@@ -95,7 +95,7 @@
                 .AddColumn(new Column("cell.ISPVersion").SetHidden(true))
                 .AddColumn(new Column("cell.ActivityState").SetHidden(ViewBag.IsISPOnly).SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Sales Navigator").SetWidth(109))
                 .AddColumn(new Column("cell.ID").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(70).SetLabel("ISP Community ID"))
-                .AddColumn(new Column("cell.Sites").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(55).SetLabel("ISP Site ID"))
+                .AddColumn(new Column("cell.Sites").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(45).SetLabel("ISP Site ID"))
                 .AddColumn(new Column("cell.BDXID").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(80).SetLabel("BDX Community ID"))
                 .AddColumn(new Column("cell.Type").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(135).SetLabel("Type"))
                 .AddColumn(new Column("cell.Status").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(65).SetLabel("Sync Status"))
@@ -113,13 +113,11 @@
                 .SetRowList(new int[] { 20, 30, 40, 50 })
                 .SetPager("pager")
                 .SetViewRecords(true)
-                .SetShrinkToFit(false)
+                .SetShrinkToFit(true)
                 .SetLoadText("Communities loading...")
                 .SetEmptyRecords("<b>No Communities Found.<b>")
             )
         }
-
-    </div>
 </div>
 
 

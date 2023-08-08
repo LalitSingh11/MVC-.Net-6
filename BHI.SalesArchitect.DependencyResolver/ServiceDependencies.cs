@@ -9,17 +9,19 @@ namespace BHI.SalesArchitect.DependencyResolver
         public ServiceDependencies(IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IBuilderBrandService, BuilderBrandService>();
             services.AddScoped<ICommunityService, CommunityService>();
             services.AddScoped<ICommunitySiteService, CommunitySiteService>();
             services.AddScoped<ICommunityUserService, CommunityUserService>();
-            services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICommunitySiteGeoJsonService, CommunitySiteGeoJsonService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IMasterPlanService, MasterPlanService>();
             services.AddScoped<ISiteService, SiteService>();
             services.AddScoped<IPartnerService, PartnerService>();
             services.AddScoped<IProspectConfigurationService, ProspectConfigurationService>();
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRoleService, UserRoleService>();
         }
     }
 }

@@ -2,8 +2,8 @@
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories
 {
-    public interface IBuilderBrandRepository
+    public interface IUserRoleRepository
     {
-        IEnumerable<BuilderBrand> GetByPartnerId(int partnerId);
+        IEnumerable<UserRole> GetByUserIds(List<int> userIds);
     }
 }

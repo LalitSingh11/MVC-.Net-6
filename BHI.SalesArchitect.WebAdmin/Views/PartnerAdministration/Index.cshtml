@@ -1,1 +1,37 @@
 ﻿
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@using BHI.SalesArchitect.Core.Enumerations;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Partner";
+}
+
+<div >
+    <br />
+    <partial name="Partials/_PartnersList" />
+    <br />
+    <partial name="Partials/_UsersList" />
+    <br />
+    <br />
+    <br />
+    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+        <footer class="footer ">
+            <div class="form-actions ">
+                <button type="button" class="btn btn-primary" onclick="SaveUser();">Save changes</button>
+                <button type="button" class="btn" onclick="reloadUser();">Cancel</button>
+                <button type="button" class="btn pull-right" style="display:none;"><i class="icon-envelope"></i> Send login details to user</button>
+            </div>
+        </footer>
+    </nav>
+</div>
+@section Scripts {
+    <script src="~/js/partneradministration/manage-partner.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>
+}
+@section Styles{
+    <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
+}

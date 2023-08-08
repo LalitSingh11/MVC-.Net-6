@@ -11,6 +11,12 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
 
         }
+
+        public IEnumerable<Partner> GetAll(int[] type)
+        {
+            return _dbContext.Partners.Where(x => type.Contains(x.Type));
+        }
+
         public Partner GetById(int id)
         {
             return _dbContext.Partners.Find(id);

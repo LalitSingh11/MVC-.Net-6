@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using BHI.SalesArchitect.Infrastructure.Repositories;
 using BHI.SalesArchitect.Infrastructure.Repositories.Implementations;
-using BHI.SalesArchitect.Infrastructure;
 
 namespace BHI.SalesArchitect.DependencyResolver
 {
@@ -9,7 +8,7 @@ namespace BHI.SalesArchitect.DependencyResolver
     {
         public RepositoryDependencies(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBuilderBrandRepository, BuilderBrandRepository>();
             services.AddScoped<ICommunityRepository, CommunityRepository>();
             services.AddScoped<IPartnerRepository, PartnerRepository>();
             services.AddScoped<ICommunitySiteRepository, CommunitySiteRepository>();
@@ -20,6 +19,8 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<IProspectConfigurationRepository, ProspectConfigurationRepository>();
             services.AddScoped<IMasterPlanRepository, MasterPlanRepository>();
             services.AddScoped<ISiteRepository, SiteRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
     }
 }

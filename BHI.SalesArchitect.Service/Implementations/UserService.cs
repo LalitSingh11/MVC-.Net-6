@@ -11,7 +11,12 @@ namespace BHI.SalesArchitect.Service.Implementations
             _userRepository = userRepository;
         }
 
-        public async Task<User> GetByUsernameAsync(string username)
+        public async Task<User> GetById(int id)
+        {
+            return await _userRepository.GetById(id);
+        }
+
+        public async Task<User> GetByUsername(string username)
         {
             return await _userRepository.GetByUserName(username);
         }
@@ -21,5 +26,9 @@ namespace BHI.SalesArchitect.Service.Implementations
             return _userRepository.GetCommunityAdminsByCommunityID(communityIDs).ToList();
         }
 
+        public IEnumerable<User> GetSuperUsers()
+        {
+            return _userRepository.GetSuperUsers().ToList();
+        }
     }
 }

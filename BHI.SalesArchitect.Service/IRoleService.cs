@@ -6,6 +6,11 @@ namespace BHI.SalesArchitect.Service
     {
         Role GetByUsername(string username);
         Role GetByUserId(int userId);
+        Role BHIAdmin { get; }
+        Role PartnerAdmin { get; }
+        Role PartnerReadOnly { get; }
+        Role PartnerSuperAdmin { get; }
+        Role LotStatusEditor { get; }
 
     }
 }

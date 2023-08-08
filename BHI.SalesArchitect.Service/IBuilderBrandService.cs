@@ -1,8 +1,8 @@
 ﻿using BHI.SalesArchitect.Model.DB;
 
-namespace BHI.SalesArchitect.Infrastructure.Repositories
+namespace BHI.SalesArchitect.Service
 {
-    public interface IBuilderBrandRepository
+    public interface IBuilderBrandService
     {
         IEnumerable<BuilderBrand> GetByPartnerId(int partnerId);
     }

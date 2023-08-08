@@ -9,19 +9,19 @@ public partial class Partner
 
     public int Bdxid { get; set; }
 
-    public string? Name { get; set; }
+    public string Name { get; set; }
 
-    public string? UploadDataMappingConfiguration { get; set; }
+    public string UploadDataMappingConfiguration { get; set; }
 
-    public string? DataKey { get; set; }
+    public string DataKey { get; set; }
 
     public int Type { get; set; }
 
     public int? MappedPartnerId { get; set; }
 
-    public string? LeadPostingPassword { get; set; }
+    public string LeadPostingPassword { get; set; }
 
-    public string? Ispname { get; set; }
+    public string Ispname { get; set; }
 
     public bool Status { get; set; }
 

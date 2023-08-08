@@ -1,5 +1,6 @@
 ﻿using BHI.SalesArchitect.Model.DB;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 {
@@ -7,7 +8,8 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
     {
         private readonly SalesArchitectContext _dbContext;
         private readonly IRoleRepository _roleRepository;
-        public UserRepository(SalesArchitectContext db, IRoleRepository roleRepository)
+        public UserRepository(SalesArchitectContext db,
+            IRoleRepository roleRepository)
         {
 
             _dbContext = db;
@@ -18,6 +20,11 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
         }
 
+        public async Task<User> GetById(int id)
+        {
+            return await _dbContext.Users.FirstAsync(x => x.Id == id);
+        }
+
         public async Task<User> GetByUserName(string userName)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == userName);
@@ -26,27 +33,25 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         public IEnumerable<User> GetCommunityAdminsByCommunityID(List<int> communityIDs)
         {
             int communityRole = _roleRepository.PartnerAdmin.Id;
-            var query =  (from u in _dbContext.Users
+            var query = from u in _dbContext.Users
                          join acts in _dbContext.ActivityStates on u.ActivityStateId equals acts.Id
                          join cu in _dbContext.CommunityUsers on u.Id equals cu.UserId
                          join ur in _dbContext.UserRoles on new { UserId = u.Id, RoleId = communityRole } equals new { ur.UserId, ur.RoleId }
                          where communityIDs.Contains(cu.CommunityId)
-                         select u);
+                         select u;
 
             return query.Distinct();
         }
 
-        /* public Task<IEnumerable<User>> GetCommunityAdminsByCommunityID(List<int> communityIDs)
-         {
-
-             var query = from u in _db.Users
-                         join acts in _db.ActivityStates on u.ActivityStateId equals acts.Id
-                         join cu in _db.CommunityUsers on u.Id equals cu.UserId
-                         //join ur in _db.UserRoles on new { UserID = u.Id, RoleId = communityRole } equals new { ur.UserId, ur.RoleId }
-                        where communityIDs.Contains(cu.CommunityID)
-                         select new { u, acts };
-
-             return query.ToList();
-         }*/
+        public IEnumerable<User> GetSuperUsers()
+        {
+            var query = from u in _dbContext.Users
+                        join acts in _dbContext.ActivityStates on u.ActivityStateId equals acts.Id
+                        join ur in _dbContext.UserRoles on u.Id equals ur.UserId
+                        join r in _dbContext.Roles on ur.RoleId equals r.Id
+                        where r.Code == "PARTNERSUPERADMIN" || r.Code == "BHIADMIN"
+                        select u;
+            return query.Distinct();
+        }
     }
 }

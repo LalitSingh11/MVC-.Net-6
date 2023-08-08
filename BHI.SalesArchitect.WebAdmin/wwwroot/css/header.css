@@ -1,36 +1,56 @@
-﻿/* Assuming the class of the parent container is "header" */
-
-.header {
-    /* Display the list items in a single line and justify them to the right */
+﻿/* CSS for positioning the list in the top right corner */
+#header {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     display: flex;
-    justify-content: flex-end;
-    align-items: center; /* Align items vertically in the center */
-    /* Adjust spacing between list items if needed */
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    list-style: none;
 }
 
-    .header li {
-        margin-left: 15px; /* Add spacing between list items */
+    /* CSS for making the text big and pretty */
+    #header li {
+        font-size: 20px;
+        color: #333;
     }
 
-        .header li:last-child {
-            margin-right: 0; /* Remove margin from the last list item to avoid unnecessary spacing */
-        }
+/* CSS for making the logout and username a bit different */
+#username {
+    font-weight: bold;
+    color: #ff6600;
+}
 
-        /* Improve the text appearance of the list items */
-        .header li a {
-            color: #333; /* Change the text color */
-            text-decoration: none; /* Remove underline from links */
-            font-size: 16px; /* Adjust the font size */
-            font-weight: bold; /* Apply bold font weight */
-            text-transform: uppercase; /* Convert text to uppercase */
-            padding: 5px 10px; /* Add padding to make the links more clickable */
-            border-radius: 5px; /* Add rounded corners to the links */
-        }
+#logout-link {
+    font-style: italic;
+}
 
-            .header li a:hover {
-                background-color: #f2f2f2; /* Add a subtle background color on hover */
-                color: #007bff; /* Change the text color on hover */
-            }
+/* CSS for styling the separator between list items */
+#header li:not(:last-child)::after {
+    content: "|";
+    margin-left: 10px;
+    color: #777;
+}
+
+/* CSS for styling the logo "SalesArchitect" */
+.branding a {
+    font-size: 36px;
+    color: #336699;
+    text-decoration: none; /* Remove the underline */
+    font-weight: bold;
+}
+
+/* Optional: Add some margin to the logo to create space from the top left corner */
+.branding {
+    margin: 10px;
+}
+
+/* CSS for changing colors on hover */
+#header li a:hover {
+    color: #ff6600; /* Change to desired hover color */
+}
+
+.branding a:hover {
+    color: #ff6600; /* Change to desired hover color */
+}
