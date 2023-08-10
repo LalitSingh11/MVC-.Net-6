@@ -9,5 +9,6 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
         Task<User> GetById(int id);
         IEnumerable<User> GetCommunityAdminsByCommunityID(List<int> communityIDs);
         IEnumerable<User> GetSuperUsers();
+        Task<bool> UpdateUser(User user);
     }
 }

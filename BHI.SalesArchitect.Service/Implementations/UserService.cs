@@ -21,14 +21,28 @@ namespace BHI.SalesArchitect.Service.Implementations
             return await _userRepository.GetByUserName(username);
         }
 
-        public IEnumerable<User> GetCommunityAdminsByCommunityIDs(List<int> communityIDs)
+        public List<User> GetCommunityAdminsByCommunityIDs(List<int> communityIDs)
         {
             return _userRepository.GetCommunityAdminsByCommunityID(communityIDs).ToList();
         }
 
-        public IEnumerable<User> GetSuperUsers()
+        public List<User> GetSuperUsers()
         {
             return _userRepository.GetSuperUsers().ToList();
+        }
+
+        public async Task<bool> UpdateUser(User user)
+        {
+            var dbUser = await GetById(user.Id);
+            dbUser.FirstName = user.FirstName;
+            dbUser.LastName = user.LastName;
+            dbUser.Email = user.Email;  
+            dbUser.PhoneNumber = user.PhoneNumber;
+            dbUser.UserName = user.UserName;
+            dbUser.Password = user.Password;
+            dbUser.PartnerId = user.PartnerId;
+            var a = await _userRepository.UpdateUser(dbUser);
+            return a;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace BHI.SalesArchitect.Service.Implementations
 
         public int? UserID
         {
-            get { return _session.GetInt32("UserId"); }
+            get { return _session.GetInt32("UserID"); }
             set { _session.SetInt32("UserID", (int)value); }
         }
 
@@ -42,10 +42,10 @@ namespace BHI.SalesArchitect.Service.Implementations
             set { _session.SetString("PartnerDataKey", value); }
         }
 
-        public bool IsIsp
+        public bool? IsIsp
         {
             get { return Convert.ToBoolean(_session.GetString("IsIsp")); }
-            set { _session.SetString("PartnerDataKey", value.ToString()); }
+            set { _session.SetString("IsIsp", value.ToString()); }
         }
     }
 }

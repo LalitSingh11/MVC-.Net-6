@@ -23,7 +23,7 @@
                 .AddColumn(new Column("cell.BDXID").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(145).SetLabel("BDX Community ID"))
                 .AddColumn(new Column("cell.Type").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(185).SetLabel("Type"))
                 .AddColumn(new Column("cell.Status").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(95).SetLabel("Sync Status"))
-                .AddColumn(new Column("cell.DWStatus").SetHidden(!ViewBag.showDreamweaver).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(85).SetLabel("DW Status"))
+                .AddColumn(new Column("cell.DWStatus").SetHidden(ViewBag.showDreamweaver == false).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(85).SetLabel("DW Status"))
                 .AddColumn(new Column("cell.DateDeleted").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Date Deleted").SetWidth(110))
                 .AddColumn(new Column("cell.DeletedBy").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center).SetLabel("Deleted By").SetWidth(110))
                 .SetUrl(Url.Action("GetCommunitiesGrid"))

@@ -5,5 +5,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
     public interface IUserRoleRepository
     {
         IEnumerable<UserRole> GetByUserIds(List<int> userIds);
+        UserRole GetByUserId(int userId);
+        Task<bool> UpdateUserRole(UserRole userRole);
     }
 }

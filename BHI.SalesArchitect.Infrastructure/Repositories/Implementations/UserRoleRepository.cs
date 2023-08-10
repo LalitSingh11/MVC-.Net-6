@@ -10,9 +10,20 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
         }
 
+        public UserRole GetByUserId(int userId)
+        {
+            return _dbContext.UserRoles.Where(x => x.UserId == userId).FirstOrDefault();
+        }
+
         public IEnumerable<UserRole> GetByUserIds(List<int> userIds)
         {
-            return _dbContext.UserRoles.Where(x => userIds.Contains(x.Id));
+            return _dbContext.UserRoles.Where(x => userIds.Contains(x.UserId));
+        }
+
+        public async Task<bool> UpdateUserRole(UserRole userRole)
+        {
+            _dbContext.UserRoles.Update(userRole);
+            return await _dbContext.SaveChangesAsync() > 0;
         }
     }
 }

@@ -7,6 +7,6 @@
         int? CommunityID { get; set; }
         string PartnerName { get; set; }
         string PartnerDataKey { get; set; }
-        bool IsIsp { get; set; }
+        bool? IsIsp { get; set; }
     }
 }

@@ -6,7 +6,8 @@ namespace BHI.SalesArchitect.Service
     {
         Task<User> GetByUsername(string username);
         Task<User> GetById(int id);
-        IEnumerable<User> GetCommunityAdminsByCommunityIDs(List<int> communityIDs);
-        IEnumerable<User> GetSuperUsers();
+        List<User> GetCommunityAdminsByCommunityIDs(List<int> communityIDs);
+        List<User> GetSuperUsers();
+        Task<bool> UpdateUser(User user);
     }
 }

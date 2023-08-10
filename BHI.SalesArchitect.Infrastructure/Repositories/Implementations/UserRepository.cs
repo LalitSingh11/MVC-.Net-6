@@ -39,7 +39,6 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                          join ur in _dbContext.UserRoles on new { UserId = u.Id, RoleId = communityRole } equals new { ur.UserId, ur.RoleId }
                          where communityIDs.Contains(cu.CommunityId)
                          select u;
-
             return query.Distinct();
         }
 
@@ -48,10 +47,15 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             var query = from u in _dbContext.Users
                         join acts in _dbContext.ActivityStates on u.ActivityStateId equals acts.Id
                         join ur in _dbContext.UserRoles on u.Id equals ur.UserId
-                        join r in _dbContext.Roles on ur.RoleId equals r.Id
-                        where r.Code == "PARTNERSUPERADMIN" || r.Code == "BHIADMIN"
+                        where ur.RoleId == _roleRepository.PartnerSuperAdmin.Id || ur.RoleId == _roleRepository.BHIAdmin.Id
                         select u;
-            return query.Distinct();
+            return query;
+        }
+
+        public async Task<bool> UpdateUser(User user)
+        {
+            _dbContext.Users.Update(user);
+            return await _dbContext.SaveChangesAsync() > 0;
         }
     }
 }

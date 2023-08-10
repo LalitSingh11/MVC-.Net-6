@@ -9,6 +9,11 @@
     {
       "library": "jqueryui@1.13.2",
       "destination": "wwwroot/lib/jqueryui/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery.serializeJSON@3.2.1",
+      "destination": "wwwroot/lib/jquery.serializeJSON/"
     }
   ]
 }

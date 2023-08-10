@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SalesArchitect</title>
     @RenderSection("Styles", required: false)
-    <link rel="stylesheet" href="~/css/header.css" />
+    <link href="~/css/header.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/jqueryui/themes/smoothness/jquery-ui.min.css" rel="stylesheet" asp-append-version="true" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
@@ -22,7 +22,7 @@
     <ul id="header">
     @if(User.Identity.IsAuthenticated)
     {
-        <li>Hello, <span id="username">@User.Identity.Name</span></li>
+        <li>Hello, <span id="header-username">@User.Identity.Name</span></li>
         <li><a href="/HelpDocuments">Help</a></li>
         @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
         {

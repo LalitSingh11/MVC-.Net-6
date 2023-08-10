@@ -1,9 +1,13 @@
 ﻿@{
-    var GRID_USER = "GridUsers";
+    var GRID_USER = "GridUser";
 }
 <div class="container">
     <h2>Users</h2>
     <hr />
+
+    <button class="btn btn-danger" onclick="deleteSelected();">Delete Selected</button>
+    <br />
+    <br />
     <div class="d-flex justify-content-center">
         
     @(Html.Grid(GRID_USER)
@@ -21,9 +25,10 @@
         .SetSortOrder(MvcJqGrid.Enums.SortOrder.Asc)
         .SetRowNum(10000)
         .SetWidth(1350)
+        .SetScrollRows(true)
         .SetHeight(450)
-        .SetMultiSelect(true)
         .SetViewRecords(true)
+        .OnLoadComplete("onUserLoadComplete(xhr)")
         //.SetShrinkToFit(true)
         //.SetAutoWidth(true)
         .OnSelectRow("onUserRowSelected(rowid, status)")
@@ -32,7 +37,5 @@
     </div>
     <br />
     <partial name="Partials/_UserInformationForm" />
-    <br />
-    <partial name="Partials/_ResetPassword" />
     <br />
 </div>

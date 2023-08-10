@@ -44,7 +44,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         public IActionResult Index()
         {
             InitViewBag();
-            ViewData["PartnerName"] = PartnerName;
+            ViewData["PartnerName"] = _sessionService.PartnerName ?? PartnerName;
             return View();
         }
 
@@ -142,7 +142,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             if (siteID != -1)
             {
                 var site = _siteService.GetByIdWithoutSvg(siteID);
-                hasGeoSVG = site.IsGeoSvg;
+                hasGeoSVG = (bool)site.IsGeoSvg;
             }
             switch (ispPartnerType)
             {
@@ -163,7 +163,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             if (siteID != -1)
             {
                 var site = _siteService.GetByIdWithoutSvg(siteID);
-                return site.IsGeoSvg;
+                return (bool)site.IsGeoSvg;
             }
             return false;
         }
@@ -179,7 +179,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         }
        private void InitViewBag()
        {
-            var partnerConfig = _prospectConfigurationService.GetByPartnerId(PartnerId);
+            var partnerConfig = _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
             ViewBag.showDreamweaver = partnerConfig != null ? partnerConfig.IsDreamweaver : false;
             ViewBag.IspPartnerType = partnerConfig?.IspPartnerType ?? 1;
             ViewBag.PreviewPlugin = partnerConfig?.PreviewIspplugin ?? false;
@@ -194,7 +194,6 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ViewBag.IsISPOnly = partnerConfig?.IsIsp ?? false;
         }
         #endregion
-
     }
 }
 

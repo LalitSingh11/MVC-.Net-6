@@ -17,9 +17,11 @@
     }
 
 /* CSS for making the logout and username a bit different */
-#username {
+#header-username {
     font-weight: bold;
-    color: #ff6600;
+    font-family:'Trebuchet MS';
+    font-size:larger;
+    color: #bd0a46;
 }
 
 #logout-link {
