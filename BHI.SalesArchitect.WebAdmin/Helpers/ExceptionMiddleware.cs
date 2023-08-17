@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Microsoft.Data.SqlClient;
+using System.Net;
 using System.Text.Json;
 
 namespace BHI.SalesArchitect.WebAdmin.Helpers
@@ -34,6 +35,9 @@ namespace BHI.SalesArchitect.WebAdmin.Helpers
                         break;
                     case UnauthorizedAccessException:
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case SqlException:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;

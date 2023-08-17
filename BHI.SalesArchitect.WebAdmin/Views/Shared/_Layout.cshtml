@@ -8,16 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SalesArchitect</title>
     @RenderSection("Styles", required: false)
-    <link href="~/css/header.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/jqueryui/themes/smoothness/jquery-ui.min.css" rel="stylesheet" asp-append-version="true" />
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    @*<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" asp-append-version="true" />*@
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" asp-append-version="true" />
+    @*<link href="~/lib/bootstrap-modal/css/bootstrap-modal.min.css" rel="stylesheet" asp-append-version="true" />*@
+    <link href="~/css/header.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/toast.css" rel="stylesheet" asp-append-version="true" />
+
+
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap-modal/js/bootstrap-modal.min.js" asp-append-version="true"></script>
+    <script src="~/js/common/common.js" asp-append-version="true"></script>
 </head>
-<body>
+<body class="container-fluid">
     <h1 class="branding"><a class="ir logo" href="/">Sales Architect</a></h1>
     <ul id="header">
     @if(User.Identity.IsAuthenticated)
@@ -45,14 +52,15 @@
                 <a asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a>
             </form>
         </li>
-    }    
+    }
     </ul>
+        @RenderSection("Modals", required: false)
 
-    <main role="main">
+    <main role="main" class="container-fluid">
         @RenderBody()
+        @RenderSection("Scripts", required: false)
     </main>   
 
-    @RenderSection("Scripts", required: false)
 </body>
 </html>
 

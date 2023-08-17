@@ -10,6 +10,18 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
         }
 
+        public async Task<bool> AddUserRole(UserRole userRole)
+        {
+            _dbContext.UserRoles.Add(userRole);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> DeleteUserRole(UserRole userRole)
+        {
+            _dbContext.UserRoles.Remove(userRole);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
         public UserRole GetByUserId(int userId)
         {
             return _dbContext.UserRoles.Where(x => x.UserId == userId).FirstOrDefault();

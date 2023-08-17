@@ -1,6 +1,4 @@
 ﻿using BHI.SalesArchitect.Model.DB;
-using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 {
@@ -10,11 +8,6 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         public LotRepository(SalesArchitectContext db)
         {
             _dbContext = db;
-        }
-
-        public IEnumerable<Lot> GetByCommunityID(int? communityID)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<Lot> GetByPartnerID(int? partnerID)
@@ -31,5 +24,16 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 
             return query.ToList();
         }
+        public IEnumerable<Lot> GetByCommunityID(int? commID)
+        {
+            var query = from l in _dbContext.Lots
+                        join ls in _dbContext.LotStates on l.LotStateId equals ls.Id
+                        join cs in _dbContext.CommunitySites on l.SiteId equals cs.SiteId
+                        where cs.CommunityId == commID
+                        select l;
+
+            return query.ToList();
+        }
+
     }
 }

@@ -1,7 +1,8 @@
-﻿<div>
+﻿@model BHI.SalesArchitect.WebAdmin.Models.RegisterModel
+<div>
     <h2>User Information</h2>
     <hr />
-    <form class="row g-3" id="user_form">
+    <form class="row g-3" id="update_user_form">
         <div class="col-md-6">
             <label for="firstName" class="form-label">First Name</label>
             <input type="text" class="form-control" name="firstName" id="firstName">
@@ -23,79 +24,30 @@
             <input type="number" class="form-control" name="phone" id="phone">
         </div>
         <div class="col-12">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="gridCheck" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                    Is Partner Super Admin?
-                </label>
-            </div>
-            <br />
+            <input class="form-check-input" type="checkbox" name="gridCheck" id="gridCheck">
+            <label class="form-check-label" for="gridCheck"> Is Partner Super Admin? </label>
+        </div>
+        <br />
         <h2>Reset Password</h2>
         <hr />
-            <div class="row text-center">
-                <div class="col-md-6">
-                    <label for="password">Password</label>
-                </div>
-                <div class="col-md-6">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                </div>                
+        <div class="row text-center">
+            <div class="col-md-6">
+                <label for="password">Password</label>
             </div>
-            <br />
-            <div class="row text-center">
-                <div class="col-md-6">
-                    <label for="confirm_password">Confirm Password</label>
-                </div>
-                <div class="col-md-6">
-                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
-                </div>
-            </div>
-
+            <div class="col-md-6">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>                
         </div>
-        
+        <br />
+        <br />
+        <div class="row text-center">
+            <div class="col-md-6">
+                <label for="confirm_password">Confirm Password</label>
+            </div>
+            <div class="col-md-6">
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
+            </div>
+        </div>
     </form>
-        @*<legend>User Information</legend>
-        <div class="row-fluid">
-            <div class="span6">
-                <div class="control-group">
-                    <label class="control-label">First Name</label>
-                    <div class="controls">
-                        <input class="input-block-level" type="text" id="userFirstName" name="firstName" placeholder="First Name" data-bind="value: FirstName" />
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label">Username</label>
-                    <div class="controls">
-                        <input class="input-block-level" type="text" id="userUserName" name="userName" placeholder="Username" data-bind="value: UserName" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Phone Number</label>
-                    <div class="controls">
-                        <input class="input-block-level" type="text" id="userPhoneNumber" name="phoneNumber" placeholder="Phone Number" data-bind="value: PhoneNumber" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="row custom-row1 newuser-checkbox">
-                        <input class="input-block-level" type="checkbox" id="isPartnerSuperAdmin" name="isPartnerSuperAdmin" data-bind="value: IsPartnerSuperAdmin" />
-                        <label class="control-label">Is Partner Super Admin?</label>
-                    </div>
-                </div>
-            </div>
-            <div class="span6">
-                <div class="control-group">
-                    <label class="control-label">Last Name</label>
-                    <div class="controls">
-                        <input class="input-block-level" type="text" id="userLastName" name="lastName" placeholder="LastName" data-bind="value: LastName" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Email</label>
-                    <div class="controls">
-                        <input class="input-block-level" type="text" id="userEmail" name="email" placeholder="Email" data-bind="value: Email" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <input type="hidden" id="userPartner" name="partner" data-bind="value: AssociationIds">*@
 </div>
+       

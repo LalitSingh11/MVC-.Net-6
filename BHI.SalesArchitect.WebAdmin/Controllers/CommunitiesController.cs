@@ -1,5 +1,7 @@
 ﻿using BHI.SalesArchitect.Core.Enumerations;
+using BHI.SalesArchitect.Model.DB;
 using BHI.SalesArchitect.Service;
+using BHI.SalesArchitect.Service.Implementations;
 using BHI.SalesArchitect.WebAdmin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +12,16 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
     [Authorize]
     public class CommunitiesController : BaseController
     {
-        private ICommunityService _communityService;
-        private ICommunityUserService _communityUserService;
-        private IUserService _userService;
-        private ICommunitySiteService _communitySiteService;
-        private ICommunitySiteGeoJsonService _communitySiteGeoJsonService;
-        private ISiteService _siteService;
-        private IMasterPlanService _masterPlanService;
-        private ISessionService _sessionService;
-        private IProspectConfigurationService _prospectConfigurationService;
+        private readonly ICommunityService _communityService;
+        private readonly ICommunityUserService _communityUserService;
+        private readonly IUserService _userService;
+        private readonly ICommunitySiteService _communitySiteService;
+        private readonly ICommunitySiteGeoJsonService _communitySiteGeoJsonService;
+        private readonly ISiteService _siteService;
+        private readonly IMasterPlanService _masterPlanService;
+        private readonly ISessionService _sessionService;
+        private readonly IProspectConfigurationService _prospectConfigurationService;
+        private readonly ILotService _lotService;
         public CommunitiesController(ICommunityService communityService,
             ICommunityUserService communityUserService,
             IUserService userService,
@@ -27,7 +30,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ISiteService siteService,
             IMasterPlanService masterPlanService,
             ISessionService sessionService,
-            IProspectConfigurationService prospectConfigurationService
+            IProspectConfigurationService prospectConfigurationService,
+            ILotService lotService
             ) 
         {
             _communityService = communityService;
@@ -39,6 +43,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _masterPlanService = masterPlanService;
             _sessionService = sessionService;
             _prospectConfigurationService = prospectConfigurationService;
+            _lotService = lotService;
         }
         
         public IActionResult Index()
@@ -47,17 +52,20 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ViewData["PartnerName"] = _sessionService.PartnerName ?? PartnerName;
             return View();
         }
+        #region GRIDS
 
         [HttpGet]
         public IActionResult GetCommunitiesGrid(GridSettings gridSettings, string searchTerm, int commStatusType = 0, int commType = 0)
         {
-            var communities = _communityService.GetGridCommunitiesList(_sessionService.PartnerID ?? PartnerId, searchTerm, commStatusType, commType);            
-            var communityAdmins = _userService.GetCommunityAdminsByCommunityIDs(communities.Select(p => p.Id).ToList());
-            var communityUsers = _communityUserService.GetByCommunityIDs(communities.Select(p => p.Id).ToList()).ToList();
-            var communitySites = _communitySiteService.GetActiveCommunitySites(communities.Select(p => p.Id).ToList()).ToList();
-            var communityMasterSites = _communityService.GetByCommunityIDs(communities.Select(p => p.Id).ToList()).ToList();
-            var communitySiteGeoJson = _communitySiteGeoJsonService.GetByCommunityIds(communities.Select(p => p.Id).ToList()).ToList();
-            var partnerConfig = _prospectConfigurationService.GetByPartnerId(PartnerId);
+            var communities = _communityService.GetGridCommunitiesList(_sessionService.PartnerID ?? PartnerId, searchTerm, commStatusType, commType);
+            _sessionService.CommunityID = communities.FirstOrDefault()?.Id ?? 1;
+            var commIds = communities.Select(p => p.Id).ToList();
+            var communityAdmins = _userService.GetCommunityAdminsByCommunityIDs(commIds);
+            var communityUsers = _communityUserService.GetByCommunityIDs(commIds).ToList();
+            var communitySites = _communitySiteService.GetActiveCommunitySites(commIds).ToList();
+            var communityMasterSites = _communityService.GetByCommunityIDs(commIds).ToList();
+            var communitySiteGeoJson = _communitySiteGeoJsonService.GetByCommunityIds(commIds).ToList();
+            var partnerConfig = _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
             var jsonData = new
             {
                 total = (communities.Count() % gridSettings.PageSize == 0) ? communities.Count() / gridSettings.PageSize : communities.Count() / gridSettings.PageSize + 1,
@@ -81,14 +89,14 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                                 Admins = communityAdmins.Where(p => communityUsers.Any(q => q.UserId == p.Id && q.CommunityId == c.Id)).Select(p => p.FirstName + " " + p.LastName).FirstOrDefault(),
                                 ActivityState = c.ActivityStateName,
                                 //Address = string.Format("{0}, {1}", c.City, c.State),
-                                Sites = communitySites.Any(p => p.CommunityId == c.Id) ? communitySites.First(p => p.CommunityId == c.Id).SiteId.ToString() : communitySiteGeoJson.Any(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1) ? communitySiteGeoJson.First(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1).SiteId.ToString() : "-1",
+                                Sites = communitySites.Any(p => p.CommunityId == c.Id) ? communitySites.First(p => p.CommunityId == c.Id).SiteId.ToString() : communitySiteGeoJson.Any(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1) ? communitySiteGeoJson.First(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1).SiteId.ToString() : "",
                                 MasterSites = communityMasterSites.Any(cm => cm.Id == c.Id) ? communityMasterSites.First(cm => cm.Id == c.Id).MasterPlanId.ToString() : "-1",
                                 Locked = c.Locked.ToString(),
                                 NewIsp = c.NewIsp.ToString(),
-                                ISPVersion = GetISPVersion(communitySiteGeoJson.Any(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1), c.NewIsp, communitySites.Any(p => p.CommunityId == c.Id) ? communitySites.First(p => p.CommunityId == c.Id).SiteId : -1, partnerConfig.IspPartnerType),
+                                ISPVersion = GetISPVersion(communitySiteGeoJson.Any(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1), c.NewIsp, communitySites.Any(p => p.CommunityId == c.Id) ? communitySites.First(p => p.CommunityId == c.Id).SiteId : -1, (partnerConfig?.IspPartnerType ?? 1)),
                                 BDXId = c.Bdxid,
-                                HasGeoJson = partnerConfig.IspPartnerType != (int)CommonEnumerations.IspPartnerType.SVG && (communitySiteGeoJson.Any(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1)),
-                                HasSVG = partnerConfig.IspPartnerType != (int)CommonEnumerations.IspPartnerType.PaidGeoSpatial && communitySites.Any(p => p.CommunityId == c.Id),
+                                HasGeoJson = (partnerConfig?.IspPartnerType ?? 1) != (int)CommonEnumerations.IspPartnerType.SVG && (communitySiteGeoJson.Any(csj => csj.CommunityId == c.Id && csj.GeoJsontype == 1)),
+                                HasSVG = (partnerConfig?.IspPartnerType ?? 1) != (int)CommonEnumerations.IspPartnerType.PaidGeoSpatial && communitySites.Any(p => p.CommunityId == c.Id),
                                 IsGeoSVG = GeoSVGCheck(communitySites.Any(p => p.CommunityId == c.Id) ? communitySites.First(p => p.CommunityId == c.Id).SiteId : -1),
                                 IsMasterGeoSVG = MasterGeoSVGCheck((communityMasterSites.Any(cm => cm.Id == c.Id) ? communityMasterSites.First(cm => cm.Id == c.Id).MasterPlanId : -1) ?? -1),
                                 DateDeleted = c.DateDeleted != null && c.DateDeleted != DateTime.MinValue ? c.DateDeleted.Value.ToShortDateString() : "",
@@ -131,18 +139,46 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                             }
                         }).ToArray().Skip((gridSettings.PageIndex - 1) * gridSettings.PageSize).Take(gridSettings.PageSize)
             };
-            return new JsonResult(jsonData);
-        
+            return new JsonResult(jsonData);        
         }
 
+        [HttpGet]
+        public IActionResult GetLotsByCommId(GridSettings gridSettings, int commId)
+        {
+            var lots  = _lotService.GetByCommID(commId);
+            _sessionService.CommunityID = commId;
+            var jsonData = new
+            {
+                total = lots.Count(),
+                rows = (
+                           from l in lots
+                           select new
+                           {
+                               id = l.Id,
+                               cell = new[]
+                               {
+                                    l.Id.ToString(),
+                                    GetLotNumber(l.InternalReference)
+                               }
+                           }).ToArray(),
+            };
+            return Json(jsonData);
+        }
+        #endregion
+
         #region Private Methods
+        private static string GetLotNumber(string internalReference)
+        {
+            var splittedString = internalReference.Split('_');
+            return (splittedString.Length > 1) ? splittedString[1] : splittedString[0];
+        }
         private string GetISPVersion(bool hasGeoJson, bool isNewISP, int siteID, int ispPartnerType)
         {
             var hasGeoSVG = false;
             if (siteID != -1)
             {
                 var site = _siteService.GetByIdWithoutSvg(siteID);
-                hasGeoSVG = (bool)site.IsGeoSvg;
+                hasGeoSVG = site.IsGeoSvg ?? false;
             }
             switch (ispPartnerType)
             {
@@ -158,12 +194,13 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                     return "-";
             }
         }
+        
         private bool GeoSVGCheck(int siteID)
         {
             if (siteID != -1)
             {
                 var site = _siteService.GetByIdWithoutSvg(siteID);
-                return (bool)site.IsGeoSvg;
+                return site.IsGeoSvg ?? false;
             }
             return false;
         }
@@ -173,7 +210,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             if (masterPlanId != -1)
             {
                 var masterPlan = _masterPlanService.GetByIdWithoutSvg(masterPlanId);
-                return masterPlan.IsMasterGeoSvg;
+                return masterPlan.IsMasterGeoSvg ?? false;
             }
             return false;
         }

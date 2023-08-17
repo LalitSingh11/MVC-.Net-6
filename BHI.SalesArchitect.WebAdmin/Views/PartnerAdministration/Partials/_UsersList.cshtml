@@ -4,38 +4,41 @@
 <div class="container">
     <h2>Users</h2>
     <hr />
-
-    <button class="btn btn-danger" onclick="deleteSelected();">Delete Selected</button>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" ><i class="bi bi-trash3-fill"></i> Delete Selected</button>
+   
+    <a class="btn btn-success" style="float: right;" asp-controller="PartnerAdministration" asp-action="CreateUser"><i class="bi bi-person-plus-fill"></i> Create User</a>
     <br />
     <br />
     <div class="d-flex justify-content-center">
         
+        
     @(Html.Grid(GRID_USER)
         .AddColumn(new Column("ID").SetHidden(true))
-        .AddColumn(new Column("UserName").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(150).SetLabel("User"))
-        .AddColumn(new Column("FirstName").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(150).SetLabel("First Name"))
-        .AddColumn(new Column("LastName").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(150).SetLabel("Last Name"))
+        .AddColumn(new Column("UserName").SetAlign(Align.Center).SetWidth(150).SetLabel("User"))
+        .AddColumn(new Column("FirstName").SetAlign(Align.Center).SetWidth(150).SetLabel("First Name"))
+        .AddColumn(new Column("LastName").SetAlign(Align.Center).SetWidth(150).SetLabel("Last Name"))
         .AddColumn(new Column("Phone Number").SetHidden(true))
-        .AddColumn(new Column("Email").SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(350))
+        .AddColumn(new Column("Email").SetAlign(Align.Center).SetWidth(350))
         .AddColumn(new Column("Partner").SetHidden(true))
         .AddColumn(new Column("Role").SetHidden(true))
         .SetUrl(Url.Action("GetUsers"))
-        .SetRequestType(MvcJqGrid.Enums.RequestType.Get)
+        .SetRequestType(RequestType.Get)
         .SetSortName("UserName")
-        .SetSortOrder(MvcJqGrid.Enums.SortOrder.Asc)
+        .SetSortOrder(SortOrder.Asc)
         .SetRowNum(10000)
         .SetWidth(1350)
         .SetScrollRows(true)
         .SetHeight(450)
         .SetViewRecords(true)
         .OnLoadComplete("onUserLoadComplete(xhr)")
-        //.SetShrinkToFit(true)
-        //.SetAutoWidth(true)
         .OnSelectRow("onUserRowSelected(rowid, status)")
-        //.OnLoadComplete("onPartnerLoadComplete(xhr)")
+        .SetLoadText("Users loading...")
+            //.OnLoadComplete("onUsersLoadComplete(xhr)")
         )
     </div>
     <br />
     <partial name="Partials/_UserInformationForm" />
     <br />
 </div>
+
+

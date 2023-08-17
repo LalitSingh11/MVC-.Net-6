@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Diagnostics;
-using BHI.SalesArchitect.Service.Implementations;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
@@ -43,23 +42,24 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                     var role = _roleService.GetByUserId(user.Id);
                     var claims = new List<Claim>
                     {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Role, role.Code),
-                    new Claim("UserId", user.Id.ToString()),
-                    new Claim("PartnerId",user.PartnerId.ToString()),
-                    new Claim("PartnerName", partner.Name),
-                    new Claim("PartnerDataKey", partner.DataKey)
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Role, role.Code),
+                        new Claim("UserId", user.Id.ToString()),
+                        new Claim("PartnerId",user.PartnerId.ToString()),
+                        new Claim("PartnerName", partner.Name),
+                        new Claim("PartnerDataKey", partner.DataKey)
                     };
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                    User.AddIdentity(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
+                                                    principal,
                                                     properties: new AuthenticationProperties
                                                     {
                                                         IsPersistent = true,
                                                         ExpiresUtc = DateTime.UtcNow.AddHours(24)
                                                     });
-
 
                     UpdateSession();
                     return RedirectToAction("Index", "Communities");

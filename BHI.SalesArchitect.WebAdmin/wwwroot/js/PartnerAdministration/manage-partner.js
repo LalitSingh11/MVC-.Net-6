@@ -1,10 +1,13 @@
-﻿const Grid_Partner = "#GridPartner";
+﻿"use strict";
+const Grid_Partner = "#GridPartner";
 const Grid_User = "#GridUser";
+const updateUserUrl = "partneradministration/updateuser";
+const deleteUserUrl = "partneradministration/deleteuser"
 var currentUserRowId = -1;
 var currentPartnerRowId = -1;
-const updateUserUrl = "partneradministration/updateuser";
+
 $().ready(function () {
-    $("#user_form").validate({
+    $("#update_user_form").validate({
         rules: {
             firstName: "required",
             lastName: "required",
@@ -16,7 +19,9 @@ $().ready(function () {
                 email: true
             },
             phone: {
-                phoneUs: true
+                minlength:10
+                //PhoneUs : true
+                //pattern: `/^(1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/`
             },
             password: {
                 minlength: 5
@@ -26,7 +31,6 @@ $().ready(function () {
                 equalTo: "#password"
             },
         },
-        // In 'messages' user have to specify message as per rules
         messages: {
             firstname: " Please enter your firstname",
             lastname: " Please enter your lastname",
@@ -35,6 +39,7 @@ $().ready(function () {
                 minlength:
                     " Your username must consist of at least 2 characters"
             },
+            phone: "Enter a valid number",
             password: {
                 required: " Please enter a password",
                 minlength:
@@ -49,6 +54,7 @@ $().ready(function () {
         }
     });
 });
+
 function onUserRowSelected(rowid, status) {
     currentUserRowId = rowid;
     let user = $(Grid_User).jqGrid("getRowData", rowid);
@@ -59,7 +65,7 @@ function onUserRowSelected(rowid, status) {
         populateUserForm(user);
     /*}
     else
-        $(`#user_form`)[0].reset();*/
+        $(`#update_user_form`)[0].reset();*/
 }
 
 function onPartnerRowSelected(rowid, status) {
@@ -77,47 +83,41 @@ function populateUserForm(user) {
         $(`#gridCheck`).prop("checked", true);
 }
 
-function SaveUser() {
-    let user = getFormObj(`user_form`);
-    let data = {
+function updateUser() {
+    if ($('#update_user_form').valid()) {
+        let user = getFormObj(`update_user_form`);
+        let data = {
             UserName: user.username,
             FirstName: user.firstName,
             LastName: user.lastName,
-            Email:user.email,
+            Email: user.email,
             PhoneNumber: user?.phone,
             Password: user?.password,
             ConfirmPassword: user?.confirm_password,
             IsPartnerSuperAdmin: user?.gridCheck == undefined ? false : true,
             AssociationIds: currentPartnerRowId?.toString()
-    };
+        };
 
-    $.ajax({
-        url: `${updateUserUrl}?userId=${currentUserRowId}`,
-        contentType: "application/json",
-        type: 'POST',
-        async: true,
-        dataType: 'json',
-        data: JSON.stringify(data)
-    }).done(function (result) {
-        $(Grid_User).jqGrid().trigger('reloadGrid');
-        console.log(result);
-    }).fail(function (xhr) {
-        console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
-    });
-}
-function getFormObj(formId) {
-    let formParams = {};
-    $('#' + formId)
-        .serializeArray()
-        .forEach(function (item) {
-            if (formParams[item.name]) {
-                formParams[item.name] = [formParams[item.name]];
-                formParams[item.name].push(item.value)
-            } else {
-                formParams[item.name] = item.value
-            }
+        $.ajax({
+            url: `${updateUserUrl}?userId=${currentUserRowId}`,
+            contentType: "application/json",
+            type: 'POST',
+            async: true,
+            dataType: 'json',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $(Grid_User).jqGrid().trigger('reloadGrid');
+            if (result?.success == "true")
+                showToast("User Updated");
+            else
+                showToast("Unsuccessful", false);
+        }).fail(function (xhr) {
+            showToast("Unsuccessful", false);
+            console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
         });
-    return formParams;
+    }
+    else
+        showToast("Invalid User Details", false);
 }
 
 function onUserLoadComplete(data) {
@@ -126,8 +126,38 @@ function onUserLoadComplete(data) {
     $(Grid_User).jqGrid('setSelection', id, true);
 }
 
-function OnPartnerLoadComplete(data) {
+function onPartnerLoadComplete(data) {
     let id = data?.currentPartnerId;
     currentPartnerRowId = id;
     $(Grid_Partner).jqGrid('setSelection', id, true);
+}
+
+function deleteUser() {
+    let userId = currentUserRowId;
+    if (userId == -1) {
+        showToast("Please Select a User to delete", false);
+        return;
+    }
+    $.ajax({
+        url: `${deleteUserUrl}?userId=${ currentUserRowId }`,
+        contentType: "application/json",
+        type: 'POST',
+        async: true,
+        dataType: 'json',
+        data: ''
+    }).done(function (result) {
+        $(Grid_User).jqGrid().trigger('reloadGrid');
+        if (result?.success == "true")
+            showToast("User Deleted Successfully");
+        else
+            showToast("Unsuccessful", false);
+    }).fail(function (xhr) {
+        showToast("Unsuccessful", false);
+        console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
+    });
+}
+
+function onPartnerStatusChange(selectedValue) {
+    let go = $(Grid_Partner);
+    $(Grid_Partner).jqGrid().setGridParam({ postData: { partnerStatusType: selectedValue } }).trigger('reloadGrid');
 }

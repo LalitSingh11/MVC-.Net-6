@@ -1,0 +1,106 @@
+﻿@model BHI.SalesArchitect.WebAdmin.Models.RegisterModel
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@using BHI.SalesArchitect.Core.Enumerations;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Create User";
+    var GridPartnerUser = "GridPartnerUser";
+}
+
+<div>
+    <partial name="_Toast" />
+    <br />
+    <a class="btn btn-primary" style="float: right;" asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a>
+    <h2>New Administration User</h2>
+    <div class="container border">
+        <br />
+        <h2>User Information</h2>
+        <hr />
+        <form class="row g-3 m-5" id="create_user_form">
+            <div class="col-md-6">
+                <label for="create_firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="create_firstName" id="create_firstName">
+            </div>
+            <div class="col-md-6">
+                <label for="create_lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="create_lastName" id="create_lastName">
+            </div>
+            <div class="col-md-6">
+                <label for="create_username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="create_username" id="create_username">
+            </div>
+            <div class="col-md-6">
+                <label for="create_email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="create_email" id="create_email">
+            </div>
+            <div class="col-md-6">
+                <label for="create_password">Password</label>
+                <input type="password" class="form-control" id="create_password" name="create_password">
+            </div>
+            <div class="col-md-6">
+                <label for="create_confirm_password">Confirm Password</label>
+                <input type="password" class="form-control" id="create_confirm_password" name="create_confirm_password">
+            </div>
+            <div class="col-md-6">
+                <label for="create_phone" class="form-label">Phone Number</label>
+                <input type="number" class="form-control" name="create_phone" id="create_phone">
+            </div>
+            <div class="col-12">
+                <input class="form-check-input" type="checkbox" name="create_roleCheck" id="create_roleCheck">
+                <label class="form-check-label" for="create_roleCheck">
+                    &nbsp;Is Partner Super Admin?
+                </label>
+            </div>
+
+        </form>
+
+        <h2>Partner for User</h2>
+        <hr />
+        <div class="d-flex justify-content-center">
+
+            @(Html.Grid(GridPartnerUser)
+                .AddColumn(new Column("ID").SetHidden(true))
+                .AddColumn(new Column("Partner Label").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center))
+                .AddColumn(new Column("Partner").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center))
+                .AddColumn(new Column("Partner Brands").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center))
+                .SetRequestType(MvcJqGrid.Enums.RequestType.Get)
+                .SetUrl(Url.Action("GetPartners", new { partnerStatusType = 2 }))
+                //.SetAutoWidth(true)
+                .SetWidth(1250)
+                .SetHeight(450)
+                .SetScrollRows(true)
+                .SetHoverRows(true)
+                .SetLoadOnce(true)
+                .SetRowNum(10000)
+                .SetViewRecords(true)
+                .SetForceFit(true)
+                .OnSelectRow("onPartnerUserRowSelected(rowid, status)")
+                //.OnLoadComplete("onPartnerUserLoadComplete(xhr)")
+                )
+            <div />
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+        <footer class="footer ">
+            <button type="button" class="btn btn-primary" onclick="createUser();">Register User</button>
+        </footer>
+    </nav>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/js/partneradministration/create-user.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
+}
+@section Styles{
+    <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/partneradministration/user-form.css" rel="stylesheet" asp-append-version="true" />
+}

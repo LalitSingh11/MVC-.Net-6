@@ -7,9 +7,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         private SalesArchitectContext _dbContext;
         public PartnerRepository(SalesArchitectContext dbContext)
         {
-
             _dbContext = dbContext;
-
         }
 
         public IEnumerable<Partner> GetAll(int[] type)

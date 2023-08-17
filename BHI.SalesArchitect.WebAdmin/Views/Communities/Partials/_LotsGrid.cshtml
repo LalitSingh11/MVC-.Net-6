@@ -1,0 +1,19 @@
+﻿@{
+    var GRID_LOTS = "GridLots";
+}
+
+<div>
+    @(Html.Grid(GRID_LOTS)
+        .AddColumn(new Column("Id").SetHidden(true))
+        .AddColumn(new Column("Lots").SetAlign(Align.Center).SetLabel("Lots").SetSortable(true))
+        .SetUrl(Url.Action("GetLotsByCommId"))
+        .SetWidth(200)
+        .SetShrinkToFit(true)
+        .SetMultiSelect(true)
+        .SetSortName("Lots")
+        .SetSortOrder(SortOrder.Asc)
+        .SetHeight(480)
+        .SetRowNum(10000)
+        .OnLoadComplete("onLotsGridComplete(xhr)")
+    )
+</div>

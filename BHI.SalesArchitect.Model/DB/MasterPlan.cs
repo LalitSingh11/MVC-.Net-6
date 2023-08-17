@@ -17,7 +17,7 @@ public partial class MasterPlan
 
     public string PdfImage { get; set; }
 
-    public bool IsMasterGeoSvg { get; set; }
+    public bool? IsMasterGeoSvg { get; set; }
 
     public string GeospatialMapImage { get; set; }
 

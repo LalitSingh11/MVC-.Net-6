@@ -31,6 +31,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             var query = from r in _dbContext.Roles
                         join ur in _dbContext.UserRoles on r.Id equals ur.RoleId
                         join u in _dbContext.Users on ur.UserId equals u.Id
+                        where u.Id == userId
                         select r;
             return query.FirstOrDefault();
         }

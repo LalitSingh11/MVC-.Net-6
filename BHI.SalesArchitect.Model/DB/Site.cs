@@ -10,7 +10,7 @@ public partial class Site
 
     public string MapImage { get; set; }
 
-    public bool ImageUpdate { get; set; }
+    public bool? ImageUpdate { get; set; }
 
     public string PdfImage { get; set; }
 
@@ -20,7 +20,7 @@ public partial class Site
 
     public string GeospatialPluginPdfImage { get; set; }
 
-    public bool IsGeoSvg { get; set; }
+    public bool? IsGeoSvg { get; set; }
 
     public virtual ICollection<CommunitySiteGeoJson> CommunitySiteGeoJsons { get; set; } = new List<CommunitySiteGeoJson>();
 

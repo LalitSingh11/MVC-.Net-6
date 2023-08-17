@@ -7,5 +7,7 @@ namespace BHI.SalesArchitect.Service
         IEnumerable<UserRole> GetByUserIds(List<int> userIds);
         UserRole GetByUserId(int userId);
         Task<bool> UpdateUserRole(int userId, int roleId);  
+        Task<bool> AddUserRole(int userId, int roleId);  
+        Task<bool> DeleteUserRole(int userId);  
     }
 }

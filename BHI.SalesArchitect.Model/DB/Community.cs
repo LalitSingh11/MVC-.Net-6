@@ -1,5 +1,8 @@
-﻿namespace BHI.SalesArchitect.Model.DB;
+﻿using System.Diagnostics;
 
+namespace BHI.SalesArchitect.Model.DB;
+
+[DebuggerDisplay("ID={ID}, BDXID={BDXID}")]
 public partial class Community
 {
     public int Id { get; set; }

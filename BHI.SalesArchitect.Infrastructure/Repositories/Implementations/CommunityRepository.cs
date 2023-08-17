@@ -16,7 +16,14 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 
         public IEnumerable<Community> GetByCommunityIDs(List<int> communityIDs)
         {
-            return _dbContext.Communities.Where(x => communityIDs.Contains(x.Id)).ToList();
+            var query = from c in _dbContext.Communities
+                        join m in _dbContext.Markets on c.MarketId equals m.Id
+                        join acts in _dbContext.ActivityStates on c.ActivityStateId equals acts.Id
+                        where communityIDs.Contains(c.Id)
+                        select c;
+                        
+
+            return query;
         }
 
         /*public IEnumerable<Community> GetCommunityListByPartnerId(int partnerId)
@@ -58,37 +65,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                 }
                 try
                 {
-                    /*using (var dataReader = command.ExecuteReader())
-                    {
-                        if (dataReader.HasRows)
-                        {
-                            while (dataReader.Read())
-                            {
-                                var comm = new GridCommunityModel()
-                                {
-                                    Name = dataReader[11].ToString(),
-                                    VendorReference = dataReader["VendorReference"].ToString(),
-                                    Id = int.Parse(dataReader[6].ToString()),
-                                    Bdxid = int.Parse(dataReader[7].ToString()),
-                                    Dwstatus = int.TryParse(dataReader[8].ToString(), out var dwStatus) ? dwStatus : null,
-                                    MarketId = int.Parse(dataReader["MarketID"].ToString()),
-                                    MarketName = dataReader[2].ToString(),
-                                    Ispname = dataReader["ISPName"].ToString(),
-                                    ActivityStateId = int.Parse(dataReader["ActivityStateID"].ToString()),
-                                    Admins = dataReader[12].ToString(),
-                                    Locked = (bool)dataReader["Locked"],
-                                    PreferredCommunityAssetId = int.TryParse(dataReader["ActivityStateID"].ToString(), out var preferredId) ? preferredId : null,
-                                    NewIsp = dataReader["NewIsp"].GetType().Name != "DBNull" && (bool)dataReader[16],
-                                    Status = (bool)dataReader["Status"],
-                                    Brand = dataReader["Brand"].ToString(),
-                                    LotCount = int.Parse(dataReader["LotCount"].ToString()),
-                                    ProspectCount = int.Parse(dataReader["ProspectCount"].ToString()),
-                                    DateDeleted = DateTime.TryParse(dataReader["DateDeleted"].ToString(), out DateTime result) ? result : null,
-                                    DeletedBy = dataReader["DeletedBy"].ToString()
-                                }; 
-                            }
-                        }
-                    }*/
+                    
                              
                     using (var dataReader = command.ExecuteReader())
                     {

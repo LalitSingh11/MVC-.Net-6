@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MvcJqGrid;
 using static BHI.SalesArchitect.Core.Enumerations.CommonEnumerations;
 using BHI.SalesArchitect.Core.Extensions;
+using BHI.SalesArchitect.Infrastructure.Repositories;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
@@ -39,7 +40,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult GetPartners(GridSettings gridSettings, int partnerStatusType = 0)
         {
             var partners = _partnerService.GetAllPartners(new int[] { (int)PartnerType.SalesArchitect }, partnerStatusType);
@@ -88,6 +89,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             };
             return Json(jsonData);
         }
+
         [HttpGet]
         public IActionResult GetUsers(GridSettings gridSettings)
         {
@@ -118,11 +120,10 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                                     userRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == _roleService.PartnerSuperAdmin.Id) ? "true" : "false"
                                }
                            }).ToArray(),
-                currentUserId                
+                currentUserId
             };
             return Json(jsonData);
         }
-
         [HttpGet]
         public async Task<IActionResult> GetUserData(int userId)
         {
@@ -131,7 +132,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateUser([FromBody]RegisterModel model, int userId)
+        public async Task<IActionResult> UpdateUser([FromBody] RegisterModel model, int userId)
         {
             try
             {
@@ -141,15 +142,15 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     UserName = model.UserName,
-                    //PartnerId = model.AssociationIds.FirstOrDefault(),
                     Email = model.Email,
                     Password = model.Password,
-                    PhoneNumber = model.PhoneNumber,     
+                    PhoneNumber = model.PhoneNumber,
                     PartnerId = int.Parse(model.AssociationIds)
-            };
+                };
+
                 await _userService.UpdateUser(user);
                 var roleId = model.IsPartnerSuperAdmin ? _roleService.PartnerSuperAdmin.Id : _roleService.BHIAdmin.Id;
-                await _userRoleService.UpdateUserRole(userId, roleId);                
+                await _userRoleService.UpdateUserRole(userId, roleId);
                 //If we are changing the actual user partner.
                 if (UserId == userId && PartnerId != user.PartnerId)
                 {
@@ -167,6 +168,53 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             {
                 return Json(new { Success = "false", Error = ex.Message });
             }
+        }
+
+
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser([FromBody] RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    Password = model.Password,
+                    PhoneNumber = model.PhoneNumber,
+                    PartnerId = int.Parse(model.AssociationIds)
+                };
+                await _userService.AddUser(user);
+                var newUser = await _userService.GetByUsername(model.UserName);
+                var roleId = model.IsPartnerSuperAdmin ? _roleService.PartnerSuperAdmin.Id : _roleService.BHIAdmin.Id;
+                await _userRoleService.AddUserRole(newUser.Id, roleId);
+                return Json(new { Success = "true" });
+            }
+            return Json(new { Success = "false", message = "Invalid User Details" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            try
+            {
+                await _userRoleService.DeleteUserRole(userId);
+                await _userService.DeleteUser(userId);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            return Json(new { Success = "true" });
+
         }
     }
 }

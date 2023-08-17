@@ -6,25 +6,32 @@
     ViewBag.Title= "Communities";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width" />
-</head>
-<body>
-
-    <div class ="row"><div class="span12 section-heading"><h1>@ViewData["PartnerName"]</h1></div></div>
+<div>
+    <div class="row"><div class="span12 section-heading"><h2>@ViewData["PartnerName"]</h2></div></div>
     <partial name="Partials/_FilterAndSearch" />
+    <br />
     <partial name="Partials/_CommunityGrid" />
+    <br />
+    <partial name="Partials/_LotsNavTabs" />
+    <br />
+    <br />
+    <br />
+    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+        <footer class="footer ">
+            <button type="button" class="btn btn-primary" onclick="updateUser();">Save changes</button>
+        </footer>
+    </nav>
+</div>
 
-</body>
-</html>
 @section Scripts {
     <script src="~/js/communities/search-filter.js" asp-append-version="true"></script>
+    <script src="~/js/communities/communities.js" asp-append-version="true"></script>
+    <script src="~/js/communities/lots-grid.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>
+
 }
 @section Styles{
     <link href="~/css/communities/search-filter.css" rel="stylesheet" asp-append-version="true" />

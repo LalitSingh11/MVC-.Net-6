@@ -11,9 +11,16 @@
       "destination": "wwwroot/lib/jqueryui/"
     },
     {
-      "provider": "cdnjs",
       "library": "jquery.serializeJSON@3.2.1",
       "destination": "wwwroot/lib/jquery.serializeJSON/"
+    },
+    {
+      "library": "bootstrap-icons@1.10.5",
+      "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "library": "bootstrap-modal@2.2.6",
+      "destination": "wwwroot/lib/bootstrap-modal/"
     }
   ]
 }

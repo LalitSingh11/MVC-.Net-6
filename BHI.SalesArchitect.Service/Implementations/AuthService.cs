@@ -1,12 +1,12 @@
-﻿using BHI.SalesArchitect.Model.DB;
-using Microsoft.AspNetCore.Http;
+﻿using BHI.SalesArchitect.Core.Helpers;
+using BHI.SalesArchitect.Model.DB;
 
 namespace BHI.SalesArchitect.Service.Implementations
 {
     public class AuthService : IAuthService
     {
-        IUserService _userService;
-        ISessionService _sessionService;
+        readonly IUserService _userService;
+        readonly ISessionService _sessionService;
         public AuthService(IUserService userService,
             ISessionService sessionService)
         {
@@ -17,31 +17,15 @@ namespace BHI.SalesArchitect.Service.Implementations
         public async Task<(bool, User)> Authenticate(string userName, string password)
         {
             var userDetails = await _userService.GetByUsername(userName);
-            _sessionService.PartnerID = userDetails.PartnerId;
             if (userDetails != null && CheckPassword(password, userDetails.Password))
                 return (true, userDetails);
             return (false, null);
         }
 
-        private bool CheckPassword(string password, string dbPassword)
+        private static bool CheckPassword(string password, string dbPassword)
         {
-            string pass1 = password;
-            string pass2 = dbPassword;
-
-            /*switch (PasswordFormat)
-            {
-                case MembershipPasswordFormat.Encrypted:
-                    pass2 = SecurityUtility.Decrypt(dbPassword);
-                    break;
-                case MembershipPasswordFormat.Hashed:
-                    pass1 = SecurityUtility.HashPassword(password);
-                    break;
-                default:
-                    break;
-            }*/
-            return true;
-            return !string.IsNullOrEmpty(pass2) && pass1 == pass2;
+            var encodedPass = EncryptionHelper.GetSHA1(password);
+            return encodedPass == dbPassword;
         }
-
     }
 }

@@ -1,0 +1,15 @@
+﻿/* Adjust toast size and close icon position */
+.toast {
+    width: 400px; /* Adjust the width as needed */
+    max-width: 100%; /* Ensure the toast doesn't exceed the viewport */
+}
+
+.toast-header {
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+}
+
+    .toast-header .close {
+        margin-left: auto; /* Align close icon to the right */
+    }

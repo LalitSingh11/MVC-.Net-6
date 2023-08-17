@@ -16,8 +16,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
         {
@@ -39,8 +37,8 @@ var config = builder.Configuration.AddJsonFile("appsettings.json").Build();
 builder.Services.AddDbContext<SalesArchitectContext>(options =>
         options.UseSqlServer(config.GetSection("ConnectionString").Value), ServiceLifetime.Transient);
 
-builder.Services.AddHttpContextAccessor();
-
+//builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 RepositoryDependencies repositoryDependencyResolver = new(builder.Services);
 ServiceDependencies servicesDependencyResolver = new(builder.Services);
 
@@ -57,7 +55,7 @@ else
     app.UseDeveloperExceptionPage();
 }
 
-//app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<BHI.SalesArchitect.WebAdmin.Helpers.ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

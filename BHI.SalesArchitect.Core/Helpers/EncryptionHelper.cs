@@ -1,4 +1,7 @@
-﻿namespace BHI.SalesArchitect.Core.Helpers
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace BHI.SalesArchitect.Core.Helpers
 {
     public class EncryptionHelper
     {
@@ -19,6 +22,16 @@
             Random random = new(Guid.NewGuid().GetHashCode());
             int randomIndex = random.Next(minValue, maxValue);
             return randomIndex;
+        }
+
+        public static string GetSHA1(string str)
+        {
+            SHA1 sha1 = SHA1.Create();
+            ASCIIEncoding encoding = new();
+            StringBuilder sb = new();
+            byte[] stream = sha1.ComputeHash(encoding.GetBytes(str));
+            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
         }
     }
 }

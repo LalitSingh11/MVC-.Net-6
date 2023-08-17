@@ -1,5 +1,4 @@
-﻿using BHI.SalesArchitect.Service;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers

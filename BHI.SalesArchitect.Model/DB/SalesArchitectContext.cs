@@ -169,6 +169,8 @@ public partial class SalesArchitectContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Server=172.17.1.100;Database=SalesArchitect;uid=sa;pwd=Master@123;TrustServerCertificate=True;");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseSqlServer("Server=172.16.80.176;Database=SalesArchitect;uid=salesarchitect;pwd=test0227;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

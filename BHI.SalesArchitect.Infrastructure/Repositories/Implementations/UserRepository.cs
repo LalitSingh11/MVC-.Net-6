@@ -15,6 +15,19 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = db;
             _roleRepository = roleRepository;
         }
+
+        public async Task<bool> AddUser(User user)
+        {
+            _dbContext.Users.Add(user);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> DeleteUser(User user)
+        {
+            _dbContext.Users.Remove(user);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
         public async Task<User> GetByEmail(string userEmail)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == userEmail);

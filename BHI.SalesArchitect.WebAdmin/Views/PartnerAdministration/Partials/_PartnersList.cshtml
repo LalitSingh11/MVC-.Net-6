@@ -5,32 +5,30 @@
 <div class="container">
     <h2>Partners</h2>
     <hr />
+    <partial name="Partials/_FilterAndNewPartner" />
+
     <div class="d-flex justify-content-center">
         
         @(Html.Grid(GRID_PARTNER)
             .AddColumn(new Column("ID").SetHidden(true))
-            .AddColumn(new Column("Partner Label").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center))
-            .AddColumn(new Column("Partner").SetSortable(true).SetAlign(MvcJqGrid.Enums.Align.Center))
-            .AddColumn(new Column("Partner Brands").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center))
-            .AddColumn(new Column("API Key").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(70))
-            .AddColumn(new Column("Sync Status").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(60))
-            .AddColumn(new Column("Actions").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center).SetWidth(60))
-            .SetRequestType(MvcJqGrid.Enums.RequestType.Get)
+            .AddColumn(new Column("Partner Label").SetSortable(true).SetAlign(Align.Center))
+            .AddColumn(new Column("Partner").SetSortable(true).SetAlign(Align.Center))
+            .AddColumn(new Column("Partner Brands").SetSortable(false).SetAlign(Align.Center))
+            .AddColumn(new Column("API Key").SetSortable(false).SetAlign(Align.Center).SetWidth(70))
+            .AddColumn(new Column("Sync Status").SetSortable(false).SetAlign(Align.Center).SetWidth(60))
+            .AddColumn(new Column("Actions").SetSortable(false).SetAlign(Align.Center).SetWidth(60))
             .SetUrl(Url.Action("GetPartners"))
-            //.SetAutoWidth(true)
+            .SetRequestType(RequestType.Post)
             .SetWidth(1350)
             .SetHeight(450)
             .SetScrollRows(true)
-            .SetHoverRows(true)
-            .SetLoadOnce(true)
             .SetRowNum(10000)
             .SetViewRecords(true)
             .SetForceFit(true)
-            //.SetMultiSelect(true)
             .OnSelectRow("onPartnerRowSelected(rowid, status)")
-            .OnLoadComplete("OnPartnerLoadComplete(xhr)")
-            )
+            .OnLoadComplete("onPartnerLoadComplete(xhr)")
+            .SetLoadText("Partners loading...")
+        )
  
-</div>
-
+    </div>
 </div>

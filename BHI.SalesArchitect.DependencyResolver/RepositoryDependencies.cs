@@ -8,6 +8,7 @@ namespace BHI.SalesArchitect.DependencyResolver
     {
         public RepositoryDependencies(IServiceCollection services)
         {
+            services.AddScoped<IActivityStateRepository, ActivityStateRepository>();
             services.AddScoped<IBuilderBrandRepository, BuilderBrandRepository>();
             services.AddScoped<ICommunityRepository, CommunityRepository>();
             services.AddScoped<IPartnerRepository, PartnerRepository>();

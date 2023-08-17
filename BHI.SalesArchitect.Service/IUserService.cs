@@ -9,5 +9,7 @@ namespace BHI.SalesArchitect.Service
         List<User> GetCommunityAdminsByCommunityIDs(List<int> communityIDs);
         List<User> GetSuperUsers();
         Task<bool> UpdateUser(User user);
+        Task<bool> AddUser(User user);
+        Task<bool> DeleteUser(int id);
     }
 }

@@ -4,10 +4,11 @@
 @using BHI.SalesArchitect.Core.Enumerations;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Partner";
+    ViewBag.Title = "PartnerAdministration";
 }
 
 <div >
+    <partial name="_Toast" />
     <br />
     <partial name="Partials/_PartnersList" />
     <br />
@@ -17,11 +18,8 @@
     <br />
     <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
         <footer class="footer ">
-            <div class="form-actions ">
-                <button type="button" class="btn btn-primary" onclick="SaveUser();">Save changes</button>
-                <button type="button" class="btn" onclick="reloadUser();">Cancel</button>
-                <button type="button" class="btn pull-right" style="display:none;"><i class="icon-envelope"></i> Send login details to user</button>
-            </div>
+                <button type="button" class="btn btn-primary" onclick="updateUser();">Save changes</button>
+                @*<button type="button" class="btn" onclick="reloadUser();">Cancel</button>*@
         </footer>
     </nav>
 </div>
@@ -32,7 +30,28 @@
     <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>
 }
+
 @section Styles{
     <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/partneradministration/user-form.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@section Modals{
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteUserModalLabel">Delete User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you Sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser();" data-bs-dismiss="modal">Yes! I'm Sure</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }

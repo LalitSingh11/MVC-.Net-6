@@ -11,6 +11,22 @@ namespace BHI.SalesArchitect.Service.Implementations
             _userRoleRepository = userRoleRepository;
         }
 
+        public Task<bool> AddUserRole(int userId, int roleId)
+        {
+            UserRole ur = new()
+            {
+                UserId = userId,
+                RoleId = roleId
+            };
+            return _userRoleRepository.AddUserRole(ur);
+        }
+
+        public async Task<bool> DeleteUserRole(int userId)
+        {
+            var userRole = GetByUserId(userId);
+            return await _userRoleRepository.DeleteUserRole(userRole);
+        }
+
         public UserRole GetByUserId(int userId)
         {
             return _userRoleRepository.GetByUserId(userId);

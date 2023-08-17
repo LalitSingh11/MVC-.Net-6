@@ -7,5 +7,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
         IEnumerable<UserRole> GetByUserIds(List<int> userIds);
         UserRole GetByUserId(int userId);
         Task<bool> UpdateUserRole(UserRole userRole);
+        Task<bool> AddUserRole(UserRole userRole);
+        Task<bool> DeleteUserRole(UserRole userRole);
     }
 }

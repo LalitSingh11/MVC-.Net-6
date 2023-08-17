@@ -12,10 +12,8 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         }
         public Site GetByIdWithoutSvg(int siteId)
         {
-            Console.WriteLine(siteId);
-            var query = _dbContext.Sites.Find(siteId);
-            //var query1 = _dbContext.Sites.Where(x => x.Id == siteId);
-                /*.Select(s => new Site
+            var query = _dbContext.Sites.Where(x => x.Id == siteId)
+                .Select(s => new Site
                 {
                     Id = s.Id,
                     MapImage = s.MapImage,
@@ -25,8 +23,8 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                     GeospatialPluginImage = s.GeospatialPluginImage,
                     GeospatialPluginPdfImage = s.GeospatialPluginPdfImage,
                     IsGeoSvg = s.IsGeoSvg
-                })*/
-                //.FirstOrDefault();
+                })
+                .FirstOrDefault();
             return query;
         }
     }
