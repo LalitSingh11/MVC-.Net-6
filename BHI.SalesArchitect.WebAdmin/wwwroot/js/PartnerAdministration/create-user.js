@@ -1,7 +1,7 @@
 ﻿
 "use strict";
 var currentRowId = -1;
-const createUserUrl = "adduser";
+const CREATE_USER_URL = "adduser";
 $().ready(function () {
     $("#create_user_form").validate({
         rules: {
@@ -77,7 +77,7 @@ function createUser() {
         };        
 
         $.ajax({
-            url: createUserUrl,
+            url: CREATE_USER_URL,
             contentType: "application/json",
             type: 'POST',
             dataType: 'json',

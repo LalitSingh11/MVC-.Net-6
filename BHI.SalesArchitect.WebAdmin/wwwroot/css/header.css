@@ -1,22 +1,19 @@
-﻿/* CSS for positioning the list in the top right corner */
-#header {
+﻿#header {
     position: absolute;
     top: 10px;
     right: 10px;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     text-decoration: none;
     list-style: none;
 }
 
-    /* CSS for making the text big and pretty */
     #header li {
-        font-size: 20px;
+        font-size: 16.5px;
         color: #333;
     }
 
-/* CSS for making the logout and username a bit different */
 #header-username {
     font-weight: bold;
     font-family:'Trebuchet MS';
@@ -24,35 +21,27 @@
     color: #bd0a46;
 }
 
-#logout-link {
-    font-style: italic;
-}
-
-/* CSS for styling the separator between list items */
 #header li:not(:last-child)::after {
     content: "|";
     margin-left: 10px;
     color: #777;
 }
 
-/* CSS for styling the logo "SalesArchitect" */
 .branding a {
     font-size: 36px;
     color: #336699;
-    text-decoration: none; /* Remove the underline */
+    text-decoration: none; 
     font-weight: bold;
 }
 
-/* Optional: Add some margin to the logo to create space from the top left corner */
 .branding {
     margin: 10px;
 }
 
-/* CSS for changing colors on hover */
 #header li a:hover {
-    color: #ff6600; /* Change to desired hover color */
+    color: #ff6600; 
 }
 
 .branding a:hover {
-    color: #ff6600; /* Change to desired hover color */
+    color: #0db52f;
 }

@@ -1,4 +1,5 @@
 ﻿"use strict";
+
 function showToast(message = "", success = true, delayInMilliseconds = 3000) {
     const toast = $('#myToast');
     const toastBody = toast.find('.toast-body');

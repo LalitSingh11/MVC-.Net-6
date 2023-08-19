@@ -21,6 +21,10 @@
     {
       "library": "bootstrap-modal@2.2.6",
       "destination": "wwwroot/lib/bootstrap-modal/"
+    },
+    {
+      "library": "ckeditor5@39.0.1",
+      "destination": "wwwroot/lib/ckeditor5/"
     }
   ]
 }

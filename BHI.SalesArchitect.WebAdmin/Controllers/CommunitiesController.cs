@@ -1,7 +1,5 @@
 ﻿using BHI.SalesArchitect.Core.Enumerations;
-using BHI.SalesArchitect.Model.DB;
 using BHI.SalesArchitect.Service;
-using BHI.SalesArchitect.Service.Implementations;
 using BHI.SalesArchitect.WebAdmin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +20,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private readonly ISessionService _sessionService;
         private readonly IProspectConfigurationService _prospectConfigurationService;
         private readonly ILotService _lotService;
+        private readonly ILotStateService _lotStateService;
+
         public CommunitiesController(ICommunityService communityService,
             ICommunityUserService communityUserService,
             IUserService userService,
@@ -31,7 +31,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             IMasterPlanService masterPlanService,
             ISessionService sessionService,
             IProspectConfigurationService prospectConfigurationService,
-            ILotService lotService
+            ILotService lotService,
+            ILotStateService lotStateService
             ) 
         {
             _communityService = communityService;
@@ -44,6 +45,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _sessionService = sessionService;
             _prospectConfigurationService = prospectConfigurationService;
             _lotService = lotService;
+            _lotStateService = lotStateService;
         }
         
         public IActionResult Index()
@@ -145,7 +147,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         [HttpGet]
         public IActionResult GetLotsByCommId(GridSettings gridSettings, int commId)
         {
-            var lots  = _lotService.GetByCommID(commId);
+            var lots  = _lotService.GetByCommId(commId);
             _sessionService.CommunityID = commId;
             var jsonData = new
             {
@@ -163,6 +165,21 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                            }).ToArray(),
             };
             return Json(jsonData);
+        }
+
+
+        #endregion
+
+        #region Get Methods
+        [HttpGet]
+        public IActionResult GetLotInfo(int lotId)
+        {
+            var lotInfo = new
+            {
+                lotData = _lotService.GetByID(lotId),
+                lotState = _lotStateService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId)
+            };
+            return Ok(lotInfo);
         }
         #endregion
 

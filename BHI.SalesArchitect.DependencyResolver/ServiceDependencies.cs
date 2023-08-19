@@ -15,11 +15,12 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<ICommunityUserService, CommunityUserService>();
             services.AddScoped<ICommunitySiteGeoJsonService, CommunitySiteGeoJsonService>();
             services.AddScoped<ILotService, LotService>();
-            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ILotStateService, LotStateService>();
             services.AddScoped<IMasterPlanService, MasterPlanService>();
-            services.AddScoped<ISiteService, SiteService>();
             services.AddScoped<IPartnerService, PartnerService>();
             services.AddScoped<IProspectConfigurationService, ProspectConfigurationService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ISiteService, SiteService>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRoleService, UserRoleService>();

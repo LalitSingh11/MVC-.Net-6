@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using MvcJqGrid;
 using static BHI.SalesArchitect.Core.Enumerations.CommonEnumerations;
 using BHI.SalesArchitect.Core.Extensions;
-using BHI.SalesArchitect.Infrastructure.Repositories;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
@@ -40,7 +39,9 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             return View();
         }
 
-        [HttpPost]
+
+
+        [HttpGet]
         public IActionResult GetPartners(GridSettings gridSettings, int partnerStatusType = 0)
         {
             var partners = _partnerService.GetAllPartners(new int[] { (int)PartnerType.SalesArchitect }, partnerStatusType);
@@ -124,12 +125,6 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             };
             return Json(jsonData);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetUserData(int userId)
-        {
-            var user = await _userService.GetById(userId);
-            return Ok(user);
-        }
 
         [HttpPost]
         public async Task<IActionResult> UpdateUser([FromBody] RegisterModel model, int userId)
@@ -169,7 +164,6 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                 return Json(new { Success = "false", Error = ex.Message });
             }
         }
-
 
         [HttpGet]
         public IActionResult CreateUser()
@@ -214,7 +208,6 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                 throw;
             }
             return Json(new { Success = "true" });
-
         }
     }
 }

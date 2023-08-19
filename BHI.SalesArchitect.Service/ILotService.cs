@@ -4,6 +4,7 @@ namespace BHI.SalesArchitect.Service
 {
     public interface ILotService
     {
-        IEnumerable<Lot> GetByCommID(int? commID);
+        IEnumerable<Lot> GetByCommId(int commID);
+        Lot GetByID(int lotId);
     }
 }

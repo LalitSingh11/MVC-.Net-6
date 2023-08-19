@@ -10,30 +10,34 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = db;
         }
 
-        public IEnumerable<Lot> GetByPartnerID(int? partnerID)
+        public IEnumerable<Lot> GetByPartnerID(int partnerId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Lot> GetBySiteID(int? siteID)
+        public IEnumerable<Lot> GetBySiteID(int siteId)
         {
             var query = from l in _dbContext.Lots
                                join ls in _dbContext.LotStates on l.LotStateId equals ls.Id
-                               where l.SiteId == siteID
+                               where l.SiteId == siteId
                                select l;
 
             return query.ToList();
         }
-        public IEnumerable<Lot> GetByCommunityID(int? commID)
+        public IEnumerable<Lot> GetByCommunityID(int commId)
         {
             var query = from l in _dbContext.Lots
                         join ls in _dbContext.LotStates on l.LotStateId equals ls.Id
                         join cs in _dbContext.CommunitySites on l.SiteId equals cs.SiteId
-                        where cs.CommunityId == commID
+                        where cs.CommunityId == commId
                         select l;
 
             return query.ToList();
         }
 
+        public Lot GetByID(int lotId)
+        {
+            return _dbContext.Lots.FirstOrDefault(x => x.Id == lotId);
+        }
     }
 }

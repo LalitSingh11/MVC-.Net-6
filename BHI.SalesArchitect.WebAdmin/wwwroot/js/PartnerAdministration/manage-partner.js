@@ -1,8 +1,8 @@
 ﻿"use strict";
-const Grid_Partner = "#GridPartner";
-const Grid_User = "#GridUser";
-const updateUserUrl = "partneradministration/updateuser";
-const deleteUserUrl = "partneradministration/deleteuser"
+const GRID_PARTNER = "#GridPartner";
+const GRID_USER = "#GridUser";
+const UPDATE_USER_URL = "partneradministration/updateuser";
+const DELETE_USER_URL = "partneradministration/deleteuser"
 var currentUserRowId = -1;
 var currentPartnerRowId = -1;
 
@@ -57,11 +57,11 @@ $().ready(function () {
 
 function onUserRowSelected(rowid, status) {
     currentUserRowId = rowid;
-    let user = $(Grid_User).jqGrid("getRowData", rowid);
-    let partner = $(Grid_Partner).jqGrid("getRowData", user?.Partner);
-    $(Grid_Partner).jqGrid('resetSelection');
+    let user = $(GRID_USER).jqGrid("getRowData", rowid);
+    let partner = $(GRID_PARTNER).jqGrid("getRowData", user?.Partner);
+    $(GRID_PARTNER).jqGrid('resetSelection');
     //if (status) {
-        $(Grid_Partner).jqGrid('setSelection', partner?.ID, true);
+    $(GRID_PARTNER).jqGrid('setSelection', partner?.ID, true);
         populateUserForm(user);
     /*}
     else
@@ -99,14 +99,14 @@ function updateUser() {
         };
 
         $.ajax({
-            url: `${updateUserUrl}?userId=${currentUserRowId}`,
+            url: `${UPDATE_USER_URL}?userId=${currentUserRowId}`,
             contentType: "application/json",
             type: 'POST',
             async: true,
             dataType: 'json',
             data: JSON.stringify(data)
         }).done(function (result) {
-            $(Grid_User).jqGrid().trigger('reloadGrid');
+            $(GRID_USER).jqGrid().trigger('reloadGrid');
             if (result?.success == "true")
                 showToast("User Updated");
             else
@@ -123,13 +123,13 @@ function updateUser() {
 function onUserLoadComplete(data) {
     let id = data?.currentUserId;
     currentUserRowId = id;
-    $(Grid_User).jqGrid('setSelection', id, true);
+    $(GRID_USER).jqGrid('setSelection', id, true);
 }
 
 function onPartnerLoadComplete(data) {
     let id = data?.currentPartnerId;
     currentPartnerRowId = id;
-    $(Grid_Partner).jqGrid('setSelection', id, true);
+    $(GRID_PARTNER).jqGrid('setSelection', id, true);
 }
 
 function deleteUser() {
@@ -139,14 +139,14 @@ function deleteUser() {
         return;
     }
     $.ajax({
-        url: `${deleteUserUrl}?userId=${ currentUserRowId }`,
+        url: `${DELETE_USER_URL}?userId=${ currentUserRowId }`,
         contentType: "application/json",
         type: 'POST',
         async: true,
         dataType: 'json',
         data: ''
     }).done(function (result) {
-        $(Grid_User).jqGrid().trigger('reloadGrid');
+        $(GRID_USER).jqGrid().trigger('reloadGrid');
         if (result?.success == "true")
             showToast("User Deleted Successfully");
         else
@@ -158,6 +158,6 @@ function deleteUser() {
 }
 
 function onPartnerStatusChange(selectedValue) {
-    let go = $(Grid_Partner);
-    $(Grid_Partner).jqGrid().setGridParam({ postData: { partnerStatusType: selectedValue } }).trigger('reloadGrid');
+    let go = $(GRID_PARTNER);
+    $(GRID_PARTNER).jqGrid().setGridParam({ postData: { partnerStatusType: selectedValue } }).trigger('reloadGrid');
 }

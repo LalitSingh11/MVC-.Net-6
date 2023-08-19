@@ -1,0 +1,144 @@
+﻿<form id="lot-edit-form">
+    <div class="form-group row">
+        <label for="lotId" class="col-sm-4 col-form-label">Lot Id:</label>
+        <div class="col-sm-6">
+            <input type="text" readonly class="form-control-plaintext" id="lotId">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="externalReference" class="col-sm-4 col-form-label">External Reference</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="externalReference">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group">
+        <label for="lotStatus" class="col-sm-4 col-form-label">Lot Status</label>
+        <select class="custom-select my-3" id="lotStatus">
+            <option selected>Select Lot Status</option>
+        </select>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-check form-switch">
+        <label class="form-check-label" for="amenityCheckbox">Is this an Amenity?</label>
+        <input class="form-check-input " type="checkbox" id="amenityCheckbox">
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="displayName" class="col-sm-4 col-form-label">Display Name</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="displayName">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="size" class="col-sm-4 col-form-label">Size</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="size">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="premiumPrice" class="col-sm-4 col-form-label">Premium Price</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="premiumPrice">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="reservationFee" class="col-sm-4 col-form-label">Reservation Fee</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="reservationFee">
+        </div>
+    </div><div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="block" class="col-sm-4 col-form-label">Block</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="block">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="phase" class="col-sm-4 col-form-label">Phase</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="phase">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="elevation" class="col-sm-4 col-form-label">Elevation</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="elevation">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="swing" class="col-sm-4 col-form-label">Swing</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="swing">
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="description" class="col-sm-4 col-form-label">Description</label>
+        <div class="col-sm-6">
+            <textarea class="form-control" id="description" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="mb-2"></div>
+    <div class="form-group row">
+        <label for="address" class="col-sm-4 col-form-label">Address</label>
+        <div class="col-sm-6">
+            <textarea class="form-control" id="address" rows="2"></textarea>
+        </div>
+    </div>
+    <div class="mb-4"></div>
+    <div class="border border-primary col-sm-10" style="padding: 10px;">
+        <div class="form-group row">
+            <label for="contactUrl" class="col-sm-5 col-form-label">
+                Contact Url
+                <br />
+                <small class="form-text text-muted">(If empty, shows Request Info Form)</small>
+            </label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="contactUrl">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="contactButtonLink" class="col-sm-5 col-form-label">Contact Button Link</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="contactButtonLink">
+            </div>
+        </div>
+    </div>
+    <div class="mb-4"></div>
+
+    <div class="border border-primary col-sm-10" style="padding: 10px;">
+        <div class="form-group row">
+            <label for="imageInput" class="col-sm-5 col-form-label">Hot Spot Image</label>
+            <div class="col-sm-5">
+                <label for="files" class="btn btn-success"><i class="bi bi-upload"></i> Hot Spot Image</label>
+                <input id="files" style="visibility:hidden;" type="file">
+            </div>
+        </div>
+            <small class="form-text text-muted">Note: Image size should not be more than 500KB.</small>
+        <img id="selectedImage" src="" alt="Selected Image" class="img-fluid mt-3" style="display: none;">
+        <button class="btn btn-danger mt-3" onclick="removeImage()" style="display: none;">Remove Image</button>
+        <div class="form-group row">
+            <label for="videoUrl" class="col-sm-5 col-form-label">Video URL</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="videoUrl">
+            </div>
+        </div>
+    </div>
+    <div class="mb-4"></div>
+    <div class="control-group col-sm-10 border border-warning" style="padding: 10px;">
+        <label for="description">Hot Spot Text</label>
+        <textarea class="" type="text" name="descriptionEditor" id="descriptionEditor" rows="4" maxlength="4000" style="height:50px;"></textarea>
+    </div>
+</form>
+
+
+
+

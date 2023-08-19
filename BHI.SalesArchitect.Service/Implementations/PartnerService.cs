@@ -11,7 +11,7 @@ namespace BHI.SalesArchitect.Service.Implementations
             _partnerRepository = partnerRepository;
         }
 
-        public IEnumerable<Partner> GetAllPartners(int[] type, int partnerStatusType)
+        public IEnumerable<Partner> GetAllPartners(int[] type, int partnerStatusType = 0)
         {
             var partners = _partnerRepository.GetAll(type);
             if (partnerStatusType == 0)
