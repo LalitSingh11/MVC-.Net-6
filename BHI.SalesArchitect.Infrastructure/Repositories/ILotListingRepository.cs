@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BHI.SalesArchitect.Model.DB;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories
 {
-    internal interface ILotListingRepository
+    public interface ILotListingRepository
     {
+        IEnumerable<LotListing> GetByLotId(int lotId);
+        Task<bool> DeleteLotListingsByLotId(int lotId);
+        Task<bool> AddLotListings(List<LotListing> lotListings);
     }
 }

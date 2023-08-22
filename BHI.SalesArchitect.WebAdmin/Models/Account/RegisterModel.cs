@@ -1,16 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BHI.SalesArchitect.WebAdmin.Models
+namespace BHI.SalesArchitect.WebAdmin.Models.Account
 {
-    public class LoginModel
-    {
-        [Required]
-        public string UserName { get; set; }
-        [Required]
-        public string Password { get; set; }
-        public string ReturnUrl { get; set; }
-    }
-
     public class RegisterModel
     {
         [Required]
@@ -57,4 +48,3 @@ namespace BHI.SalesArchitect.WebAdmin.Models
         public string AssociationIds { get; set; }
     }
 }
-

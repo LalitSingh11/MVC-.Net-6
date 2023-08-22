@@ -2,6 +2,20 @@
 const GRID_LOTS = "#GridLots";
 const GET_LOT_INFO = "communities/getlotinfo";
 var currentLotRowId = -1;
+var ckEditorInstance;
+
+$().ready(function () {
+    ClassicEditor
+        .create(document.querySelector('#descriptionEditor'), {
+            removePlugins: ['MediaEmbed'],
+        })
+        .then(editor => {
+            ckEditorInstance = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+})
 
 function fetchLots(commId) {
     $(GRID_LOTS).jqGrid().setGridParam({ postData: { commId: commId } }).trigger('reloadGrid');
@@ -11,8 +25,8 @@ function onLotsGridComplete(data) {
     $(`#lot-count`).text(`Lots(${data?.total ?? 0})`);
     if (data?.total > 0) {
         let firstId = $(`${GRID_LOTS} tr`).eq(1).attr("id");
-            $(GRID_LOTS).jqGrid('setSelection', firstId);
-            currentLotRowId = firstId;
+        $(GRID_LOTS).jqGrid('setSelection', firstId);
+        currentLotRowId = firstId;
     }
 }
 
@@ -23,18 +37,18 @@ function onLotSelectRow(rowId, status) {
     }
 }
 
-function fetchLotInfo(lotId) {
+function fetchLotInfo() {
     return new Promise(function (resolve, reject) {
         $.ajax({
-            url: `${GET_LOT_INFO}?lotId=${lotId}`,
+            url: `${GET_LOT_INFO}?lotId=${currentLotRowId}&commId=${currentCommRowId}`,
             contentType: "application/json",
             type: 'GET',
             dataType: 'json',
             success: function (result) {
-                resolve(result); 
+                resolve(result);
             },
             error: function (xhr) {
-                reject(xhr); 
+                reject(xhr);
             }
         });
     });
@@ -42,8 +56,7 @@ function fetchLotInfo(lotId) {
 
 async function populateLotInfoForm() {
 
-    var lotInfo = await fetchLotInfo(currentLotRowId);
-    console.log(lotInfo); 
+    var lotInfo = await fetchLotInfo();
     $("#lotId").val(lotInfo.lotData.internalReference)
     $("#externalReference").val(lotInfo.lotData.externalReference);
     $("#amenityCheckbox").prop("checked", lotInfo.lotData.isAmenity);
@@ -57,6 +70,10 @@ async function populateLotInfoForm() {
     $("#swing").val(lotInfo.lotData.swing);
     $("#description").val(lotInfo.lotData.description);
     $("#address").val(lotInfo.lotData.address);
+    $("#contactUrl").val(lotInfo.lotData.contactLink);
+    $("#contactButtonText").val(lotInfo.lotData.buttonText);
+    $("#videoUrl").val(lotInfo.lotData.videoUrl);
+
     let lotStatusDropdown = $("#lotStatus");
     lotStatusDropdown.empty();
     $.each(lotInfo?.lotState, function (index, status) {
@@ -70,4 +87,17 @@ async function populateLotInfoForm() {
         });
         lotStatusDropdown.append(option);
     });
+    lotStatusDropdown.val(lotInfo.lotData.lotStateId ?? 0);
+
+    /*if (lotInfo?.lotData?.imagePath) {
+        $('#hotspotImage').attr('src', lotInfo.lotData.imagePath).show();
+        $('#deleteImage').show();
+    }*/
+    if (ckEditorInstance) {
+        ckEditorInstance.setData(lotInfo.lotData.lotDescription ?? '');
+    }
+    populateListingsList(lotInfo);
+    checkLotListings(lotInfo);
+    addEventListenerOnCheckboxes();
+    addEventListenerOnElevationButtons();
 }

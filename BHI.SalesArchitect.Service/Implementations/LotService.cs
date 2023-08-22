@@ -15,10 +15,36 @@ namespace BHI.SalesArchitect.Service.Implementations
             return _lotRepository.GetByCommunityID(commId);
         }
 
-        public Lot GetByID(int lotId)
+        public async Task<Lot> GetByID(int lotId)
         {
-            var a =  _lotRepository.GetByID(lotId);
-            return a;
+            var lot = await _lotRepository.GetByID(lotId);
+            //lot.ImagePath = GetLotImagePath(lot.Id);
+            return lot;
+        }
+
+        public async Task<bool> UpdateLot(Lot lot)
+        {
+            Lot l = await GetByID(lot.Id);
+            l.LotStateId = lot.LotStateId;
+            l.Size = lot.Size;
+            l.Block = lot.Block;
+            l.Phase = lot.Phase;
+            l.Description = lot.Description;
+            l.Address = lot.Address;
+            l.Elevation = lot.Elevation;
+            l.Swing = lot.Swing;
+            l.PremiumPrice = lot.PremiumPrice;
+            l.ExternalReference = lot.ExternalReference;
+            l.ContactLink = lot.ContactLink;
+            l.ButtonText = lot.ButtonText;
+            l.IsAmenity = lot.IsAmenity;
+            l.DisplayName = lot.DisplayName;
+            l.VideoUrl = lot.VideoUrl;
+            l.ReservationFee = lot.ReservationFee;
+            l.LotDescription = lot.LotDescription;
+            //l.ImagePath
+            return await _lotRepository.UpdateLot(l);
         }
     }
 }
+

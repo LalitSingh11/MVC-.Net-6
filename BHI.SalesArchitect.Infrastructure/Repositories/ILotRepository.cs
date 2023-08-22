@@ -7,6 +7,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
         IEnumerable<Lot> GetBySiteID(int siteId);
         IEnumerable<Lot> GetByCommunityID(int commId);
         IEnumerable<Lot> GetByPartnerID(int partnerId);
-        Lot GetByID(int lotId);
+        Task<Lot> GetByID(int lotId);
+        Task<bool> UpdateLot(Lot lot);
     }
 }

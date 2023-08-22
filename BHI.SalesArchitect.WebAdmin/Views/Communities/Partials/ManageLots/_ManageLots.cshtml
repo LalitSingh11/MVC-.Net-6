@@ -1,11 +1,17 @@
 ﻿<div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <b id="lot-count"></b>
         <partial name="Partials/ManageLots/_LotsGrid" />
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <partial name="Partials/ManageLots/_LotEditForm" />
+        <partial name="Partials/manageLots/_ListingsList"/>
     </div>
+    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+        <footer class="footer ">
+            <button type="button" class="btn btn-primary" onclick="updateUser();">Save changes</button>
+        </footer>
+    </nav>
 </div>
 
 

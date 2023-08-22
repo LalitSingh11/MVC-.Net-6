@@ -1,10 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace BHI.SalesArchitect.Model.DB;
 
 [DebuggerDisplay("ID={Id}")]
 public partial class Lot
 {
+    [Required]
     public int Id { get; set; }
 
     public int SiteId { get; set; }

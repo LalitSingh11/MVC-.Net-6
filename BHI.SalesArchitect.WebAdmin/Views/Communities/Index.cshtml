@@ -7,6 +7,7 @@
 }
 
 <div>
+    <partial name="_Toast" />
     <div class="row"><div class="span12 section-heading"><h2>@ViewData["PartnerName"]</h2></div></div>
     <partial name="Partials/_FilterAndSearch" />
     <br />
@@ -15,12 +16,6 @@
     <partial name="Partials/_LotsNavTabs" />
     <br />
     <br />
-    <br />
-    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
-        <footer class="footer ">
-            <button type="button" class="btn btn-primary" onclick="updateUser();">Save changes</button>
-        </footer>
-    </nav>
 </div>
 
 @section Scripts {
@@ -28,6 +23,7 @@
     <script src="~/js/communities/communities.js" asp-append-version="true"></script>
     <script src="~/js/communities/lot-update.js" asp-append-version="true"></script>
     <script src="~/js/communities/lots-grid.js" asp-append-version="true"></script>
+    <script src="~/js/communities/manage-lots.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
@@ -37,4 +33,23 @@
 @section Styles{
     <link href="~/css/communities/search-filter.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
+}
+@section Modals{
+    <div class="modal fade" id="elevationImageModal" tabindex="-1" aria-labelledby="elevationImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="elevationImageModalLabel">Select Elevation Image</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    IMages
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteUser();" data-bs-dismiss="modal">Select Elevation</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }

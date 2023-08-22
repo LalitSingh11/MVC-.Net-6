@@ -1,4 +1,4 @@
-﻿namespace BHI.SalesArchitect.WebAdmin.Models
+﻿namespace BHI.SalesArchitect.WebAdmin.Models.Communities
 {
     public class CommunityGridModel
     {

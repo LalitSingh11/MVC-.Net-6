@@ -1,6 +1,7 @@
 ﻿using BHI.SalesArchitect.Core.Enumerations;
+using BHI.SalesArchitect.Model.DB;
 using BHI.SalesArchitect.Service;
-using BHI.SalesArchitect.WebAdmin.Models;
+using BHI.SalesArchitect.WebAdmin.Models.Communities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcJqGrid;
@@ -20,7 +21,9 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private readonly ISessionService _sessionService;
         private readonly IProspectConfigurationService _prospectConfigurationService;
         private readonly ILotService _lotService;
+        private readonly IListingService _listingService;
         private readonly ILotStateService _lotStateService;
+        private readonly ILotListingService _lotListingService;
 
         public CommunitiesController(ICommunityService communityService,
             ICommunityUserService communityUserService,
@@ -32,7 +35,9 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ISessionService sessionService,
             IProspectConfigurationService prospectConfigurationService,
             ILotService lotService,
-            ILotStateService lotStateService
+            IListingService listingService,
+            ILotStateService lotStateService,
+            ILotListingService lotListingService
             ) 
         {
             _communityService = communityService;
@@ -46,6 +51,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _prospectConfigurationService = prospectConfigurationService;
             _lotService = lotService;
             _lotStateService = lotStateService;
+            _listingService = listingService;
+            _lotListingService = lotListingService;
         }
         
         public IActionResult Index()
@@ -75,6 +82,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                 records = communities.Count(),
                 rows = (
                         from c in communities
+                        orderby c.Name
                         select new CommunityGridModel()
                         {
                             id = c.Id,
@@ -152,6 +160,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             var jsonData = new
             {
                 total = lots.Count(),
+
                 rows = (
                            from l in lots
                            select new
@@ -172,14 +181,78 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
 
         #region Get Methods
         [HttpGet]
-        public IActionResult GetLotInfo(int lotId)
+        public async Task<IActionResult> GetLotInfo(int lotId, int commId)
         {
+            var listings = _listingService.GetByCommunityId(commId);
+            _sessionService.CommunityID = commId;
+            var lotListings = _lotListingService.GetByLotId(lotId);
             var lotInfo = new
             {
-                lotData = _lotService.GetByID(lotId),
-                lotState = _lotStateService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId)
+                lotData = await _lotService.GetByID(lotId),
+                lotState = _lotStateService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId),
+                listings = (from l in listings
+                           join ll in lotListings on l.Id equals ll.ListingId
+                           select new
+                           {
+                               l.Id,
+                               ll.Price,
+                               ll.ListingImagesId
+                           }).ToList(),
+                plans = listings.Where(x => x.Type == "P").ToList(),
+                specs = listings.Where(x => x.Type == "S").ToList(),
+                models = listings.Where(x => x.Type == "M").ToList(),
             };
             return Ok(lotInfo);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetListingImages(int listingId, int lotid)
+        {
+            return Ok();
+        }
+        /*  [HttpGet]
+          public IActionResult GetLotImage(int id, int maxwidth = 0, int maxheight = 0)
+          {
+              IActionResult result = null;
+              try
+              {
+                  var gifType = _assetTypeRepository.GifType;
+                  var jpgType = _assetTypeRepository.JpgType;
+
+                  var lot = _lotRepository.GetByID(id);
+
+                  if (lot != null)
+                  {
+                      var buffer = _imageFileService.ReadImageToByte(_pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath), maxwidth, maxheight);
+                      if (buffer != null)
+                          result = new FileStreamResult(new MemoryStream(buffer), FileImage.GetFileType(Path.GetExtension(lot.ImagePath).ToLower().Remove(0, 1)));
+                      else
+                      {
+                          _logService.Error("Bad Path or Something: Directory Path:" + _directoryPath + " Value:" + lot.ImagePath + " pathFactory:" + _pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath));
+                      }
+                  }
+              }
+              catch (Exception e)
+              {
+                  _logService.Error(Request.Url.PathAndQuery, e);
+              }
+
+
+              return result ?? (result = new HttpNotFoundResult());
+          }*/
+        #endregion
+
+        #region Post Methods
+        [HttpPost]
+        public async Task<IActionResult> UpdateLotAsync([FromBody] LotListingsDataModel data)
+        {
+            if(ModelState.IsValid)
+            {
+                await _lotService.UpdateLot(data.lot);
+                var a = await _lotListingService.UpdateLotListings(data.lotListing, data.lot.Id);
+                return Json(new { Success = "true" });
+            }
+            return BadRequest(new { Success = "false" });
         }
         #endregion
 
@@ -249,5 +322,6 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         }
         #endregion
     }
+
 }
 

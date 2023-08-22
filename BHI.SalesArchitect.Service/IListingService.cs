@@ -1,8 +1,8 @@
 ﻿using BHI.SalesArchitect.Model.DB;
 
-namespace BHI.SalesArchitect.Infrastructure.Repositories
+namespace BHI.SalesArchitect.Service
 {
-    public interface IListingRepository
+    public interface IListingService
     {
         IEnumerable<Listing> GetByCommunityId(int communityId);
         IEnumerable<Listing> GetByLotId(int lotId);

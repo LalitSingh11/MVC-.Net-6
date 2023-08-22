@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Partner Configuration";
+}
+
+<div class="container-fluid">
+    <br />
+    <ul class="nav nav-tabs" id="settingsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings-tab-pane" type="button" role="tab" aria-controls="settings-tab-pane" aria-selected="true">Settings</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="titleSettings-tab" data-bs-toggle="tab" data-bs-target="#titleSettings-tab-pane" type="button" role="tab" aria-controls="titleSettings-tab-pane" aria-selected="false">Title Settings</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ispPartnerType-tab" data-bs-toggle="tab" data-bs-target="#ispPartnerType-tab-pane" type="button" role="tab" aria-controls="ispPartnerType-tab-pane" aria-selected="false">ISP Partner Type</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="holdALot-tab" data-bs-toggle="tab" data-bs-target="#holdALot-tab-pane" type="button" role="tab" aria-controls="holdALot-tab-pane" aria-selected="false">Hold A Lot</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="dreamweaver-tab" data-bs-toggle="tab" data-bs-target="#dreamweaver-tab-pane" type="button" role="tab" aria-controls="dreamweaver-tab-pane" aria-selected="false">Dreamweaver</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pdfSettings-tab" data-bs-toggle="tab" data-bs-target="#pdfSettings-tab-pane" type="button" role="tab" aria-controls="pdfSettings-tab-pane" aria-selected="false">PDF Setings</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="manageLotsTabContent">
+        <div class="tab-pane fade show active" id="settings-tab-pane" role="tabpanel" aria-labelledby="settings-tab" tabindex="0"><partial name="Partials/_Settings"/></div>
+        <div class="tab-pane fade" id="titleSettings-tab-pane" role="tabpanel" aria-labelledby="titleSettings-tab" tabindex="0">Title Settings...</div>
+        <div class="tab-pane fade" id="ispPartnerType-tab-pane" role="tabpanel" aria-labelledby="ispPartnerType-tab" tabindex="0">ISP Partner Type...</div>
+        <div class="tab-pane fade" id="holdALot-tab-pane" role="tabpanel" aria-labelledby="holdALot-tab" tabindex="0">Hold A Lot...</div>
+        <div class="tab-pane fade" id="dreamweaver-tab-pane" role="tabpanel" aria-labelledby="dreamweaver-tab" tabindex="0">Dreamweaver...</div>
+        <div class="tab-pane fade" id="pdfSettings-tab-pane" role="tabpanel" aria-labelledby="pdfSettings-tab" tabindex="0">PDF Setings...</div>
+    </div>
+</div>
+

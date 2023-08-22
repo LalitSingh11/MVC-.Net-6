@@ -61,10 +61,7 @@ namespace BHI.SalesArchitect.Service.Implementations
             dbUser.UserName = user.UserName;
             dbUser.Password = String.IsNullOrWhiteSpace(user.Password) ? dbUser.Password : EncryptionHelper.GetSHA1(user.Password);
             dbUser.PartnerId = user.PartnerId;
-            var a = await _userRepository.UpdateUser(dbUser);
-            return a;
-        }
-
-        
+            return await _userRepository.UpdateUser(dbUser);             
+        }        
     }
 }

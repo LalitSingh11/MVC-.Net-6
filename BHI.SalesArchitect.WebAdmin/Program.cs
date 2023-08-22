@@ -34,6 +34,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         });
 
 var config = builder.Configuration.AddJsonFile("appsettings.json").Build();
+
 builder.Services.AddDbContext<SalesArchitectContext>(options =>
         options.UseSqlServer(config.GetSection("ConnectionString").Value), ServiceLifetime.Transient);
 
@@ -64,6 +65,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 //app.UseCors();
+
 
 app.UseAuthentication();
 

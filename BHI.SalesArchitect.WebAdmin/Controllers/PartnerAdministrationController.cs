@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using MvcJqGrid;
 using static BHI.SalesArchitect.Core.Enumerations.CommonEnumerations;
 using BHI.SalesArchitect.Core.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using BHI.SalesArchitect.WebAdmin.Models.Account;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
+    [Authorize]
     public class PartnerAdministrationController : BaseController
     {
         private IPartnerService _partnerService;
@@ -40,7 +43,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         }
 
 
-
+        #region Grid Methods
         [HttpGet]
         public IActionResult GetPartners(GridSettings gridSettings, int partnerStatusType = 0)
         {
@@ -125,6 +128,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             };
             return Json(jsonData);
         }
+        #endregion
 
         [HttpPost]
         public async Task<IActionResult> UpdateUser([FromBody] RegisterModel model, int userId)
@@ -205,7 +209,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             }
             catch(Exception)
             {
-                throw;
+                throw; 
             }
             return Json(new { Success = "true" });
         }

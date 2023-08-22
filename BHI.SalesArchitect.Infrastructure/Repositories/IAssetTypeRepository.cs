@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BHI.SalesArchitect.Model.DB;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories
 {
-    internal interface IAssetTypeRepository
+    public interface IAssetTypeRepository
     {
+        IEnumerable<AssetType> GetAll();    
+        AssetType GifType { get; }
+        AssetType JpgType { get; }
+        AssetType TextType { get; }
+        AssetType XmlType { get; }
+        AssetType HexColorType { get; }
     }
 }
