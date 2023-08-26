@@ -347,7 +347,10 @@ button[type=button]:disabled {
 }
 
 .login-form, .forgot-form {
-    background: #fff url(../Images/login-bg.jpg) center/cover no-repeat;
+    background: #fff url(../content/images/login-bg.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     height: 100vh;
     display: -ms-flexbox;
     display: -webkit-flex;
@@ -404,31 +407,3 @@ button[type=button]:disabled {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
-
-.logo {
-    display: block;
-    height: 53px;
-    width: 197px;
-    background: url(images/logo.png) no-repeat 0 0;
-}
-
-.ir {
-    background-color: transparent;
-    border: 0;
-    overflow: hidden;
-    /* IE 6/7 fallback */
-    *text-indent: -9999px;
-}
-
-.ir:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 100%;
-}
-
-    .ir a:after,
-    a[href^="javascript:"]:after,
-    a[href^="#"]:after {
-        content: "";
-    }

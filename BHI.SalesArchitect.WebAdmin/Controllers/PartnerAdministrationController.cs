@@ -7,6 +7,7 @@ using static BHI.SalesArchitect.Core.Enumerations.CommonEnumerations;
 using BHI.SalesArchitect.Core.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using BHI.SalesArchitect.WebAdmin.Models.Account;
+using BHI.SalesArchitect.Core.Constants;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
@@ -38,6 +39,11 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _prospectConfigurationService = prospectConfigurationService;
         }
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult CreateUser()
         {
             return View();
         }
@@ -147,11 +153,11 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                     PartnerId = int.Parse(model.AssociationIds)
                 };
 
-                await _userService.UpdateUser(user);
+                var res1 = await _userService.UpdateUser(user);
                 var roleId = model.IsPartnerSuperAdmin ? _roleService.PartnerSuperAdmin.Id : _roleService.BHIAdmin.Id;
-                await _userRoleService.UpdateUserRole(userId, roleId);
+                var res2 = await _userRoleService.UpdateUserRole(userId, roleId);
                 //If we are changing the actual user partner.
-                if (UserId == userId && PartnerId != user.PartnerId)
+                if (UserId == userId && ((_sessionService.PartnerID ?? PartnerId) != user.PartnerId))
                 {
                     _sessionService.PartnerID = user.PartnerId;
                     var partner = _partnerService.GetById((int)user.PartnerId);
@@ -161,21 +167,16 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                     //var config = _prospectConfigurationService.GetByPartnerId(user.PartnerId);
                     //_sessionService.IsIsp = (bool)(config != null && config.isisp is not null);
                 }
-                return Json(new { Success = "true" });
+                return Json(new { Success = res1 && res2 });
             }
             catch (Exception ex)
             {
-                return Json(new { Success = "false", Error = ex.Message });
+                return Json(new { Success = false, Error = ex.Message });
             }
-        }
-
-        [HttpGet]
-        public IActionResult CreateUser()
-        {
-            return View();
-        }
+        }        
 
         [HttpPost]
+        [Authorize(Roles = Roles.BHIADMIN)]
         public async Task<IActionResult> AddUser([FromBody] RegisterModel model)
         {
             if (ModelState.IsValid)
@@ -190,28 +191,28 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                     PhoneNumber = model.PhoneNumber,
                     PartnerId = int.Parse(model.AssociationIds)
                 };
-                await _userService.AddUser(user);
-                var newUser = await _userService.GetByUsername(model.UserName);
-                var roleId = model.IsPartnerSuperAdmin ? _roleService.PartnerSuperAdmin.Id : _roleService.BHIAdmin.Id;
-                await _userRoleService.AddUserRole(newUser.Id, roleId);
-                return Json(new { Success = "true" });
+                var exists = await _userService.GetByUsername(user.UserName);
+                if (exists == null)
+                {
+                    var res1 = await _userService.AddUser(user);
+                    var newUser = await _userService.GetByUsername(model.UserName);
+                    var roleId = model.IsPartnerSuperAdmin ? _roleService.PartnerSuperAdmin.Id : _roleService.BHIAdmin.Id;
+                    var res2 = await _userRoleService.AddUserRole(newUser.Id, roleId);
+                    return Json(new { Success = res1 && res2, message = "Something went wrong!" });
+                }
+                return Json(new { Success = false, message = "Username already in use." });
             }
-            return Json(new { Success = "false", message = "Invalid User Details" });
+            var error = ModelState.Where(e => e.Value.Errors.Any()).ToDictionary(e => e.Key, e => e.Value.Errors.First().ErrorMessage);
+            return Json(new { Success = false, message = error });
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.BHIADMIN)]
         public async Task<IActionResult> DeleteUser(int userId)
         {
-            try
-            {
-                await _userRoleService.DeleteUserRole(userId);
-                await _userService.DeleteUser(userId);
-            }
-            catch(Exception)
-            {
-                throw; 
-            }
-            return Json(new { Success = "true" });
+            var res1 = await _userRoleService.DeleteUserRole(userId);
+            var res2 = await _userService.DeleteUser(userId);
+            return Json(new { Success = res1 && res2});
         }
     }
 }

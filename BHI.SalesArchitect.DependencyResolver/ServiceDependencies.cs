@@ -14,6 +14,8 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<ICommunitySiteService, CommunitySiteService>();
             services.AddScoped<ICommunityUserService, CommunityUserService>();
             services.AddScoped<ICommunitySiteGeoJsonService, CommunitySiteGeoJsonService>();
+            services.AddScoped<IConfigurationService, ConfigurationService>();
+            services.AddScoped<ICustomizedContentService, CustomizedContentService>();
             services.AddScoped<IListingService, ListingService>();
             services.AddScoped<ILotListingService, LotListingService>();
             services.AddScoped<ILotService, LotService>();

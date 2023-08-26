@@ -73,10 +73,10 @@ function addEventListenerOnCheckboxes() {
 function addEventListenerOnElevationButtons() {
     $('#listingsTabContent button').on('click', function () {
         var listingId = $(this).closest("tr").attr("id");
-        populateElevationModal(listingId);
+       // populateElevationModal(listingId);
     });
 }
-
+/*
 function populateElevationModal(listingId) {
     fetchElevationImages(currentLotRowId, listingId);
 }
@@ -96,3 +96,4 @@ function fetchElevationImages(currentLotRowId, listingId) {
         });
     });
 }
+*/

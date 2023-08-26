@@ -1,9 +1,10 @@
 ﻿const LOT_UPDATE_URL = "communities/updatelot";
-function updateUser() {
+async function updateUser() {
     if (currentLotRowId == -1) {
         showToast("Select a lot", false);
         return;
     }
+    
     let lot = getFormObj("lot-edit-form");
     let lotData = {
         Id: currentLotRowId,
@@ -26,6 +27,12 @@ function updateUser() {
         //ImagePath
     }
 
+    if (lot.lotStatus == "0") {
+        showToast("Select a Lot Status", false);
+        return;
+    }
+
+    //get checked listings
     let lotListing = [];
     $('#listingsTabContent tr').each(function () {
         var checkbox = $(this).find('input[type="checkbox"]');
@@ -36,37 +43,24 @@ function updateUser() {
             var price = $(this).find('input[type="number"]').val();
             var rowData = {
                 LotId: currentLotRowId,
-                ListingId : trId,
+                ListingId: trId,
                 Price: price?.trim() == '' ? null : price?.trim()
             };
             lotListing.push(rowData);
         }
     });
-
-    if (lot.lotStatus == "0") {
-        showToast("Select a Lot Status", false);
-        return;
-    }
+    
     if (ckEditorInstance)
         lotData.LotDescription = ckEditorInstance.getData();
-   /* console.log(data);
-    var lotImage = $('#lotImageFile').val();
-    //var lotImageFile = lotImage.val();
-    console.log(lotImage);
-    console.log(lotImageFile);*/
-    $.ajax({
-        url: LOT_UPDATE_URL,
-        contentType: "application/json",
-        type: 'POST',
-        dataType: 'json',
-        data: JSON.stringify({ lot: lotData, lotListing: lotListing })
-    }).done(function (result) {
-        if (result?.success == "true")
-            showToast("Lot Updated");
-        else
-            showToast("Unsuccesful", false);
-    }).fail(function (xhr) {
-        showToast("Unsuccessful", false);
-        console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
-    });
+    /* console.log(data);
+     var lotImage = $('#lotImageFile').val();
+     //var lotImageFile = lotImage.val();
+     console.log(lotImage);
+     console.log(lotImageFile);*/
+
+    let result = await executeHttpRequest(LOT_UPDATE_URL, METHOD_POST, { lot: lotData, lotListing: lotListing });
+    if (result?.success)
+        showToast("Lot Updated");
+    else
+        showToast("Unsuccesful", false);
 }

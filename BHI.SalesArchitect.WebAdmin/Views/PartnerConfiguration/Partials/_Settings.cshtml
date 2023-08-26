@@ -1,3 +1,253 @@
-﻿<div class="container">
-    <h2>General Settings (These apply to both ISP 2.0 and Geospatial)</h2>
+﻿<div class="container-fluid">
+    <br />
+    <h4>General Settings (These apply to both ISP 2.0 and Geospatial)</h4>
+    <div class="mb-1"></div>
+    <form id="prospectSettingsform">
+    <div class="m-2">
+        <b>Partner Type <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Indicates if the Partner is using BDX Sales Navigator Application.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isIsp" id="isIsp1" value="true">
+            <label class="form-check-label" for="partnerTypeRadio1">ISP Only</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isIsp" id="isIsp2" value="false">
+            <label class="form-check-label" for="isIsp2">ISP and Sales Navigator</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Secure Access? <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">“Yes”, all ISPs for this Partner require login/authentication against the Partner’s User List to access.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isSecured" id="secureAccessRadio1" value="true">
+            <label class="form-check-label" for="secureAccessRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isSecured" id="secureAccessRadio2" value="false">
+            <label class="form-check-label" for="secureAccessRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Display Available Plans in Pop-up <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Show All Plans list in Popup if no Plan is assigned to a Homesite.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showAllPlans" id="availablePlansRadio1" value="true">
+            <label class="form-check-label" for="availablePlansRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showAllPlans" id="availablePlansRadio2" value="false">
+            <label class="form-check-label" for="availablePlansRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Display Available Specs in Pop-up <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Show All Specs list in Popup if no Spec is assigned to a Homesite.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showAllSpecs" id="availableSpecsRadio1" value="true">
+            <label class="form-check-label" for="availableSpecsRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showAllSpecs" id="availableSpecsRadio2" value="false">
+            <label class="form-check-label" for="availableSpecsRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Display Pop-up on Hover or on Click <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Enable/Disable Hover functionality on ISP</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isHoverAllowed" id="isHoverAllowedRadio1" value="true">
+            <label class="form-check-label" for="isHoverAllowedRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isHoverAllowed" id="isHoverAllowedRadio2" value="false">
+            <label class="form-check-label" for="isHoverAllowedRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Display Request Information Button <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Show Request Info Button on ISP Page for Lead Submission.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="requestInfoModal" id="requestInfoModalRadio1" value="true">
+            <label class="form-check-label" for="requestInfoModalRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="requestInfoModal" id="requestInfoModalRadio2" value="false">
+            <label class="form-check-label" for="requestInfoModalRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Send Lot IDs with Leads <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Send lot id’s clicked by the user in comment section of Lead.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="sendLotId" id="sendLotIdRadio1" value="true">
+            <label class="form-check-label" for="sendLotIdRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="sendLotId" id="sendLotIdRadio2" value="false">
+            <label class="form-check-label" for="sendLotIdRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Selected Lot Outline Color <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This color will determine the outline color for selected lots on the map.</span> </span></b>
+        <br />
+            <input type="color" name="lotOutlineColor" id="outlineColor" />
+    </div>
+    <div class="m-2">
+        <b>Lot Premium Optional Display <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will modify pricing display. 2 or more plans assigned to a lot will display premium + base in the right rail as ‘Starting at’. A single plan assigned to a lot will display Lot Premium value as ‘Priced at’.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="lotPremiumOptionalDisplay" id="optionalDisplayRadio1" value="true">
+            <label class="form-check-label" for="optionalDisplayRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="lotPremiumOptionalDisplay" id="optionalDisplayRadio2" value="false">
+            <label class="form-check-label" for="optionalDisplayRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Suppress Top Left Builder Logo <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will hide the builder logo at the top left of the ISP.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="suppressBuilderLogo" id="suppressBuilderLogoRadio1" value="true">
+            <label class="form-check-label" for="suppressBuilderLogoRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="suppressBuilderLogo" id="suppressBuilderLogoRadio2" value="false">
+            <label class="form-check-label" for="suppressBuilderLogoRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Suppress Bottom Bar Community Name <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will hide the Community Name from the bottom bar.</span> </span> </b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="suppressBottomCommunityName" id="suppressBottomCommunityNameRadio1" value="true">
+            <label class="form-check-label" for="suppressBottomCommunityNameRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="suppressBottomCommunityName" id="suppressBottomCommunityNameRadio2" value="false">
+            <label class="form-check-label" for="suppressBottomCommunityNameRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Suppress Top Left Community Name <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will hide the Community Name from the top left of the ISP.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="suppressTopCommunityName" id="suppressTopCommunityNameRadio1" value="true">
+            <label class="form-check-label" for="suppressTopCommunityNameRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="suppressTopCommunityName" id="suppressTopCommunityNameRadio2" value="false">
+            <label class="form-check-label" for="suppressTopCommunityNameRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Display Lot List in Right Rail <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will display all available lots for each plan in the right rail.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="displayLotList" id="displayLotListRadio1" value="true">
+            <label class="form-check-label" for="displayLotListRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="displayLotList" id="displayLotListRadio2" value="false">
+            <label class="form-check-label" for="displayLotListRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Display Spec Address Under Plan Name <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This will display the address assigned to a spec.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="displaySpecAddress" id="displaySpecAddressRadio1" value="true">
+            <label class="form-check-label" for="displaySpecAddressRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="displaySpecAddress" id="displaySpecAddressRadio2" value="false">
+            <label class="form-check-label" for="displaySpecAddressRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Add Model Home Banner Icon for model homes <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will provide new configuration options to display a Model Homes banner for model homes.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="addModelHomesBanner" id="addModelHomesBannerRadio1" value="true">
+            <label class="form-check-label" for="addModelHomesBannerRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="addModelHomesBanner" id="addModelHomesBannerRadio2" value="false">
+            <label class="form-check-label" for="addModelHomesBannerRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Replace Key Icon for Spec homes <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this provides an editable banner to replace the key Icon for spec homes.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="replaceKeyIcon" id="replaceKeyIconRadio1" value="true">
+            <label class="form-check-label" for="replaceKeyIconRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="replaceKeyIcon" id="replaceKeyIconRadio2" value="false">
+            <label class="form-check-label" for="replaceKeyIconRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Open Spec Details by Default <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, on mouse over or clicking a lot with an assigned Spec, when updating the content in the right rail, have the content display by default.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="openSpecDefault" id="OpenSpecDefaultRadio1" value="true">
+            <label class="form-check-label" for="OpenSpecDefaultRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="openSpecDefault" id="OpenSpecDefaultRadio2" value="false">
+            <label class="form-check-label" for="OpenSpecDefaultRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Show Exterior Color Scheme <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, the ISP will attempt to match an Envision Exterior Color Option based on a Lot’s External Reference number and display in popup.</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showExteriorColorScheme" id="showExteriorColorSchemeRadio1" value="true">
+            <label class="form-check-label" for="showExteriorColorSchemeRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showExteriorColorScheme" id="showExteriorColorSchemeRadio2" value="false">
+            <label class="form-check-label" for="showExteriorColorSchemeRadio2">No</label>
+        </div>
+    </div>
+    <br />
+
+    <h4>ISP 2.0 Only</h4>
+    <div class="m-2">
+        <b>Display Homesite Status Filter <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Show Filter by Lot Status on ISP 2.0</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showHomesiteFilter" id="showHomesiteFilterRadio1" value="true">
+            <label class="form-check-label" for="showHomesiteFilterRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showHomesiteFilter" id="showHomesiteFilterRadio2" value="false">
+            <label class="form-check-label" for="showHomesiteFilterRadio2">No</label>
+        </div>
+    </div>
+    <div class="m-2">
+        <b>Show Bottom Bar <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Show/Hide Bottom Bar on ISP 2.0</span> </span></b>
+        <br />
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showBottombar" id="showBottomBarRadio1" value="true">
+            <label class="form-check-label" for="showBottomBarRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="showBottombar" id="showBottomBarRadio2" value="false">
+            <label class="form-check-label" for="showBottomBarRadio2">No</label>
+        </div>
+    </div>
+    </form>
+    <br />
+    <br />
+    <br />
+    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+        <footer class="footer ">
+            <button type="button" class="btn btn-primary" onclick="saveProspectSettings();">Save changes</button>
+            <button type="button" class="btn" onclick="setSettingsValues();">Cancel</button>
+        </footer>
+    </nav>
 </div>
+

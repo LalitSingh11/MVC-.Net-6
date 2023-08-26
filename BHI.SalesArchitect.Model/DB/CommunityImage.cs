@@ -13,13 +13,13 @@ public partial class CommunityImage
 
     public string Type { get; set; } = null!;
 
-    public string? Url { get; set; }
+    public string Url { get; set; }
 
     public int? Sequence { get; set; }
 
     public DateTime? ProcessDate { get; set; }
 
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
     public virtual Community Community { get; set; } = null!;
 

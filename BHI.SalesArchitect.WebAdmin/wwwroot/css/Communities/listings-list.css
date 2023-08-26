@@ -1,0 +1,15 @@
+﻿#listingsTabContent {
+    max-height: 350px;
+    overflow-y: auto;
+    border: 1px solid grey;
+}
+
+#plansTable {
+    overflow-x: auto;
+    width: 140%;
+}
+
+#specsTable, #modelsTable {
+    overflow-x: auto;
+    width: 180%;
+}

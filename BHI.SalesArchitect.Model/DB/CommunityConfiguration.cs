@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BHI.SalesArchitect.Model.DB;
+﻿namespace BHI.SalesArchitect.Model.DB;
 
 public partial class CommunityConfiguration
 {
@@ -23,7 +20,7 @@ public partial class CommunityConfiguration
 
     public bool SuppressPriceStatus { get; set; }
 
-    public string? HoldAlotButtonText { get; set; }
+    public string HoldAlotButtonText { get; set; }
 
     public virtual ActivityState ActivityState { get; set; } = null!;
 

@@ -11,7 +11,7 @@ public partial class Feedback
 
     public int FeedbackCategoryId { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 
@@ -21,5 +21,5 @@ public partial class Feedback
 
     public virtual Consumer Consumer { get; set; } = null!;
 
-    public virtual Partner? Partner { get; set; }
+    public virtual Partner Partner { get; set; }
 }

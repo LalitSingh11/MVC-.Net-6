@@ -1,12 +1,14 @@
 ﻿
 <div class="form-floating">
-    <div class="community-status-filter-container">
-        <label class="form-label">Sync Status</label>
-        <select onchange="onPartnerStatusChange(this.value);">
-            <option value="0">Active</option>
-            <option value="1">Inactive</option>
-            <option value="2">All</option>
-        </select>
+    <div class="col-md-6">
+        <div class="d-flex col-md-5 align-items-center">
+            <label class="form-label col-md-4 me-2">Sync Status</label>
+            <select class="form-select" onchange="onPartnerStatusChange(this.value);">
+                <option value="0">Active</option>
+                <option value="1">Inactive</option>
+                <option value="2">All</option>
+            </select>
+        </div>
     </div>
     <br />
 </div>

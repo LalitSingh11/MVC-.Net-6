@@ -8,7 +8,7 @@ public partial class ProspectReferralSource
 
     public int ReferralSourceId { get; set; }
 
-    public string? CustomValue { get; set; }
+    public string CustomValue { get; set; }
 
     public virtual Prospect Prospect { get; set; } = null!;
 

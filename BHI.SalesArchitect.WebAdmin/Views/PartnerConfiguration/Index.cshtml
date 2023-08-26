@@ -1,4 +1,5 @@
-﻿@{
+﻿@using BHI.SalesArchitect.Core.Constants;
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Partner Configuration";
 }
@@ -12,26 +13,73 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="titleSettings-tab" data-bs-toggle="tab" data-bs-target="#titleSettings-tab-pane" type="button" role="tab" aria-controls="titleSettings-tab-pane" aria-selected="false">Title Settings</button>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="ispPartnerType-tab" data-bs-toggle="tab" data-bs-target="#ispPartnerType-tab-pane" type="button" role="tab" aria-controls="ispPartnerType-tab-pane" aria-selected="false">ISP Partner Type</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="holdALot-tab" data-bs-toggle="tab" data-bs-target="#holdALot-tab-pane" type="button" role="tab" aria-controls="holdALot-tab-pane" aria-selected="false">Hold A Lot</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="dreamweaver-tab" data-bs-toggle="tab" data-bs-target="#dreamweaver-tab-pane" type="button" role="tab" aria-controls="dreamweaver-tab-pane" aria-selected="false">Dreamweaver</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pdfSettings-tab" data-bs-toggle="tab" data-bs-target="#pdfSettings-tab-pane" type="button" role="tab" aria-controls="pdfSettings-tab-pane" aria-selected="false">PDF Setings</button>
-        </li>
+        @if (User.IsInRole(Roles.BHIADMIN))
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="ispPartnerType-tab" data-bs-toggle="tab" data-bs-target="#ispPartnerType-tab-pane" type="button" role="tab" aria-controls="ispPartnerType-tab-pane" aria-selected="false">ISP Partner Type</button>
+            </li>
+        }
+        @if (User.IsInRole(Roles.BHIADMIN) || User.IsInRole(Roles.PARTNERSUPERADMIN))
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="holdALot-tab" data-bs-toggle="tab" data-bs-target="#holdALot-tab-pane" type="button" role="tab" aria-controls="holdALot-tab-pane" aria-selected="false">Hold A Lot</button>
+            </li>
+        }
+        @if (User.IsInRole(Roles.BHIADMIN))
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="dreamweaver-tab" data-bs-toggle="tab" data-bs-target="#dreamweaver-tab-pane" type="button" role="tab" aria-controls="dreamweaver-tab-pane" aria-selected="false">Dreamweaver</button>
+            </li>
+        }
+        @if (ViewBag.IspPartnerType != 1)
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pdfSettings-tab" data-bs-toggle="tab" data-bs-target="#pdfSettings-tab-pane" type="button" role="tab" aria-controls="pdfSettings-tab-pane" aria-selected="false">PDF Setings</button>
+            </li>
+        }
     </ul>
     <div class="tab-content" id="manageLotsTabContent">
-        <div class="tab-pane fade show active" id="settings-tab-pane" role="tabpanel" aria-labelledby="settings-tab" tabindex="0"><partial name="Partials/_Settings"/></div>
-        <div class="tab-pane fade" id="titleSettings-tab-pane" role="tabpanel" aria-labelledby="titleSettings-tab" tabindex="0">Title Settings...</div>
-        <div class="tab-pane fade" id="ispPartnerType-tab-pane" role="tabpanel" aria-labelledby="ispPartnerType-tab" tabindex="0">ISP Partner Type...</div>
-        <div class="tab-pane fade" id="holdALot-tab-pane" role="tabpanel" aria-labelledby="holdALot-tab" tabindex="0">Hold A Lot...</div>
-        <div class="tab-pane fade" id="dreamweaver-tab-pane" role="tabpanel" aria-labelledby="dreamweaver-tab" tabindex="0">Dreamweaver...</div>
-        <div class="tab-pane fade" id="pdfSettings-tab-pane" role="tabpanel" aria-labelledby="pdfSettings-tab" tabindex="0">PDF Setings...</div>
+        <div class="tab-pane fade show active" id="settings-tab-pane" role="tabpanel" aria-labelledby="settings-tab" tabindex="0"><partial name="Partials/_Settings" /></div>
+        <div class="tab-pane fade" id="titleSettings-tab-pane" role="tabpanel" aria-labelledby="titleSettings-tab" tabindex="0"><partial name="Partials/_TitleSettings" /></div>
+        <div class="tab-pane fade" id="ispPartnerType-tab-pane" role="tabpanel" aria-labelledby="ispPartnerType-tab" tabindex="0"><partial name="Partials/_IspPartnerType" /></div>
+        <div class="tab-pane fade" id="holdALot-tab-pane" role="tabpanel" aria-labelledby="holdALot-tab" tabindex="0"><partial name="Partials/_HoldALot" /></div>
+        <div class="tab-pane fade" id="dreamweaver-tab-pane" role="tabpanel" aria-labelledby="dreamweaver-tab" tabindex="0"><partial name="Partials/_Dreamweaver" /></div>
+        <div class="tab-pane fade" id="pdfSettings-tab-pane" role="tabpanel" aria-labelledby="pdfSettings-tab" tabindex="0"><partial name="Partials/_PdfSettings" /></div>
     </div>
 </div>
 
+@section Scripts{
+    <script src="~/js/partnerconfiguration/settings.js" asp-append-version="true"></script>
+    <script src="~/js/partnerconfiguration/dreamweaver.js" asp-append-version="true"></script>
+    <script src="~/js/partnerconfiguration/title-settings.js" asp-append-version="true"></script>
+    <script src="~/js/partnerconfiguration/hold-a-lot.js" asp-append-version="true"></script>
+    <script src="~/js/partnerconfiguration/partner-configuration.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>
+}
+
+@section Styles{
+    <link href="~/css/partnerconfiguration/partner-configuration.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
+}
+
+@section Modals{
+    <div class="modal fade" id="customizedContentModal" tabindex="-1" aria-labelledby="customizedContentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="customizedContentModalLabel">Edit Customized Content</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="" data-bs-dismiss="modal">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -10,25 +10,25 @@ public partial class Prospect
 
     public string Email { get; set; } = null!;
 
-    public string? HomePhone { get; set; }
+    public string HomePhone { get; set; }
 
-    public string? MobilePhone { get; set; }
+    public string MobilePhone { get; set; }
 
-    public string? ZipCode { get; set; }
+    public string ZipCode { get; set; }
 
-    public string? CardNumber { get; set; }
+    public string CardNumber { get; set; }
 
-    public string? Address { get; set; }
+    public string Address { get; set; }
 
-    public string? State { get; set; }
+    public string State { get; set; }
 
-    public string? City { get; set; }
+    public string City { get; set; }
 
-    public string? AccessKey { get; set; }
+    public string AccessKey { get; set; }
 
-    public string? WelcomeImage { get; set; }
+    public string WelcomeImage { get; set; }
 
-    public int? PartnerId { get; set; }
+    public int PartnerId { get; set; }
 
     public int CreatedByPartnerId { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿using BHI.SalesArchitect.Infrastructure.Repositories;
 using BHI.SalesArchitect.Model;
 using BHI.SalesArchitect.Model.DB;
-using MvcJqGrid;
 
 namespace BHI.SalesArchitect.Service.Implementations
 {
@@ -22,7 +21,7 @@ namespace BHI.SalesArchitect.Service.Implementations
             return _communityRepository.GetByCommunityIDs(communityIds);
         }
 
-        public IEnumerable<GridCommunityResult> GetGridCommunitiesList(int partnerId, string searchTerm, int commStatusType, int commType)
+        public IEnumerable<GridCommunityResult> GetGridCommunitiesList(int partnerId, string searchTerm, int commStatusType = 0, int commType = 0)
         {
             var communities = _communityRepository.GetProcDataByPartnerId(partnerId);
             if (!string.IsNullOrWhiteSpace(searchTerm))

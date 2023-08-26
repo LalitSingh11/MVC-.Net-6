@@ -1,8 +1,8 @@
 ﻿@using System.Security.Claims;
 <div class="span12 search-filter-container">
     <div class="community-status-filter-container">
-        <label class="community-status-filter-label">Type</label>
-        <select class="community-status-filter" id="commTypeFilter" onchange="onCommunityTypeChange(this.value);">
+        <label class="community-status-filter-label">Type </label>
+        <select class="community-status-filter m-1" id="commTypeFilter" onchange="onCommunityTypeChange(this.value);">
             <option value="0">BDXLive Connected</option>
             <option value="1">Standalone</option>
             <option value="2">All</option>
@@ -12,8 +12,8 @@
     @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
     {
         <div class="community-status-filter-container" >
-            <label class="community-status-filter-label">Status</label>
-            <select class="community-status-filter" id="commStatusFilter" onchange="onCommunityStatusChange(this.value);" >
+            <label class="community-status-filter-label">Status </label>
+            <select class="community-status-filter m-1" id="commStatusFilter" onchange="onCommunityStatusChange(this.value);" >
                 <option value="0">Active</option>
                 <option value="1">Inactive</option>
                 <option value="2">All</option>

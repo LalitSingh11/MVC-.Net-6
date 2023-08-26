@@ -1,4 +1,5 @@
 ﻿using BHI.SalesArchitect.Model.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 {
@@ -11,9 +12,15 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
 
         }
-        public ProspectConfiguration GetByPartnerId(int partnerId)
+        public async Task<ProspectConfiguration> GetByPartnerId(int partnerId)
         {
-            return _dbContext.ProspectConfigurations.Where(x => x.PartnerId == partnerId).FirstOrDefault(); 
+            return await _dbContext.ProspectConfigurations.Where(x => x.PartnerId == partnerId).FirstOrDefaultAsync(); 
+        }
+
+        public async Task<bool> Update(ProspectConfiguration config)
+        {
+            _dbContext.Update(config);
+            return await _dbContext.SaveChangesAsync() > 0;
         }
     }
 }

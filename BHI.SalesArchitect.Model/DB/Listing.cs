@@ -13,13 +13,13 @@ public partial class Listing
 
     public string Type { get; set; } = null!;
 
-    public string? Address { get; set; }
+    public string Address { get; set; }
 
-    public string? City { get; set; }
+    public string    City { get; set; }
 
-    public string? State { get; set; }
+    public string State { get; set; }
 
-    public string? Zip { get; set; }
+    public string Zip { get; set; }
 
     public decimal? BasePrice { get; set; }
 
@@ -33,11 +33,11 @@ public partial class Listing
 
     public int? Stories { get; set; }
 
-    public string? MasterBedLocation { get; set; }
+    public string MasterBedLocation { get; set; }
 
-    public string? VirtualTour { get; set; }
+    public string VirtualTour { get; set; }
 
-    public string? PlanType { get; set; }
+    public string PlanType { get; set; }
 
     public int? LivingAreas { get; set; }
 
@@ -45,13 +45,13 @@ public partial class Listing
 
     public bool? Basement { get; set; }
 
-    public string? EnvisionDesignCenter { get; set; }
+    public string EnvisionDesignCenter { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
-    public string? VendorReference { get; set; }
+    public string VendorReference { get; set; }
 
-    public string? BuilderListingUrl { get; set; }
+    public string BuilderListingUrl { get; set; }
 
     public virtual ICollection<BuilderBrandListing> BuilderBrandListings { get; set; } = new List<BuilderBrandListing>();
 

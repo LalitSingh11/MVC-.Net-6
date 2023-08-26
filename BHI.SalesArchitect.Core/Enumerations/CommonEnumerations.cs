@@ -1,7 +1,7 @@
 ﻿namespace BHI.SalesArchitect.Core.Enumerations
 {
     public class CommonEnumerations
-    {
+    { 
         public enum AjaxCallStatus
         {
             Accepted = 1,
@@ -28,7 +28,6 @@
         {
             DoNotSend = 0,
             Send = 1
-
         }
 
         public enum RequestType
@@ -37,7 +36,6 @@
             Register = 2,
             UUP = 3
         }
-
         public enum PartnerType
         {
             SalesArchitect = 1,
@@ -45,7 +43,6 @@
             BuilderBrandedApp = 3,
             Others = 4
         }
-
         public enum NHNXSource
         {
             BuilderSalesNavigator = 1,
@@ -62,7 +59,6 @@
             HEXCOL = 5,
             GEN = 6
         }
-
         public enum PlatformType
         {
             iOS = 1,

@@ -1,5 +1,5 @@
 ﻿using BHI.SalesArchitect.Core.Enumerations;
-using BHI.SalesArchitect.Model.DB;
+using BHI.SalesArchitect.Core.Extensions;
 using BHI.SalesArchitect.Service;
 using BHI.SalesArchitect.WebAdmin.Models.Communities;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +24,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private readonly IListingService _listingService;
         private readonly ILotStateService _lotStateService;
         private readonly ILotListingService _lotListingService;
+        private readonly IRoleService _roleService;
 
         public CommunitiesController(ICommunityService communityService,
             ICommunityUserService communityUserService,
@@ -37,7 +38,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ILotService lotService,
             IListingService listingService,
             ILotStateService lotStateService,
-            ILotListingService lotListingService
+            ILotListingService lotListingService,
+            IRoleService roleService
             ) 
         {
             _communityService = communityService;
@@ -53,18 +55,19 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _lotStateService = lotStateService;
             _listingService = listingService;
             _lotListingService = lotListingService;
+            _roleService = roleService;
         }
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            InitViewBag();
+            await InitViewBag();
             ViewData["PartnerName"] = _sessionService.PartnerName ?? PartnerName;
             return View();
         }
         #region GRIDS
 
         [HttpGet]
-        public IActionResult GetCommunitiesGrid(GridSettings gridSettings, string searchTerm, int commStatusType = 0, int commType = 0)
+        public async Task<IActionResult> GetCommunitiesGrid(GridSettings gridSettings, string searchTerm, int commStatusType = 0, int commType = 0)
         {
             var communities = _communityService.GetGridCommunitiesList(_sessionService.PartnerID ?? PartnerId, searchTerm, commStatusType, commType);
             _sessionService.CommunityID = communities.FirstOrDefault()?.Id ?? 1;
@@ -74,16 +77,15 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             var communitySites = _communitySiteService.GetActiveCommunitySites(commIds).ToList();
             var communityMasterSites = _communityService.GetByCommunityIDs(commIds).ToList();
             var communitySiteGeoJson = _communitySiteGeoJsonService.GetByCommunityIds(commIds).ToList();
-            var partnerConfig = _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
+            var partnerConfig = await _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
             var jsonData = new
             {
                 total = (communities.Count() % gridSettings.PageSize == 0) ? communities.Count() / gridSettings.PageSize : communities.Count() / gridSettings.PageSize + 1,
                 page = gridSettings.PageIndex,
                 records = communities.Count(),
                 rows = (
-                        from c in communities
-                        orderby c.Name
-                        select new CommunityGridModel()
+                        communities.Select(c =>
+                        new CommunityGridModel()
                         {
                             id = c.Id,
                             cell = new Cell()
@@ -114,7 +116,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                                 Status = c.Status,
                                 Type = c.Bdxid == 0 ? "Standalone" : "BDXLive Connected"
                             }
-                        }).ToList().Select(y => new
+                        }).ToList().OrderByDynamic(!string.IsNullOrEmpty(gridSettings.SortColumn) ? gridSettings.SortColumn : "cell.Name", gridSettings.SortOrder == "desc").Select(y => new
                         {
                             y.id,
                             cell = new[]
@@ -147,7 +149,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                                 y.cell.DateDeleted.ToString(),
                                 y.cell.DeletedBy.ToString()
                             }
-                        }).ToArray().Skip((gridSettings.PageIndex - 1) * gridSettings.PageSize).Take(gridSettings.PageSize)
+                        }).ToArray().Skip((gridSettings.PageIndex - 1) * gridSettings.PageSize).Take(gridSettings.PageSize))
             };
             return new JsonResult(jsonData);        
         }
@@ -183,8 +185,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLotInfo(int lotId, int commId)
         {
-            var listings = _listingService.GetByCommunityId(commId);
             _sessionService.CommunityID = commId;
+            var listings = _listingService.GetByCommunityId(commId);
             var lotListings = _lotListingService.GetByLotId(lotId);
             var lotInfo = new
             {
@@ -205,11 +207,11 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             return Ok(lotInfo);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IActionResult> GetListingImages(int listingId, int lotid)
         {
             return Ok();
-        }
+        }*/
         /*  [HttpGet]
           public IActionResult GetLotImage(int id, int maxwidth = 0, int maxheight = 0)
           {
@@ -244,15 +246,15 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
 
         #region Post Methods
         [HttpPost]
-        public async Task<IActionResult> UpdateLotAsync([FromBody] LotListingsDataModel data)
+        public async Task<IActionResult> UpdateLot([FromBody] LotListingsDataModel data)
         {
             if(ModelState.IsValid)
             {
-                await _lotService.UpdateLot(data.lot);
-                var a = await _lotListingService.UpdateLotListings(data.lotListing, data.lot.Id);
-                return Json(new { Success = "true" });
+                var result1 = await _lotService.UpdateLot(data.lot);
+                var result2 = await _lotListingService.UpdateLotListings(data.lotListing, data.lot.Id);
+                return Json(new { Success = result1 || result2 });
             }
-            return BadRequest(new { Success = "false" });
+            return BadRequest(new { Success = false });
         }
         #endregion
 
@@ -304,9 +306,9 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             }
             return false;
         }
-       private void InitViewBag()
+       private async Task InitViewBag()
        {
-            var partnerConfig = _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
+            var partnerConfig = await _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
             ViewBag.showDreamweaver = partnerConfig != null ? partnerConfig.IsDreamweaver : false;
             ViewBag.IspPartnerType = partnerConfig?.IspPartnerType ?? 1;
             ViewBag.PreviewPlugin = partnerConfig?.PreviewIspplugin ?? false;

@@ -4,7 +4,7 @@ const GET_LOT_INFO = "communities/getlotinfo";
 var currentLotRowId = -1;
 var ckEditorInstance;
 
-$().ready(function () {
+$(function () {
     ClassicEditor
         .create(document.querySelector('#descriptionEditor'), {
             removePlugins: ['MediaEmbed'],
@@ -37,26 +37,11 @@ function onLotSelectRow(rowId, status) {
     }
 }
 
-function fetchLotInfo() {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: `${GET_LOT_INFO}?lotId=${currentLotRowId}&commId=${currentCommRowId}`,
-            contentType: "application/json",
-            type: 'GET',
-            dataType: 'json',
-            success: function (result) {
-                resolve(result);
-            },
-            error: function (xhr) {
-                reject(xhr);
-            }
-        });
-    });
-}
-
 async function populateLotInfoForm() {
+    let url = `${GET_LOT_INFO}?lotId=${currentLotRowId}&commId=${currentCommRowId}`
 
-    var lotInfo = await fetchLotInfo();
+    let lotInfo = await executeHttpRequest(url, METHOD_GET);
+
     $("#lotId").val(lotInfo.lotData.internalReference)
     $("#externalReference").val(lotInfo.lotData.externalReference);
     $("#amenityCheckbox").prop("checked", lotInfo.lotData.isAmenity);
@@ -73,7 +58,7 @@ async function populateLotInfoForm() {
     $("#contactUrl").val(lotInfo.lotData.contactLink);
     $("#contactButtonText").val(lotInfo.lotData.buttonText);
     $("#videoUrl").val(lotInfo.lotData.videoUrl);
-
+    // populating lot status dropdown
     let lotStatusDropdown = $("#lotStatus");
     lotStatusDropdown.empty();
     $.each(lotInfo?.lotState, function (index, status) {

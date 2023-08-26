@@ -2,7 +2,7 @@
     var GRID_PARTNER = "GridPartner";
 }
 
-<div class="container">
+<div class="container-fluid">
     <h2>Partners</h2>
     <hr />
     <partial name="Partials/_FilterAndNewPartner" />
@@ -19,7 +19,7 @@
             .AddColumn(new Column("Actions").SetSortable(false).SetAlign(Align.Center).SetWidth(60))
             .SetUrl(Url.Action("GetPartners"))
             .SetRequestType(RequestType.Get)
-            .SetWidth(1350)
+            .SetAutoWidth(true)
             .SetHeight(450)
             .SetScrollRows(true)
             .SetRowNum(10000)
@@ -28,7 +28,6 @@
             .OnSelectRow("onPartnerRowSelected(rowid, status)")
             .OnLoadComplete("onPartnerLoadComplete(xhr)")
             .SetLoadText("Partners loading...")
-        )
- 
+        ) 
     </div>
 </div>

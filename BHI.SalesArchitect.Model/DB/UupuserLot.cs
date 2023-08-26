@@ -17,5 +17,5 @@ public partial class UupuserLot
 
     public int BdxcommunityId { get; set; }
 
-    public string? SiteImageName { get; set; }
+    public string SiteImageName { get; set; }
 }

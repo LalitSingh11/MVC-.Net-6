@@ -6,7 +6,7 @@ const DELETE_USER_URL = "partneradministration/deleteuser"
 var currentUserRowId = -1;
 var currentPartnerRowId = -1;
 
-$().ready(function () {
+$(function () {
     $("#update_user_form").validate({
         rules: {
             firstName: "required",
@@ -83,8 +83,9 @@ function populateUserForm(user) {
         $(`#gridCheck`).prop("checked", true);
 }
 
-function updateUser() {
+async function updateUser() {
     if ($('#update_user_form').valid()) {
+        showLoader();
         let user = getFormObj(`update_user_form`);
         let data = {
             UserName: user.username,
@@ -94,27 +95,18 @@ function updateUser() {
             PhoneNumber: user?.phone,
             Password: user?.password,
             ConfirmPassword: user?.confirm_password,
-            IsPartnerSuperAdmin: user?.gridCheck == undefined ? false : true,
+            IsPartnerSuperAdmin: user?.partnerSuperAdminCheck == undefined ? false : true,
             AssociationIds: currentPartnerRowId?.toString()
         };
 
-        $.ajax({
-            url: `${UPDATE_USER_URL}?userId=${currentUserRowId}`,
-            contentType: "application/json",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            data: JSON.stringify(data)
-        }).done(function (result) {
-            $(GRID_USER).jqGrid().trigger('reloadGrid');
-            if (result?.success == "true")
-                showToast("User Updated");
-            else
-                showToast("Unsuccessful", false);
-        }).fail(function (xhr) {
+        let url = `${UPDATE_USER_URL}?userId=${currentUserRowId}`;
+        let result = await executeHttpRequest(url, METHOD_POST, data);
+        $(GRID_USER).jqGrid().trigger('reloadGrid');
+        if (result?.success)
+            showToast("User Updated");
+        else
             showToast("Unsuccessful", false);
-            console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
-        });
+        hideLoader();
     }
     else
         showToast("Invalid User Details", false);
@@ -132,29 +124,21 @@ function onPartnerLoadComplete(data) {
     $(GRID_PARTNER).jqGrid('setSelection', id, true);
 }
 
-function deleteUser() {
+async function deleteUser() {
     let userId = currentUserRowId;
     if (userId == -1) {
         showToast("Please Select a User to delete", false);
         return;
     }
-    $.ajax({
-        url: `${DELETE_USER_URL}?userId=${ currentUserRowId }`,
-        contentType: "application/json",
-        type: 'POST',
-        async: true,
-        dataType: 'json',
-        data: ''
-    }).done(function (result) {
-        $(GRID_USER).jqGrid().trigger('reloadGrid');
-        if (result?.success == "true")
-            showToast("User Deleted Successfully");
-        else
-            showToast("Unsuccessful", false);
-    }).fail(function (xhr) {
+
+    let url = `${DELETE_USER_URL}?userId=${currentUserRowId}`;
+    let result = await executeHttpRequest(url, METHOD_POST);
+    $(GRID_USER).jqGrid().trigger('reloadGrid');
+    if (result?.success)
+        showToast("User Deleted Successfully");
+    else
         showToast("Unsuccessful", false);
-        console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
-    });
+
 }
 
 function onPartnerStatusChange(selectedValue) {

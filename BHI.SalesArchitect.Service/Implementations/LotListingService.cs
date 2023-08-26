@@ -18,8 +18,9 @@ namespace BHI.SalesArchitect.Service.Implementations
 
         public async Task<bool> UpdateLotListings(List<LotListing> lotListings, int lotId)
         {
-            await _lotListingRepository.DeleteLotListingsByLotId(lotId);
-            return await _lotListingRepository.AddLotListings(lotListings);
+            var res1 = await _lotListingRepository.DeleteLotListingsByLotId(lotId);
+            var res2 = await _lotListingRepository.AddLotListings(lotListings);
+            return res1 || res2;
         }
     }
 }

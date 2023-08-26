@@ -10,11 +10,11 @@ public partial class ProspectLead
 
     public string EmailAddress { get; set; } = null!;
 
-    public string? PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
-    public string? ZipCode { get; set; }
+    public string ZipCode { get; set; }
 
-    public string? Comments { get; set; }
+    public string Comments { get; set; }
 
     public int? CommunityId { get; set; }
 
@@ -22,19 +22,19 @@ public partial class ProspectLead
 
     public DateTime? SubmitDate { get; set; }
 
-    public string? ActionOwner { get; set; }
+    public string ActionOwner { get; set; }
 
-    public string? Response { get; set; }
+    public string Response { get; set; }
 
     public int? PartnerId { get; set; }
 
     public bool? IsApilead { get; set; }
 
-    public string? LeadType { get; set; }
+    public string LeadType { get; set; }
 
-    public string? LeadAction { get; set; }
+    public string LeadAction { get; set; }
 
-    public string? LeadPostingPassword { get; set; }
+    public string LeadPostingPassword { get; set; }
 
     public int? Platform { get; set; }
 

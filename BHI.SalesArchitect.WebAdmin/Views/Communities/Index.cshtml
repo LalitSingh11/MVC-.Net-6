@@ -1,14 +1,10 @@
-﻿@using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Components.Web
-@using BHI.SalesArchitect.Core.Enumerations;
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title= "Communities";
 }
 
-<div>
-    <partial name="_Toast" />
-    <div class="row"><div class="span12 section-heading"><h2>@ViewData["PartnerName"]</h2></div></div>
+<div class="container-fluid">
+    <div class="row"><h3><em>@ViewData["PartnerName"]</em></h3></div>
     <partial name="Partials/_FilterAndSearch" />
     <br />
     <partial name="Partials/_CommunityGrid" />
@@ -32,6 +28,7 @@
 }
 @section Styles{
     <link href="~/css/communities/search-filter.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/communities/listings-list.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
 }
 @section Modals{

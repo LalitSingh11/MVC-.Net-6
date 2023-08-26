@@ -7,17 +7,17 @@ public partial class Consumer
 {
     public int Id { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; }
 
-    public string? Password { get; set; }
+    public string Password { get; set; }
 
-    public string? FacebookEmail { get; set; }
+    public string FacebookEmail { get; set; }
 
-    public string? FacebookId { get; set; }
+    public string FacebookId { get; set; }
 
-    public string? GoogleEmail { get; set; }
+    public string GoogleEmail { get; set; }
 
-    public string? GoogleId { get; set; }
+    public string GoogleId { get; set; }
 
     public bool? IsActive { get; set; }
 
@@ -37,5 +37,5 @@ public partial class Consumer
 
     public virtual ICollection<OneTimePassword> OneTimePasswords { get; set; } = new List<OneTimePassword>();
 
-    public virtual Partner? Partner { get; set; }
+    public virtual Partner Partner { get; set; }
 }

@@ -12,9 +12,7 @@ public partial class CustomizedContent
 
     public int? CustomizedContentTypeId { get; set; }
 
-    public string? Value { get; set; }
+    public string Value { get; set; }
 
-    public bool isCommunityContent { get; set; }
-
-    public virtual CustomizedContentType? CustomizedContentType { get; set; }
+    public virtual CustomizedContentType CustomizedContentType { get; set; }
 }

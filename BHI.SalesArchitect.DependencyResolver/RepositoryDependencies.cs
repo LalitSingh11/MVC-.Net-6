@@ -14,6 +14,10 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<ICommunitySiteGeoJsonRepository, CommunitySiteGeoJsonRepository>();
             services.AddScoped<ICommunitySiteRepository, CommunitySiteRepository>();
             services.AddScoped<ICommunityUserRepository, CommunityUserRepository>();
+            services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+            services.AddScoped<ICustomizedContentRepository, CustomizedContentRepository>();
+            services.AddScoped<ICustomizedContentTypeRepository, CustomizedContentTypeRepository>();
+            services.AddScoped<ICustomizedLocationRepository, CustomizedLocationRepository>();
             services.AddScoped<IListingRepository, ListingRepository>();
             services.AddScoped<ILotListingRepository, LotListingRepository>();
             services.AddScoped<ILotRepository, LotRepository>();

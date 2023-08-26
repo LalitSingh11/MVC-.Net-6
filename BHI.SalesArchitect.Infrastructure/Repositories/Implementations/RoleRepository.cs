@@ -7,7 +7,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         private SalesArchitectContext _dbContext;
         public RoleRepository(SalesArchitectContext dbContext)
         {
-            _dbContext = dbContext; 
+            _dbContext = dbContext;
             Initialize();
         }
         public Role BHIAdmin { get; set; }
@@ -23,7 +23,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 
         public Role GetByCode(string code)
         {
-            return _dbContext.Roles.Where(x => x.Code ==  code).FirstOrDefault();
+            return _dbContext.Roles.Where(x => x.Code == code).FirstOrDefault();
         }
 
         public Role GetByUserId(int userId)

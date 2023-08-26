@@ -1,5 +1,7 @@
-﻿namespace BHI.SalesArchitect.Model.DB;
+﻿using System.Diagnostics;
 
+namespace BHI.SalesArchitect.Model.DB;
+[DebuggerDisplay("Id={Id}")]
 public partial class BuilderBrand
 {
     public int Id { get; set; }

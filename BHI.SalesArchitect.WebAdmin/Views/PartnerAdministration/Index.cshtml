@@ -1,18 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Web
-@using BHI.SalesArchitect.Core.Enumerations;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Partner Administration";
 }
 
-<div >
-    <partial name="_Toast" />
+<div class="container-fluid">
     <br />
     <partial name="Partials/_PartnersList" />
     <br />
     <partial name="Partials/_UsersList" />
     <br />
+    <br />
+    <partial name="Partials/_UserInformationForm" />
     <br />
     <br />
     <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using BHI.SalesArchitect.DependencyResolver;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -38,8 +37,7 @@ var config = builder.Configuration.AddJsonFile("appsettings.json").Build();
 builder.Services.AddDbContext<SalesArchitectContext>(options =>
         options.UseSqlServer(config.GetSection("ConnectionString").Value), ServiceLifetime.Transient);
 
-//builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddHttpContextAccessor();
 RepositoryDependencies repositoryDependencyResolver = new(builder.Services);
 ServiceDependencies servicesDependencyResolver = new(builder.Services);
 
@@ -65,7 +63,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 //app.UseCors();
-
 
 app.UseAuthentication();
 

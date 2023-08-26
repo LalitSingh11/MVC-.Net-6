@@ -1,6 +1,6 @@
 ﻿#header {
     position: absolute;
-    top: 10px;
+    top: 16px;
     right: 10px;
     display: flex;
     gap: 8px;
@@ -11,7 +11,7 @@
 
     #header li {
         font-size: 16.5px;
-        color: #333;
+        color: #bd0a46;
     }
 
 #header-username {
@@ -26,22 +26,16 @@
     margin-left: 10px;
     color: #777;
 }
-
-.branding a {
-    font-size: 36px;
-    color: #336699;
-    text-decoration: none; 
-    font-weight: bold;
+#header a {
+    text-decoration: none;
+    color: rebeccapurple;
 }
 
-.branding {
-    margin: 10px;
-}
-
-#header li a:hover {
-    color: #ff6600; 
-}
-
-.branding a:hover {
-    color: #0db52f;
+    #header a:hover {
+        font-weight: bold; 
+        color: #bd0a46;
+    }
+.logo {
+    height: 60px;
+    width: 240px;
 }

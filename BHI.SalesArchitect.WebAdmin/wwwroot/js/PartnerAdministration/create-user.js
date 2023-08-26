@@ -2,7 +2,7 @@
 "use strict";
 var currentRowId = -1;
 const CREATE_USER_URL = "adduser";
-$().ready(function () {
+$(function () {
     $("#create_user_form").validate({
         rules: {
             create_firstName: "required",
@@ -56,7 +56,7 @@ function onPartnerUserRowSelected(rowid) {
     currentRowId = rowid;
 }
 
-function createUser() {
+async function createUser() {
     if (currentRowId == -1) {
         showToast("Please select a partner for User", false);
         return;
@@ -76,21 +76,11 @@ function createUser() {
             AssociationIds: currentRowId?.toString()
         };        
 
-        $.ajax({
-            url: CREATE_USER_URL,
-            contentType: "application/json",
-            type: 'POST',
-            dataType: 'json',
-            data: JSON.stringify(data)
-        }).done(function (result) {
-            if (result?.success == "true")
-                showToast("User Created");
-            else
-                showToast(data?.message, false);
-        }).fail(function (xhr) {
-            showToast("Unsuccessful", false);
-            console.log('error : ' + xhr.status + ' - ' + xhr.statusText + ' - ' + xhr.responseText);
-        });
+        let result = await executeHttpRequest(CREATE_USER_URL, METHOD_POST, data);
+        if (result?.success)
+            showToast("User Created");
+        else
+            showToast(result?.message, false);
     }
     else
         showToast("Invalid Details", false);

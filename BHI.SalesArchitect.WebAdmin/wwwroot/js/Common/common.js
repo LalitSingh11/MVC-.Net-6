@@ -1,38 +1,77 @@
 ﻿"use strict";
 
+const METHOD_GET = "GET";
+const METHOD_POST = "POST";
+
+async function executeHttpRequest(uri, method, body) {
+    const options = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    if (body)
+        options.body = JSON.stringify(body);
+
+    try {
+        const response = await fetch(uri, options);
+        const responseData = await response?.json();
+        return responseData;
+    } catch (error) {
+        showToast("Something went wrong!", false);
+        console.warn(error);
+    }
+}
+
 function showToast(message = "", success = true, delayInMilliseconds = 3000) {
-    const toast = $('#myToast');
-    const toastBody = toast.find('.toast-body');
-    const toastHeader = toast.find('.toast-header');
-    const toastHeaderStrong = toast.find('.mr-auto');
+    const toast = document.getElementById('myToast');
+    const toastBody = toast.querySelector('.toast-body');
+    const toastHeader = toast.querySelector('.toast-header');
+    const toastHeaderStrong = toast.querySelector('.mr-auto');
 
-    toastBody.html(`<b>${message}<b>`);
-    toastHeaderStrong.html(success ? "<b>Success</b>" : "<b>Error</b>");
+    toastBody.innerHTML = `<b>${message}</b>`;
+    toastHeaderStrong.innerHTML = success ? "Success" : "Error";
 
-    if (success)
-        toastHeader.removeClass('bg-danger').addClass('bg-success');
-    else 
-        toastHeader.removeClass('bg-success').addClass('bg-danger');
+    if (success) {
+        toastHeader.classList.remove('bg-danger');
+        toastHeader.classList.add('bg-success');
+    } else {
+        toastHeader.classList.remove('bg-success');
+        toastHeader.classList.add('bg-danger');
+    }
 
-    toast.toast('show');
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+
     setTimeout(function () {
-        toast.toast('hide');
+        bsToast.hide();
     }, delayInMilliseconds);
 }
 
 function getFormObj(formId) {
     let formParams = {};
-    $('#' + formId)
-        .serializeArray()
-        .forEach(function (item) {
-            if (formParams[item.name]) {
-                formParams[item.name] = [formParams[item.name]];
-                formParams[item.name].push(item.value)
-            } else {
-                formParams[item.name] = item.value
-            }
-        });
+    const form = document.getElementById(formId);
+    const formElements = form.elements;
+
+    for (const item of formElements) {
+        if (item.name) {
+            if (item.type == "checkbox")
+                formParams[item.name] = item.checked;
+            else
+                formParams[item.name] = item.value;
+        }
+    }
     return formParams;
 }
 
+function showLoader() {
+    document.getElementById("universal-loader").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+}
+
+function hideLoader() {
+    document.getElementById("universal-loader").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+}
 

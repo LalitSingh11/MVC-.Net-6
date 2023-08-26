@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BHI.SalesArchitect.Model.DB;
+﻿namespace BHI.SalesArchitect.Model.DB;
 
 public partial class CustomizedContentType
 {
@@ -9,7 +6,7 @@ public partial class CustomizedContentType
 
     public int? CustomizedLocationId { get; set; }
 
-    public string? ContentType { get; set; }
+    public string ContentType { get; set; }
 
-    public virtual CustomizedLocation? CustomizedLocation { get; set; }
+    public virtual CustomizedLocation CustomizedLocation { get; set; }
 }

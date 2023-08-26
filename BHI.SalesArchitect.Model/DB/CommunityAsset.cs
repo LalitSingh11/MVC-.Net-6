@@ -10,13 +10,13 @@ public partial class CommunityAsset
 
     public string Value { get; set; } = null!;
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     public int PartnerId { get; set; }
 
     public int? Sequence { get; set; }
 
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
     public virtual AssetType AssetType { get; set; } = null!;
 

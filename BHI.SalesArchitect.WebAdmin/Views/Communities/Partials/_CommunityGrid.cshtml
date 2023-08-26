@@ -5,7 +5,7 @@
 @{
     var COMMUNITIES_GRID = "Communities";
 }
-<div class="sapn-12 overflow-auto">
+<div>
 
     @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
     {
@@ -29,7 +29,7 @@
             .AddColumn(new Column("cell.DateDeleted").SetSortable(true).SetAlign(Align.Center).SetLabel("Date Deleted").SetWidth(110))
             .AddColumn(new Column("cell.DeletedBy").SetSortable(true).SetAlign(Align.Center).SetLabel("Deleted By").SetWidth(110))
             .SetUrl(Url.Action("GetCommunitiesGrid"))
-            //.SetAutoWidth(true)
+            .SetAutoWidth(true)
             .SetHeight(230)
             .SetRowNum(20)
             .SetAutoEncode(true)
@@ -42,8 +42,7 @@
             .SetRowNumWidth(35)
             .OnSelectRow("onCommunitiesRowSelected(rowid)")
             .OnLoadComplete("onCommunitiesLoadComplete()")
-            //.SetShrinkToFit(false)
-            //.SetForceFit(true)
+            .SetShrinkToFit(false)
             .SetLoadText("Communities loading...")
             .SetEmptyRecords("<b>No Communities Found.<b>")
             )

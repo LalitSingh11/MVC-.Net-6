@@ -8,13 +8,13 @@ public partial class ListingInteractiveMedium
 
     public int PartnerId { get; set; }
 
-    public string? Url { get; set; }
+    public string Url { get; set; }
 
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
-    public int? Sequence { get; set; }
+    public int Sequence { get; set; }
 
-    public string? Type { get; set; }
+    public string Type { get; set; }
 
     public virtual Listing Listing { get; set; } = null!;
 

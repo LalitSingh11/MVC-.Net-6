@@ -14,7 +14,7 @@ public partial class BuilderBrandListing
 
     public DateTime? DateDeleted { get; set; }
 
-    public string? DeletedBy { get; set; }
+    public string DeletedBy { get; set; }
 
     public virtual BuilderBrand BuilderBrand { get; set; } = null!;
 

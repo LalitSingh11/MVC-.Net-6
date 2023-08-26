@@ -15,7 +15,7 @@ public partial class ConsumerAppConfigurable
 
     public int? BuilderBrandId { get; set; }
 
-    public virtual BuilderBrand? BuilderBrand { get; set; }
+    public virtual BuilderBrand BuilderBrand { get; set; }
 
     public virtual Partner Partner { get; set; } = null!;
 }

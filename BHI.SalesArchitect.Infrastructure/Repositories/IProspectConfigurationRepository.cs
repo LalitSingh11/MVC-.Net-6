@@ -4,6 +4,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
 {
     public interface IProspectConfigurationRepository
     {
-        ProspectConfiguration GetByPartnerId(int partnerId);
+        Task<ProspectConfiguration> GetByPartnerId(int partnerId);
+        Task<bool> Update(ProspectConfiguration config);
     }
 }

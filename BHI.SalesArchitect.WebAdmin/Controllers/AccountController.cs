@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Diagnostics;
-using BHI.SalesArchitect.WebAdmin.Models.Account;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {

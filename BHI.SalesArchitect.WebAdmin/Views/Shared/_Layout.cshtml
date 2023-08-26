@@ -1,7 +1,9 @@
-﻿@using Microsoft.AspNetCore.Authentication.Cookies;
+﻿@using BHI.SalesArchitect.Core.Constants;
+@using Microsoft.AspNetCore.Authentication.Cookies;
 @using Microsoft.AspNetCore.Authentication;
 @using Microsoft.AspNetCore.Mvc;
 @using System.Security.Claims;
+@using static BHI.SalesArchitect.Core.Enumerations.CommonEnumerations;
 <html>
 <head>
     <meta charset="utf-8" />
@@ -15,9 +17,7 @@
     @*<link href="~/lib/bootstrap-modal/css/bootstrap-modal.min.css" rel="stylesheet" asp-append-version="true" />*@
     <link href="~/css/header.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/toast.css" rel="stylesheet" asp-append-version="true" />
-
-
-
+    <link href="~/css/loader.css" rel="stylesheet" asp-append-version="true" />
 
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
@@ -28,42 +28,47 @@
     <script src="~/lib/ckeditor5/ckeditor.min.js" asp-append-version="true"></script>
 </head>
 <body class="container-fluid">
-    <h1 class="branding"><a class="ir logo" href="/">Sales Architect</a></h1>
+    <h1 class="branding">
+        <a class="logo-link" href="/">
+            <img class="logo" src="~/content/images/logo.png" alt="Sales Architect">
+        </a>
+    </h1>
+    <div id="universal-loader" class="loader"></div>
+    <partial name="_Toast" />
+    <div id="overlay" class="overlay"></div>
     <ul id="header">
-    @if(User.Identity.IsAuthenticated)
-    {
-        <li>Hello, <span id="header-username">@User.Identity.Name</span></li>
-        <li><a href="/HelpDocuments">Help</a></li>
-        @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+        @if (User.Identity.IsAuthenticated)
         {
-            <li><a asp-controller="NewHomeNavigator" asp-action="Index">New Home Navigator</a></li>
-        }@if (!User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR"))
-        {
-            <li><a asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
-        }
-        @if (!User.HasClaim(ClaimTypes.Role, "PARTNERREADONLY") && !User.HasClaim(ClaimTypes.Role, "LOTSTATUSEDITOR") && !User.HasClaim(ClaimTypes.Role, "PARTNERADMIN"))
-        {
-            <li><a asp-controller="PartnerConfiguration" asp-action="Index">Partner Configuration</a></li>
-        }
-        @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
-        {
-            <li ><a asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a></li>
-        } 
-        <li id="logoutLink">
-            <form asp-controller="Account" asp-action="LogOut" method="post" id="logoutForm" style="float:right;">
+            <li>Hello, <span id="header-username">@User.Identity.Name</span></li>
+            <li><a href="/HelpDocuments">Help</a></li>
+            @if (User.IsInRole(Roles.BHIADMIN))
+            {
+                <li><a asp-controller="NewHomeNavigator" asp-action="Index">New Home Navigator</a></li>
+            }
+            @if (!User.IsInRole(Roles.LOTSTATUSEDITOR))
+            {
+                <li><a asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
+            }
+            @if (User.IsInRole(Roles.PARTNERSUPERADMIN) || User.IsInRole(Roles.BHIADMIN))
+            {
+                <li><a asp-controller="PartnerConfiguration" asp-action="Index">Partner Configuration</a></li>
+            }
+            @if (User.IsInRole(Roles.BHIADMIN))
+            {
+                <li><a asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a></li>
+            }
+            <li id="logoutLink">
                 @Html.AntiForgeryToken()
                 <a asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a>
-            </form>
-        </li>
-    }
+            </li>
+        }
     </ul>
-        @RenderSection("Modals", required: false)
 
     <main role="main" class="container-fluid">
         @RenderBody()
         @RenderSection("Scripts", required: false)
-    </main>   
-
+        @RenderSection("Modals", required: false)
+    </main>
 </body>
 </html>
 

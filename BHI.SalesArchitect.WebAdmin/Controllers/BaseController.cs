@@ -28,7 +28,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         public string PartnerName
         {
             get { return GetPartnerName(); }
-        }public string PartnerDataKey
+        }
+        public string PartnerDataKey
         {
             get { return GetPartnerDataKey(); }
         }

@@ -20,7 +20,7 @@ public partial class CommunitySiteGeoJson
 
     public int? UserId { get; set; }
 
-    public string? GeoJsonfileName { get; set; }
+    public string GeoJsonfileName { get; set; }
 
     public virtual Community Community { get; set; } = null!;
 

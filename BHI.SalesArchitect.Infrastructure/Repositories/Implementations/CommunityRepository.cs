@@ -64,9 +64,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                     }
                 }
                 try
-                {
-                    
-                             
+                {  
                     using (var dataReader = command.ExecuteReader())
                     {
                         if (dataReader.HasRows)
@@ -99,10 +97,8 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 
                                 communities.Add(comm); 
                             }
-
                         }
                     }
-
                 }
                 catch (SqlException sqx)
                 {
