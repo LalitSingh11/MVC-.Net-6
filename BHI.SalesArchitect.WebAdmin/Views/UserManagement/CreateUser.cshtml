@@ -1,0 +1,41 @@
+﻿<div class="container-fluid border">
+    <br />
+    <h2>User Information</h2>
+    <hr />
+    <form class="row g-3 m-5" id="create_new_user_form">
+        <div class="col-md-6">
+            <label for="create_firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" name="create_firstName" id="create_firstName">
+        </div>
+        <div class="col-md-6">
+            <label for="create_lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="create_lastName" id="create_lastName">
+        </div>
+        <div class="col-md-6">
+            <label for="create_username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="create_username" id="create_username">
+        </div>
+        <div class="col-md-6">
+            <label for="create_email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="create_email" id="create_email">
+        </div>
+        <div class="col-md-6">
+            <label for="create_password">Password</label>
+            <input type="password" class="form-control" id="create_password" name="create_password">
+        </div>
+        <div class="col-md-6">
+            <label for="create_confirm_password">Confirm Password</label>
+            <input type="password" class="form-control" id="create_confirm_password" name="create_confirm_password">
+        </div>
+        <div class="col-md-6">
+            <label for="create_phone" class="form-label">Phone Number</label>
+            <input type="number" class="form-control" name="create_phone" id="create_phone">
+        </div>
+    </form>
+    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+        <footer class="footer ">
+            <button type="button" class="btn btn-primary" onclick="">Register User</button>
+            @*<button type="button" class="btn" onclick="reloadUser();">Cancel</button>*@
+        </footer>
+    </nav>
+</div>

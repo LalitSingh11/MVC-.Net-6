@@ -22,35 +22,135 @@ namespace BHI.SalesArchitect.Service.Implementations
         public async Task<bool> SaveProspectConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration)
         {
             var existingConfig = await GetByPartnerId(partnerId);
+            if (existingConfig != null)
+            {
+                existingConfig.UserId = userId;
+                existingConfig.IsIsp = prospectConfiguration.IsIsp;
+                existingConfig.IsSecured = prospectConfiguration.IsSecured;
+                existingConfig.ShowAllPlans = prospectConfiguration.ShowAllPlans;
+                existingConfig.ShowAllSpecs = prospectConfiguration.ShowAllSpecs;
+                existingConfig.IsHoverAllowed = prospectConfiguration.IsHoverAllowed;
+                existingConfig.RequestInfoModal = prospectConfiguration.RequestInfoModal;
+                existingConfig.SendLotId = prospectConfiguration.SendLotId;
+                existingConfig.LotPremiumOptionalDisplay = prospectConfiguration.LotPremiumOptionalDisplay;
+                existingConfig.SuppressBuilderLogo = prospectConfiguration.SuppressBuilderLogo;
+                existingConfig.SuppressBottomCommunityName = prospectConfiguration.SuppressBottomCommunityName;
+                existingConfig.SuppressTopCommunityName = prospectConfiguration.SuppressTopCommunityName;
+                existingConfig.DisplayLotList = prospectConfiguration.DisplayLotList;
+                existingConfig.DisplaySpecAddress = prospectConfiguration.DisplaySpecAddress;
+                existingConfig.AddModelHomesBanner = prospectConfiguration.AddModelHomesBanner;
+                existingConfig.ReplaceKeyIcon = prospectConfiguration.ReplaceKeyIcon;
+                existingConfig.OpenSpecDefault = prospectConfiguration.OpenSpecDefault;
+                existingConfig.ShowExteriorColorScheme = prospectConfiguration.ShowExteriorColorScheme;
+                existingConfig.ShowHomesiteFilter = prospectConfiguration.ShowHomesiteFilter;
+                existingConfig.ShowBottombar = prospectConfiguration.ShowBottombar;
+                existingConfig.LotOutlineColor = prospectConfiguration.LotOutlineColor;
 
-            existingConfig.PartnerId = partnerId;
-            existingConfig.UserId = userId;
-            existingConfig.IsIsp = prospectConfiguration.IsIsp;
-            existingConfig.IsSecured = prospectConfiguration.IsSecured;
-            existingConfig.ShowAllPlans = prospectConfiguration.ShowAllPlans;
-            existingConfig.ShowAllSpecs = prospectConfiguration.ShowAllSpecs;
-            existingConfig.IsHoverAllowed = prospectConfiguration.IsHoverAllowed;
-            existingConfig.RequestInfoModal = prospectConfiguration.RequestInfoModal;
-            existingConfig.SendLotId = prospectConfiguration.SendLotId;
-            existingConfig.LotPremiumOptionalDisplay = prospectConfiguration.LotPremiumOptionalDisplay;
-            existingConfig.SuppressBuilderLogo = prospectConfiguration.SuppressBuilderLogo;
-            existingConfig.SuppressBottomCommunityName = prospectConfiguration.SuppressBottomCommunityName;
-            existingConfig.SuppressTopCommunityName = prospectConfiguration.SuppressTopCommunityName;
-            existingConfig.DisplayLotList = prospectConfiguration.DisplayLotList;
-            existingConfig.DisplaySpecAddress = prospectConfiguration.DisplaySpecAddress;
-            existingConfig.AddModelHomesBanner = prospectConfiguration.AddModelHomesBanner;
-            existingConfig.ReplaceKeyIcon = prospectConfiguration.ReplaceKeyIcon;   
-            existingConfig.OpenSpecDefault = prospectConfiguration.OpenSpecDefault; 
-            existingConfig.ShowExteriorColorScheme = prospectConfiguration.ShowExteriorColorScheme;
-            existingConfig.ShowHomesiteFilter = prospectConfiguration.ShowHomesiteFilter;
-            existingConfig.ShowBottombar = prospectConfiguration.ShowBottombar;
-            existingConfig.LotOutlineColor = prospectConfiguration.LotOutlineColor;
-
-            return await _prospectConfigurationRepository.Update(existingConfig);
+                return await _prospectConfigurationRepository.Update(existingConfig);
+            }
+            else
+            {
+                var defaultConfig = GetDefaultProspectConfigurations();
+                defaultConfig.UserId = userId;
+                defaultConfig.PartnerId = partnerId;
+                existingConfig.IsIsp = prospectConfiguration.IsIsp;
+                existingConfig.IsSecured = prospectConfiguration.IsSecured;
+                existingConfig.ShowAllPlans = prospectConfiguration.ShowAllPlans;
+                existingConfig.ShowAllSpecs = prospectConfiguration.ShowAllSpecs;
+                existingConfig.IsHoverAllowed = prospectConfiguration.IsHoverAllowed;
+                existingConfig.RequestInfoModal = prospectConfiguration.RequestInfoModal;
+                existingConfig.SendLotId = prospectConfiguration.SendLotId;
+                existingConfig.LotPremiumOptionalDisplay = prospectConfiguration.LotPremiumOptionalDisplay;
+                existingConfig.SuppressBuilderLogo = prospectConfiguration.SuppressBuilderLogo;
+                existingConfig.SuppressBottomCommunityName = prospectConfiguration.SuppressBottomCommunityName;
+                existingConfig.SuppressTopCommunityName = prospectConfiguration.SuppressTopCommunityName;
+                existingConfig.DisplayLotList = prospectConfiguration.DisplayLotList;
+                existingConfig.DisplaySpecAddress = prospectConfiguration.DisplaySpecAddress;
+                existingConfig.AddModelHomesBanner = prospectConfiguration.AddModelHomesBanner;
+                existingConfig.ReplaceKeyIcon = prospectConfiguration.ReplaceKeyIcon;
+                existingConfig.OpenSpecDefault = prospectConfiguration.OpenSpecDefault;
+                existingConfig.ShowExteriorColorScheme = prospectConfiguration.ShowExteriorColorScheme;
+                existingConfig.ShowHomesiteFilter = prospectConfiguration.ShowHomesiteFilter;
+                existingConfig.ShowBottombar = prospectConfiguration.ShowBottombar;
+                existingConfig.LotOutlineColor = prospectConfiguration.LotOutlineColor;
+                return await _prospectConfigurationRepository.Insert(defaultConfig);
+            }
         }
 
+        public async Task<bool> SaveHoldALotConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration)
+        {
+            var existingConfig = await GetByPartnerId(partnerId);
+            if (existingConfig != null)
+            {
+                existingConfig.UserId = userId;
+                existingConfig.HoldAlot = prospectConfiguration.HoldAlot;
+                existingConfig.BuilderEmail = prospectConfiguration.BuilderEmail;
+                existingConfig.BuilderPhone = prospectConfiguration.BuilderPhone;
+                existingConfig.HoldAlotButtonText = prospectConfiguration.HoldAlotButtonText;
+                return await _prospectConfigurationRepository.Update(existingConfig);
+            }
+            else
+            {
+                var defaultConfig = GetDefaultProspectConfigurations();
+                defaultConfig.UserId = userId;
+                defaultConfig.PartnerId = partnerId;
+                existingConfig.HoldAlot = prospectConfiguration.HoldAlot;
+                existingConfig.BuilderEmail = prospectConfiguration.BuilderEmail;
+                existingConfig.BuilderPhone = prospectConfiguration.BuilderPhone;
+                existingConfig.HoldAlotButtonText = prospectConfiguration.HoldAlotButtonText;
+                return await _prospectConfigurationRepository.Insert(defaultConfig);
+            }
+        }
+
+        public async Task<bool> SaveIspPartnerConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration)
+        {
+            var existingConfig = await GetByPartnerId(partnerId);
+            if (existingConfig != null)
+            {
+                existingConfig.UserId = userId;
+                existingConfig.GoogleApikey = prospectConfiguration.GoogleApikey;
+                existingConfig.GoogleClientId = prospectConfiguration.GoogleClientId;
+                existingConfig.NhtbuilderNumber = prospectConfiguration.NhtbuilderNumber;
+                existingConfig.IspPartnerType = prospectConfiguration.IspPartnerType;
+                existingConfig.PreviewIspplugin = prospectConfiguration.PreviewIspplugin;
+                return await _prospectConfigurationRepository.Update(existingConfig);
+            }
+            else
+            {
+                var defaultConfig = GetDefaultProspectConfigurations();
+                defaultConfig.UserId = userId;
+                defaultConfig.PartnerId = partnerId;
+                existingConfig.GoogleApikey = prospectConfiguration.GoogleApikey;
+                existingConfig.GoogleClientId = prospectConfiguration.GoogleClientId;
+                existingConfig.NhtbuilderNumber = prospectConfiguration.NhtbuilderNumber;
+                existingConfig.IspPartnerType = prospectConfiguration.IspPartnerType;
+                existingConfig.PreviewIspplugin = prospectConfiguration.PreviewIspplugin;
+                return await _prospectConfigurationRepository.Insert(defaultConfig);
+            }
+        }
+
+        public async Task<bool> SavePdfConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration)
+        {
+            var existingConfig = await GetByPartnerId(partnerId);
+            if (existingConfig != null)
+            {
+                existingConfig.UserId = userId;
+                existingConfig.HoldAlotDisclaimer = prospectConfiguration.HoldAlotDisclaimer;
+                return await _prospectConfigurationRepository.Update(existingConfig);
+            }
+            else
+            {
+                var defaultConfig = GetDefaultProspectConfigurations();
+                defaultConfig.UserId = userId;
+                defaultConfig.PartnerId = partnerId;
+                existingConfig.HoldAlotDisclaimer = prospectConfiguration.HoldAlotDisclaimer;
+                return await _prospectConfigurationRepository.Insert(defaultConfig);
+            }
+        }
+
+
         #region Private Methods
-        private ProspectConfiguration GetDefaultProspectConfigurations()
+        private static ProspectConfiguration GetDefaultProspectConfigurations()
         {
             return new ProspectConfiguration
             {
@@ -88,9 +188,7 @@ namespace BHI.SalesArchitect.Service.Implementations
                 ShowExteriorColorScheme = false,
                 IsSecured = false,
             };
-        }
+        }        
         #endregion
     }
-
-
 }

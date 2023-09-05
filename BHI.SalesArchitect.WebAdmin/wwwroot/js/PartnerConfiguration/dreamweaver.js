@@ -1,12 +1,13 @@
-﻿const DREAMWEAVER_GRID = `#Dreamweaver_Grid`;
+﻿"use strict";
+const DREAMWEAVER_GRID = `#Dreamweaver_Grid`;
 
-$(function () {    
+$(function () {
     $('input[name="isDreamweaver"]').on('change', toggleGridVisibility);
 
     $(DREAMWEAVER_GRID).jqGrid({
         width: null,
         datatype: 'json',
-        height: '260px',
+        height: '270px',
         pager: '#pager',
         mtype: 'Get',
         rowList: [20, 30, 40, 50],
@@ -47,19 +48,19 @@ $(function () {
             }
         ],
         loadComplete: function () {
-            $(DREAMWEAVER_GRID).jqGrid('setGridWidth', $('.tab-content').width() - 2, true);
+            $(DREAMWEAVER_GRID).jqGrid('setGridWidth', $('.tab-content').width(), true);
         }
     });
-   /* $('.dwRadio').on('click', function (a) {
-        var commId = $(this).data('commid');
-        var val = $(this).val();
-        commArray = commArray.filter(function (e) {
-            if (commId !== e.commId) {
-                return e;
-            }
-        });
-        commArray.push({ commId: commId, val: val });
-    });*/
+    /* $('.dwRadio').on('click', function (a) {
+         var commId = $(this).data('commid');
+         var val = $(this).val();
+         commArray = commArray.filter(function (e) {
+             if (commId !== e.commId) {
+                 return e;
+             }
+         });
+         commArray.push({ commId: commId, val: val });
+     });*/
 
     /*$(document).on('keyup', '#searchBox', function (e) {
         if (e.keyCode === 13) {
@@ -78,14 +79,20 @@ function toggleGridVisibility() {
     }
 }
 
+
 function formatStatus(a, b, c) {
-    var active = a === 'Active' ? true : false;
-    var inactive = a === 'Inactive' ? true : false;
-    var pending = a === 'Pending' ? true : false;
-    var activateRadioButton = active ? "<input class='dwRadio' type='radio' checked data-commId='" + c[0] + "' name='dwStatus_" + c[0] + "' value='1' /><label>Active</label>" : "<input class='dwRadio' type='radio' data-commId='" + c[0] + "' name='dwStatus_" + c[0] + "' value='1' /><label>Active</label>";
-    var inactivateRadioButton = inactive ? "<input class='dwRadio' type = 'radio' checked data-commId='" + c[0] + "' name = 'dwStatus_" + c[0] + "' value = '2' /> <label>Inactive</label>" : "<input class='dwRadio' type = 'radio' data-commId='" + c[0] + "' name = 'dwStatus_" + c[0] + "' value = '2' /> <label>Inactive</label>";
-    var pendingButton = pending ? "<input class='dwRadio' type='radio' checked name='dwStatus_" + c[0] + "' data-commId='" + c[0] + "' value='3' /><label>Pending</label>" : "<input class='dwRadio' type='radio' name='dwStatus_" + c[0] + "' data-commId='" + c[0] + "' value='3' /><label>Pending</label>";
-    return activateRadioButton + inactivateRadioButton + pendingButton;
+    const statusOptions = [
+        { value: '1', label: 'Active' },
+        { value: '2', label: 'Inactive' },
+        { value: '3', label: 'Pending' }
+    ];
+
+    const statusInputs = statusOptions.map(option => {
+        const checked = a === option.value ? 'checked' : '';
+        return `<input class='m-1' type='radio' ${checked} data-commId='${c[0]}' name='dwStatus_${c[0]}' value='${option.value}' /><label>${option.label}  </label>`;
+    });
+
+    return statusInputs.join('');
 }
 
 function clearSearch() {

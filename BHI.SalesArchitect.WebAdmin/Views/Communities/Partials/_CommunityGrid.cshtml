@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims;
+@using BHI.SalesArchitect.Core.Constants;
 @using BHI.SalesArchitect.WebAdmin.Models.Communities;
 
 @model List<CommunityGridModel>
@@ -7,7 +8,7 @@
 }
 <div>
 
-    @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+    @if (User.IsInRole(Roles.BHIADMIN))
     {
         @(Html.Grid(COMMUNITIES_GRID)
             .AddColumn(new Column("ID").SetHidden(true))
@@ -47,7 +48,7 @@
             .SetEmptyRecords("<b>No Communities Found.<b>")
             )
     }
-    else if (User.HasClaim(ClaimTypes.Role, "PARTNERSUPERADMIN"))
+    else if (User.IsInRole(Roles.PARTNERSUPERADMIN))
     {
         @(Html.Grid(COMMUNITIES_GRID)
             .AddColumn(new Column("ID").SetHidden(true))

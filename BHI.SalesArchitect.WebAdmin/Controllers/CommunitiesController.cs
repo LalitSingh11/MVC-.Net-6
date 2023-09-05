@@ -25,6 +25,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private readonly ILotStateService _lotStateService;
         private readonly ILotListingService _lotListingService;
         private readonly IRoleService _roleService;
+        private readonly IPartnerService _partnerService;
 
         public CommunitiesController(ICommunityService communityService,
             ICommunityUserService communityUserService,
@@ -39,7 +40,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             IListingService listingService,
             ILotStateService lotStateService,
             ILotListingService lotListingService,
-            IRoleService roleService
+            IRoleService roleService,
+            IPartnerService partnerService
             ) 
         {
             _communityService = communityService;
@@ -56,11 +58,13 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _listingService = listingService;
             _lotListingService = lotListingService;
             _roleService = roleService;
+            _partnerService = partnerService;
         }
         
         public async Task<IActionResult> Index()
         {
             await InitViewBag();
+            await InitSession();
             ViewData["PartnerName"] = _sessionService.PartnerName ?? PartnerName;
             return View();
         }
@@ -70,13 +74,13 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         public async Task<IActionResult> GetCommunitiesGrid(GridSettings gridSettings, string searchTerm, int commStatusType = 0, int commType = 0)
         {
             var communities = _communityService.GetGridCommunitiesList(_sessionService.PartnerID ?? PartnerId, searchTerm, commStatusType, commType);
-            _sessionService.CommunityID = communities.FirstOrDefault()?.Id ?? 1;
+            _sessionService.CommunityID = communities.FirstOrDefault()?.Id;
             var commIds = communities.Select(p => p.Id).ToList();
-            var communityAdmins = _userService.GetCommunityAdminsByCommunityIDs(commIds);
-            var communityUsers = _communityUserService.GetByCommunityIDs(commIds).ToList();
-            var communitySites = _communitySiteService.GetActiveCommunitySites(commIds).ToList();
-            var communityMasterSites = _communityService.GetByCommunityIDs(commIds).ToList();
-            var communitySiteGeoJson = _communitySiteGeoJsonService.GetByCommunityIds(commIds).ToList();
+            var communityAdmins = await _userService.GetCommunityAdminsByCommunityIDs(commIds);
+            var communityUsers = await _communityUserService.GetByCommunityIDs(commIds);
+            var communitySites = await _communitySiteService.GetActiveCommunitySitesAsync(commIds);
+            var communityMasterSites = await _communityService.GetByCommunityIds(commIds);
+            var communitySiteGeoJson = await _communitySiteGeoJsonService.GetByCommunityIdsAsync(commIds);
             var partnerConfig = await _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
             var jsonData = new
             {
@@ -322,7 +326,16 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ViewBag.NHTBuilderNumber = partnerConfig?.NhtbuilderNumber ?? String.Empty;
             ViewBag.IsISPOnly = partnerConfig?.IsIsp ?? false;
         }
-        #endregion
+
+        private async Task InitSession()
+        {
+            var user = await _userService.GetById(UserId);
+            var partner = _partnerService.GetById(user.PartnerId ?? PartnerId);
+            _sessionService.PartnerID = user.PartnerId;
+            _sessionService.PartnerName = partner.Name;
+            _sessionService.PartnerDataKey = partner.DataKey;
+        }
+            #endregion
     }
 
 }

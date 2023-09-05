@@ -1,17 +1,18 @@
 ﻿@{
-    var COMMUNITY_GRID = "Community_Grid";
+    var COMMUNITY_GRID_MANAGE_USER = "Community_Grid_Manage_User";
 }
 <div class="container-fluid">
-    @(Html.Grid(COMMUNITY_GRID)
+    @(Html.Grid(COMMUNITY_GRID_MANAGE_USER)
         .AddColumn(new Column("ID").SetHidden(true))
-        .AddColumn(new Column("Community").SetSortable(false).SetAlign(MvcJqGrid.Enums.Align.Center))
+        .AddColumn(new Column("Community").SetSortable(false).SetAlign(Align.Center))
         .SetRequestType(RequestType.Get)
         .SetAutoWidth(true)
         .SetUrl(Url.Action("GetCommunities"))
         .SetRowNum(10000)
-        .SetViewRecords(true)
+        //.SetViewRecords(true)
         .SetMultiSelect(true)
+        //.SetHeight(500)
         //.OnSelectAll("selectAllComm(status)")
-        //.OnSelectRow("onRowCommSelected(rowid, status)")
+        //.OnSelectRow("onRowCommSelected(rowId, status)")
         )
 </div>

@@ -48,10 +48,9 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             return View();
         }
 
-
         #region Grid Methods
         [HttpGet]
-        public IActionResult GetPartners(GridSettings gridSettings, int partnerStatusType = 0)
+        public async Task<IActionResult> GetPartners(GridSettings gridSettings, int partnerStatusType = 0)
         {
             var partners = _partnerService.GetAllPartners(new int[] { (int)PartnerType.SalesArchitect }, partnerStatusType);
 
@@ -71,7 +70,12 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                 };
                 sites.Add(s);
             }
-            var currentPartnerId = partners.FirstOrDefault(x => x.Id == (_sessionService.PartnerID ?? PartnerId))?.Id;
+            var user = await _userService.GetById(UserId);
+            var currentPartnerId = user.PartnerId;
+            var currentPartner = partners.Where(x => x.Id == currentPartnerId).FirstOrDefault();
+            _sessionService.PartnerID = currentPartnerId;
+            _sessionService.PartnerName = currentPartner.Name;
+            _sessionService.PartnerDataKey = currentPartner.DataKey;
             var sortOrderDesc = gridSettings.SortOrder == "desc";
             sites = sites.OrderBy(x => x.PartnerBrands == null).ThenBy(x => x.PartnerBrands).ToList();
             var jsonData = new
@@ -101,10 +105,12 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUsers(GridSettings gridSettings)
+        public async Task<IActionResult> GetUsers(GridSettings gridSettings)
         {
             var sortOrderDesc = gridSettings.SortOrder == "desc";
-            var users = _userService.GetSuperUsers();
+            var users = new List<User>();
+            var superUsers = await _userService.GetSuperUsers();
+            users = superUsers.ToList();
             var userRoles = _userRoleService.GetByUserIds(users.Select(p => p.Id).ToList()).ToList();
             users = users.OrderBy(gridSettings.SortColumn == string.Empty ? "UserName" : gridSettings.SortColumn, sortOrderDesc).ToList();
             var currentUserId = users.FirstOrDefault(x => x.UserName != null && x.UserName.ToLower().Equals(User.Identity.Name.ToLower()))?.Id;

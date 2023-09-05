@@ -10,9 +10,14 @@ namespace BHI.SalesArchitect.Service.Implementations
         {
             _communityUserRepository = communityUserRepository;
         }
-        public IEnumerable<CommunityUser> GetByCommunityIDs(List<int> communityIDs)
+        public async Task<IEnumerable<CommunityUser>> GetByCommunityIDs(List<int> communityIDs)
         {
-           return _communityUserRepository.GetByCommunityIDs(communityIDs);
+           return await _communityUserRepository.GetByCommunityIds(communityIDs);
+        }
+
+        public async Task<IEnumerable<CommunityUser>> GetByUserIds(List<int> userIds)
+        {
+            return await _communityUserRepository.GetByUserIDs(userIds);
         }
     }
 }

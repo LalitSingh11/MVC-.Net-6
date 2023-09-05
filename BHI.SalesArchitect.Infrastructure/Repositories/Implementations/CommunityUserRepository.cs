@@ -1,4 +1,5 @@
 ﻿using BHI.SalesArchitect.Model.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 {
@@ -10,9 +11,15 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
         }
 
-        public IEnumerable<CommunityUser> GetByCommunityIDs(List<int> communityIDs)
+        public async Task<IEnumerable<CommunityUser>> GetByCommunityIds(List<int> communityIds)
         {
-            var result = _dbContext.CommunityUsers.Where(x => communityIDs.Contains(x.CommunityId)).ToList();
+            var result = await _dbContext.CommunityUsers.Where(x => communityIds.Contains(x.CommunityId)).ToListAsync();
+            return result;
+        }
+
+        public async Task<IEnumerable<CommunityUser>> GetByUserIDs(List<int> userIds)
+        {
+            var result = await _dbContext.CommunityUsers.Where(x => userIds.Contains(x.UserId)).ToListAsync();
             return result;
         }
     }

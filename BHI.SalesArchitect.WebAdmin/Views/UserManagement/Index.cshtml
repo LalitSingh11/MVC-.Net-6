@@ -8,9 +8,16 @@
     <br />
     <partial name="Partials/_UserInformationForm" />
     <br />
+    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+        <footer class="footer ">
+            <button type="button" class="btn btn-primary" onclick="UpdateUserRoleAndInfo();">Save changes</button>
+            @*<button type="button" class="btn" onclick="">Cancel</button>*@
+        </footer>
+    </nav>
 </div>
 @section Scripts {
     <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
+    <script src="~/js/usermanagement/manage-users.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>

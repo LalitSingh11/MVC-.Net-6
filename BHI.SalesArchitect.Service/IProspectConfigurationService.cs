@@ -6,5 +6,8 @@ namespace BHI.SalesArchitect.Service
     {
         Task<ProspectConfiguration> GetByPartnerId(int  partnerId);
         Task<bool> SaveProspectConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
+        Task<bool> SaveIspPartnerConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
+        Task<bool> SaveHoldALotConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
+        Task<bool> SavePdfConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
     }
 }

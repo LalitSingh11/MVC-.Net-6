@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims;
+@using BHI.SalesArchitect.Core.Constants;
 <div class="span12 search-filter-container">
     <div class="community-status-filter-container">
         <label class="community-status-filter-label">Type </label>
@@ -9,7 +10,7 @@
         </select>
         <div class="tool-tip"><img src="/content/images/help-icon.png" ><span class="tooltiptext">Standalone Communities are not linked to BDXLive data.</span></div>
     </div>
-    @if (User.HasClaim(ClaimTypes.Role, "BHIADMIN"))
+    @if (User.IsInRole(Roles.BHIADMIN))
     {
         <div class="community-status-filter-container" >
             <label class="community-status-filter-label">Status </label>
@@ -22,15 +23,12 @@
         </div>
     }
     <div class="search">
-        <div class="searchbox">
+        <div class="searchboxcontainer">
             <input type="text" placeholder="Search by Community name, builder/brand" size="40" id="searchBox">
-            <a href="javascript:void(0)" class="icon-search" onclick="searchCommunityGrid()" id="searchButton">
+            <span class="icon-search" onclick="searchCommunityGrid()" id="searchButton">
                 <img src="/content/images/icon-search.png">
-            </a>
+            </span>
         </div>
-        <a href="javascript:void(0)" class="clear disable" onclick="clearSearch()" id="clear-search">Clear Search</a>
+        <button class="clear disable" onclick="clearSearch()" id="clear-search">Clear Search</button>
     </div>
 </div>
-
-
-

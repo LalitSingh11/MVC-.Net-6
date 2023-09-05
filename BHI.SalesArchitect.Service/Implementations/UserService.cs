@@ -36,19 +36,29 @@ namespace BHI.SalesArchitect.Service.Implementations
             return await _userRepository.GetById(id);
         }
 
+        public async Task<IEnumerable<User>> GetByPartnerIDAndCommunityUser(int partnerId, int userId, List<int> roleIds, int activityStateId)
+        {
+            return await _userRepository.GetByPartnerIdAndCommunityUser(partnerId,userId, roleIds, activityStateId);
+        }
+
+        public async Task<IEnumerable<User>> GetByPartnerIdExcludingRoles(int partnerId, List<int> roleIds)
+        {
+            return await _userRepository.GetByPartnerIdExcludingRoles(partnerId, roleIds);
+        }
+
         public async Task<User> GetByUsername(string username)
         {
             return await _userRepository.GetByUserName(username);
         }
 
-        public List<User> GetCommunityAdminsByCommunityIDs(List<int> communityIDs)
+        public async Task<IEnumerable<User>> GetCommunityAdminsByCommunityIDs(List<int> communityIDs)
         {
-            return _userRepository.GetCommunityAdminsByCommunityID(communityIDs).ToList();
+            return await _userRepository.GetCommunityAdminsByCommunityID(communityIDs);
         }
 
-        public List<User> GetSuperUsers()
+        public async Task<IEnumerable<User>> GetSuperUsers()
         {
-            return _userRepository.GetSuperUsers().ToList();
+            return await _userRepository.GetSuperUsers();
         }
 
         public async Task<bool> UpdateUser(User user)

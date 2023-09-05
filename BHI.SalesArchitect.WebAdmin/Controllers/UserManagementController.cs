@@ -1,9 +1,10 @@
 ﻿using BHI.SalesArchitect.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BHI.SalesArchitect.Core.Extensions;
 using MvcJqGrid;
 using BHI.SalesArchitect.Model.DB;
+using BHI.SalesArchitect.Core.Constants;
+using BHI.SalesArchitect.Service.Implementations;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
@@ -15,18 +16,21 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private IUserRoleService _userRoleService;
         private IRoleService _roleService;
         private ICommunityService _communityService;
+        private ICommunityUserService _communityUserService;
 
         public UserManagementController(ISessionService sessionService,
             IUserService userService,
             IUserRoleService userRoleService,
             IRoleService roleService,
-            ICommunityService communityService)
+            ICommunityService communityService,
+            ICommunityUserService communityUserService)
         {
             _sessionService = sessionService;
             _userService = userService;
             _userRoleService = userRoleService;
             _roleService = roleService;
             _communityService = communityService;
+            _communityUserService = communityUserService;
         }
 
         public IActionResult Index()
@@ -34,21 +38,55 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ViewData["PartnerName"] = _sessionService.PartnerName ?? PartnerName;
             return View();
         }
-        #region GET Methods
-        [HttpGet]
-        public IActionResult GetUsers(GridSettings gridSettings)
+        public IActionResult CreateUser()
         {
-            var sortOrderDesc = gridSettings.SortOrder == "desc";
-            var users = _userService.GetSuperUsers();
-            var userRoles = _userRoleService.GetByUserIds(users.Select(p => p.Id).ToList()).ToList();
-            users = users.OrderBy(gridSettings.SortColumn == string.Empty ? "UserName" : gridSettings.SortColumn, sortOrderDesc).ToList();
-            var currentUserId = users.FirstOrDefault(x => x.UserName != null && x.UserName.ToLower().Equals(User.Identity.Name.ToLower()))?.Id;
-            var jsonData = new
+            return View();
+        }
+
+        #region Get Methods
+        #endregion
+
+        #region Grid Methods
+        [HttpGet]
+        public async Task<IActionResult> GetUsers(GridSettings gridSettings)
+        {
+            var partnerId = _sessionService.PartnerID ?? PartnerId;
+            var userId = _sessionService.UserID ?? UserId;
+            List<User> users = new();
+            if (User.IsInRole(Roles.BHIADMIN) || User.IsInRole(Roles.PARTNERSUPERADMIN))
             {
-                total = users.Count / gridSettings.PageSize + 1,
-                page = gridSettings.PageIndex,
-                records = users.Count,
-                rows = (
+                users = (await _userService.GetByPartnerIdExcludingRoles(partnerId, new List<int>() { _roleService.BHIAdmin.Id, _roleService.PartnerSuperAdmin.Id })).ToList();
+            }
+            else if (User.IsInRole(Roles.PARTNERREADONLY))
+            {
+                var user = await _userService.GetById(userId);
+                users.Add(user);
+            }
+            else
+            {
+                users = (await _userService.GetByPartnerIDAndCommunityUser(partnerId, userId, new List<int>() { _roleService.BHIAdmin.Id, _roleService.PartnerSuperAdmin.Id }, 2)).ToList();
+                if (users.Count == 0)
+                {
+                    var user = await _userService.GetById(userId);
+                    users.Add(user);
+                }
+            }
+            List<CommunityUser> communityUsers = new();
+            List<UserRole> userRoles = new();
+            if (users != null && users.Count > 0)
+            {
+                communityUsers = ( await _communityUserService.GetByUserIds(users.Select(p => p.Id).ToList())).ToList();
+                userRoles = _userRoleService.GetByUserIds(users.Select(p => p.Id).ToList()).ToList();
+            }
+
+            if (users.Any())
+            {
+                var jsonData = new
+                {
+                    total = (users.Count % gridSettings.PageSize == 0) ? users.Count / gridSettings.PageSize : users.Count / gridSettings.PageSize + 1,
+                    page = gridSettings.PageIndex,
+                    records = users.Count,
+                    rows = (
                            from u in users
                            select new
                            {
@@ -61,108 +99,58 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                                     u.LastName,
                                     u.PhoneNumber,
                                     u.Email,
-                                    "Active",
-                                    userRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == _roleService.PartnerSuperAdmin.Id) ? "true" : "false"
-                               }
-                           }).ToArray(),
-                currentUserId
-            };
-            return Json(jsonData);
-            /*var partnerId = _sessionService.PartnerID;
-            var userId = _sessionService.UserID;
-            var sortOrderDesc = gridSettings.SortOrder == "desc";
-            List<User> users = new List<User>();
-            //IEnumerable<User> users;
-            if (User.IsInRole("BHIADMIN") || User.IsInRole("PARTNERSUPERADMIN"))
-            {
-                users = _userRepository.GetByPartnerIDNotRoles(partnerId, new List<int>() { _roleRepository.BHIAdmin.ID, _roleRepository.PartnerSuperAdmin.ID }).ToList();
-            }
+                                    u.ActivityStateId == 1 ? "Active" : "Inactive",
+                                    u.PartnerId.ToString(),
+                                    String.Join("",userRoles.Where(ur => ur.UserId == u.Id).Select(ur => ur.RoleId)),
+                                    String.Join(",", communityUsers.Where(p => p.UserId == u.Id).Select(p => p.CommunityId)),
 
-            else if (User.IsInRole("PARTNERREADONLY"))
-            {
-                var user = _userRepository.GetByID(userId);
-                users.Add(user);
+                               }
+                           }).ToArray().Skip((gridSettings.PageIndex - 1) * gridSettings.PageSize).Take(gridSettings.PageSize)
+                };
+                return Json(jsonData);
             }
             else
             {
-                users = _userRepository.GetByPartnerIDAndCommunityUser(partnerId, userId, new List<int>() { _roleRepository.BHIAdmin.ID, _roleRepository.PartnerSuperAdmin.ID }, 2).ToList();
-                if (users.Count == 0)
+                var jsonData = new
                 {
-                    var user = _userRepository.GetByID(userId);
-                    users.Add(user);
-                }
+                    total = 1,
+                    page = 1,
+                    records = users.Count
+                };
+                return Json(jsonData);
             }
-            foreach (var newval in users)
-            {
-                newval.ActivityStateName = newval.ActivityState.Name;
-            }
-            users = users.OrderBy(gridSettings.SortColumn == string.Empty ? "UserName" : gridSettings.SortColumn, sortOrderDesc).ToList();
-            //Can be optimized further
-            var communityUsers = new List<CommunityUser>();
-            var userRoles = new List<UserRole>();
-            if (users != null && users.Count() > 0)
-            {
-                communityUsers = _communityUserRepository.GetByUserIDs(users.Select(p => p.ID).ToList(), false).ToList();
-                userRoles = _userRoleRepository.GetByUserIDs(users.Select(p => p.ID).ToList(), false).ToList();
-            }
-
-            var jsonData = new
-            {
-                total = users.Count() / gridSettings.PageSize + 1,
-                page = gridSettings.PageIndex,
-                records = users.Count(),
-                rows = (
-                    from u in users
-                    select new
-                    {
-                        id = u.ID,
-                        cell = new[]
-                    {
-                        u.ID.ToString(),
-                        u.UserName,
-                        u.FirstName,
-                        u.LastName,
-                        u.PhoneNumber,
-                        u.Email,
-                        String.Join(",", communityUsers.Where(p => p.UserID == u.ID).Select(p => p.CommunityID)),
-                         u.Roles.FirstOrDefault().ID.ToString(),
-                         u.ActivityStateName,
-                         u.ActivityState.ID==1?"true":"false"
-                    }
-                    }).ToArray()
-            };
-            return Json(jsonData);*/
         }
+
         [HttpGet]
-        public IActionResult GetCommunities(GridSettings gridSettings)
+        public async Task<IActionResult> GetCommunities(GridSettings gridSettings)
         {
             var partnerId = _sessionService.PartnerID ?? PartnerId;
-            int a;
-            //List<Community> communities;
-            if (User.IsInRole("BHIADMIN11") || User.IsInRole("PARTNERSUPERADMIN"))
-                 a = 10;
-              var communities = _communityService.GetGridCommunitiesList(partnerId, "").ToList().Take(10);
-            /*else
+
+            IEnumerable<Community> communities = new List<Community>();
+            if (User.IsInRole(Roles.BHIADMIN) || User.IsInRole(Roles.PARTNERSUPERADMIN))
+                communities = await _communityService.GetCommunitiesByPartnerId(partnerId);
+            else
             {
                 var userId = _sessionService.UserID ?? UserId;
-                //communities = _communityService.GetByPartnerIDAndByUser(partnerId, userId, false).ToList();
-            }*/
+                communities = await _communityService.GetByPartnerIdAndByUserId(partnerId, userId);
+            }
+
             var jsonData = new
             {
                 total = communities.Count() / gridSettings.PageSize + 1,
                 page = gridSettings.PageIndex,
                 records = communities.Count(),
                 rows = (
-                    from c in communities
-                    select new
-                    {
-                        id = c.Id,
-                        cell = new[]
-                    {
-                        c.Id.ToString(),
-                        c.Name
-                    }
-                    }).ToArray()
+                     from c in communities
+                     select new
+                     {
+                         id = c.Id,
+                         cell = new[]
+                     {
+                         c.Id.ToString(),
+                         c.Name
+                     }
+                     }).ToArray()
             };
             return Json(jsonData);
         }

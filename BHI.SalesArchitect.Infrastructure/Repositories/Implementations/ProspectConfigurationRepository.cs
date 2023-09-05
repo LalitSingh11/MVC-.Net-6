@@ -17,9 +17,15 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             return await _dbContext.ProspectConfigurations.Where(x => x.PartnerId == partnerId).FirstOrDefaultAsync(); 
         }
 
-        public async Task<bool> Update(ProspectConfiguration config)
+        public async Task<bool> Update(ProspectConfiguration configuration)
         {
-            _dbContext.Update(config);
+            _dbContext.Update(configuration);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> Insert(ProspectConfiguration configuration)
+        {
+            _dbContext.Add(configuration);
             return await _dbContext.SaveChangesAsync() > 0;
         }
     }

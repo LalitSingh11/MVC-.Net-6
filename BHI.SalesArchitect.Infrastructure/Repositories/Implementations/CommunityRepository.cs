@@ -9,39 +9,51 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
     public class CommunityRepository : ICommunityRepository
     {
         private SalesArchitectContext _dbContext;
-        public CommunityRepository(SalesArchitectContext db)
+        public CommunityRepository(SalesArchitectContext dbContext)
         { 
-            _dbContext = db;
+            _dbContext = dbContext;
         }
 
-        public IEnumerable<Community> GetByCommunityIDs(List<int> communityIDs)
+        public async Task<IEnumerable<Community>> GetByCommunityIds(List<int> communityIds)
         {
             var query = from c in _dbContext.Communities
                         join m in _dbContext.Markets on c.MarketId equals m.Id
                         join acts in _dbContext.ActivityStates on c.ActivityStateId equals acts.Id
-                        where communityIDs.Contains(c.Id)
+                        where communityIds.Contains(c.Id)
                         select c;
                         
 
-            return query;
+            return await query.ToListAsync();
         }
 
-        /*public IEnumerable<Community> GetCommunityListByPartnerId(int partnerId)
+        public async Task<IEnumerable<Community>> GetByPartnerIdAndByUserId(int partnerId, int userId)
+        {
+            var query  = from c in _dbContext.Communities
+                                    join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
+                                    join cu in _dbContext.CommunityUsers on c.Id equals cu.CommunityId
+                                    where pc.PartnerId == partnerId && cu.UserId == userId
+                                    select c;
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Community>> GetCommunitiesByPartnerId(int partnerId)
         {
             var result = from c in _dbContext.Communities
-                        join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
+                         join m in _dbContext.Markets on c.MarketId equals m.Id
+                         join acts in _dbContext.ActivityStates on c.ActivityStateId equals acts.Id
+                         join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
                         where pc.PartnerId == partnerId
                         select c;
-            return result;
-        }*/
+            return await result.ToListAsync();
+        }
 
-        public IEnumerable<GridCommunityResult> GetProcDataByPartnerId(int partnerID)
+        public IEnumerable<GridCommunityResult> GetProcDataByPartnerId(int partnerId)
         {
             string commandText = "EXEC pr_GetCommunityList @partnerId";
             SqlParameter[] parameters = new SqlParameter[1];
-            parameters[0] = new SqlParameter("@partnerID", SqlDbType.Int)
+            parameters[0] = new SqlParameter("@partnerId", SqlDbType.Int)
             {
-                Value = partnerID
+                Value = partnerId
             };
             return CallProc(commandText, parameters);
         }
@@ -79,13 +91,13 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                                     Id = int.Parse(dataReader[6].ToString()),
                                     Bdxid = int.Parse(dataReader[7].ToString()),
                                     Dwstatus = int.TryParse(dataReader[8].ToString(), out var dwStatus) ? dwStatus : null,
-                                    MarketId = int.Parse(dataReader["MarketID"].ToString()),
+                                    MarketId = int.Parse(dataReader["MarketId"].ToString()),
                                     MarketName = dataReader[2].ToString(),
                                     Ispname = dataReader["ISPName"].ToString(),
-                                    ActivityStateId = int.Parse(dataReader["ActivityStateID"].ToString()),
+                                    ActivityStateId = int.Parse(dataReader["ActivityStateId"].ToString()),
                                     Admins = dataReader[12].ToString(),
                                     Locked = (bool)dataReader["Locked"],
-                                    PreferredCommunityAssetId = int.TryParse(dataReader["ActivityStateID"].ToString(), out var preferredId) ? preferredId : null,
+                                    PreferredCommunityAssetId = int.TryParse(dataReader["ActivityStateId"].ToString(), out var preferredId) ? preferredId : null,
                                     NewIsp = dataReader["NewIsp"].GetType().Name != "DBNull" && (bool)dataReader[16],
                                     Status = (bool)dataReader["Status"],
                                     Brand = dataReader["Brand"].ToString(),

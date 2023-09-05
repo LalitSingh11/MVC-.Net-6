@@ -12,13 +12,13 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
 
         }
-        public IEnumerable<CommunitySite> GetActiveCommunitySites(List<int> communityIds)
+        public async Task<IEnumerable<CommunitySite>> GetActiveCommunitySitesAsync(List<int> communityIds)
         {
             var query = from cs in _dbContext.CommunitySites
                         join s in _dbContext.Sites on cs.SiteId equals s.Id
                         where communityIds.Contains(cs.CommunityId) && s.MapData != null
                         select cs;
-            return query.ToList();
+            return await query.ToListAsync();
         }
     }
 }

@@ -25,16 +25,17 @@
     border-radius: 6px;
 }
 
-.searchbox {
+.searchboxcontainer {
     display: flex;
     align-items: center;
-    position: relative; 
-    border: 1px solid #ccc; 
-    border-radius: 6px; 
-    padding: 5px; }
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 5px;
+}
 
-    .searchbox input[type="text"] {
-        border: none; 
+    .searchboxcontainer input[type="text"] {
+        border: none;
     }
 
 .icon-search img {
@@ -44,8 +45,11 @@
 }
 
 #clear-search {
-    margin-left:15px;
+    margin-left:8px;
     text-decoration: none;
+    border:none;
+    background:none;
+    color:deepskyblue;
 }
 
 .tool-tip {

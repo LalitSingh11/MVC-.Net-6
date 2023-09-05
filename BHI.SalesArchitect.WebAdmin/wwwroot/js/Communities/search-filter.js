@@ -14,7 +14,7 @@ function onCommunityStatusChange(selectedValue) {
 }
 
 function clearSearch() {
-    $("#Communities").jqGrid().trigger('reloadGrid');
+    //$("#Communities").jqGrid().trigger('reloadGrid');
     if (!$('#clear-search').hasClass('disable')) {
         $('#searchBox').val("");
         $(COMMUNITIES_GRID).jqGrid().setGridParam({ postData: { searchTerm: null }, page: 1 }).trigger('reloadGrid');

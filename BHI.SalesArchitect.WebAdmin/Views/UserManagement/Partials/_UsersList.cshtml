@@ -3,8 +3,6 @@
 }
 <div class="container-fluid">
     <hr />
-   @*  <a class="btn btn-success " style="float: right;" asp-controller="UserManagement" asp-action="CreateUser"><i class="bi bi-person-plus-fill"></i> Create User</a>
-    <button type="button" class="btn btn-danger mr-3" style="float: right;" data-bs-toggle="modal" data-bs-target="#deleteUserModal"><i class="bi bi-trash3-fill"></i> Delete Selected</button> *@
      <a class="btn btn-success" style="float: right; margin-right: 10px;" asp-controller="UserManagement" asp-action="CreateUser">
         <i class="bi bi-person-plus-fill"></i> Create User
     </a>
@@ -25,6 +23,7 @@
             .AddColumn(new Column("Status").SetAlign(Align.Center).SetWidth(250))
             .AddColumn(new Column("Partner").SetHidden(true))
             .AddColumn(new Column("Role").SetHidden(true))
+            .AddColumn(new Column("Communities").SetHidden(true))
             .SetUrl(Url.Action("GetUsers"))
             .SetRequestType(RequestType.Get)
             .SetSortName("UserName")
@@ -33,7 +32,8 @@
             //.SetWidth(1100)
             .SetAutoWidth(true)
             .SetScrollRows(true)
-            .SetHeight(450)
+            //.SetHeight(450).
+            .OnSelectRow("onUserRowSelected(rowid)")
             .SetViewRecords(true)
             //.SetLoadText("Users loading...")
             )

@@ -58,6 +58,11 @@ function getFormObj(formId) {
         if (item.name) {
             if (item.type == "checkbox")
                 formParams[item.name] = item.checked;
+            else if (item.type == "radio") {
+                if (item.checked) {
+                    formParams[item.name] = item.value;
+                }
+            }
             else
                 formParams[item.name] = item.value;
         }

@@ -6,5 +6,6 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
     {
         Task<ProspectConfiguration> GetByPartnerId(int partnerId);
         Task<bool> Update(ProspectConfiguration config);
+        Task<bool> Insert(ProspectConfiguration configuration);
     }
 }

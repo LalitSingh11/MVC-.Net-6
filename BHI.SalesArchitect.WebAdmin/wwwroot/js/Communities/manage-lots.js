@@ -1,4 +1,84 @@
-﻿const GET_LISTING_ELEVATION_IMAGES = "communities/getlistingimages";
+﻿"use strict";
+const GET_LISTING_ELEVATION_IMAGES = "communities/getlistingimages";
+
+async function populateLotInfoForm() {
+    let url = `${GET_LOT_INFO}?lotId=${currentLotRowId}&commId=${currentCommRowId}`
+
+    let lotInfo = await executeHttpRequest(url, METHOD_GET);
+
+    $("#lotId").val(lotInfo.lotData.internalReference);
+    $("#externalReference").val(lotInfo.lotData.externalReference);
+    $("#amenityCheckbox").prop("checked", lotInfo.lotData.isAmenity);
+    $("#displayName").val(lotInfo.lotData.displayName);
+    $("#size").val(lotInfo.lotData.size);
+    $("#premiumPrice").val(lotInfo.lotData.premiumPrice);
+    $("#reservationFee").val(lotInfo.lotData.reservationFee);
+    $("#block").val(lotInfo.lotData.block);
+    $("#phase").val(lotInfo.lotData.phase);
+    $("#elevation").val(lotInfo.lotData.elevation);
+    $("#swing").val(lotInfo.lotData.swing);
+    $("#description").val(lotInfo.lotData.description);
+    $("#address").val(lotInfo.lotData.address);
+    $("#contactUrl").val(lotInfo.lotData.contactLink);
+    $("#contactButtonText").val(lotInfo.lotData.buttonText);
+    $("#videoUrl").val(lotInfo.lotData.videoUrl);
+    // populating lot status dropdown
+    let lotStatusDropdown = $("#lotStatus");
+    lotStatusDropdown.empty();
+    $.each(lotInfo?.lotState, function (index, status) {
+        if (index == 0) lotStatusDropdown.append($('<option>', {
+            value: 0,
+            text: "Select Lot Status"
+        }));
+        var option = $('<option>', {
+            value: status.id,
+            text: status.name
+        });
+        lotStatusDropdown.append(option);
+    });
+    lotStatusDropdown.val(lotInfo.lotData.lotStateId ?? 0);
+
+    /*if (lotInfo?.lotData?.imagePath) {
+        $('#hotspotImage').attr('src', lotInfo.lotData.imagePath).show();
+        $('#deleteImage').show();
+    }*/
+    if (ckEditorInstance) {
+        ckEditorInstance.setData(lotInfo.lotData.lotDescription ?? '');
+    }
+    populateListingsList(lotInfo);
+    checkLotListings(lotInfo);
+    addEventListenerOnCheckboxes();
+    addEventListenerOnElevationButtons();
+}
+
+function emptyLotInfoForm() {
+    $("#lotId").val('');
+    $("#externalReference").val('');
+    $("#amenityCheckbox").prop("checked", false);
+    $("#displayName").val('');
+    $("#size").val('');
+    $("#premiumPrice").val('');
+    $("#reservationFee").val('');
+    $("#block").val('');
+    $("#phase").val('');
+    $("#elevation").val('');
+    $("#swing").val('');
+    $("#description").val('');
+    $("#address").val('');
+    $("#contactUrl").val('');
+    $("#contactButtonText").val('');
+    $("#videoUrl").val('');
+    if (ckEditorInstance) {
+        ckEditorInstance.setData('');
+    }
+    let lotStatusDropdown = $("#lotStatus");
+    lotStatusDropdown.empty();
+    lotStatusDropdown.append($('<option>', {
+        value: 0,
+        text: "Select Lot Status"
+    }));
+    lotStatusDropdown.val(0);
+}
 
 function populateListingsList(lotInfo) {
     var plansTable = $("#plansTable tbody").empty();

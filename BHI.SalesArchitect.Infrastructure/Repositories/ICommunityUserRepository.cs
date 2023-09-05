@@ -4,6 +4,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
 {
     public interface ICommunityUserRepository
     {
-        IEnumerable<CommunityUser> GetByCommunityIDs(List<int> communityIDs);
+        Task<IEnumerable<CommunityUser>> GetByCommunityIds(List<int> communityIds);
+        Task<IEnumerable<CommunityUser>> GetByUserIDs(List<int> userIds);
     }
 }

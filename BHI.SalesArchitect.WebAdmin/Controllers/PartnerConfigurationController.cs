@@ -51,6 +51,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             var popTitlesConfigs = await _configurationService.GetIspConfigurationsByPartnerId(_sessionService.PartnerID ?? PartnerId);
             return Ok(popTitlesConfigs);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetCustomizedContent()
         {
@@ -67,6 +68,21 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _sessionService.IsIsp = prospectConfiguration.IsIsp;
             return Ok(new { Success = res });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveIspPartnerConfiguration([FromBody] ProspectConfiguration prospectConfiguration)
+        {
+            var res = await _prospectConfigurationService.SaveIspPartnerConfiguration(_sessionService.PartnerID ?? PartnerId, UserId, prospectConfiguration);
+            return Ok(new { Success = res });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveHoldALotConfiguration([FromBody] ProspectConfiguration prospectConfiguration)
+        {
+            var res = await _prospectConfigurationService.SaveHoldALotConfiguration(_sessionService.PartnerID ?? PartnerId, UserId, prospectConfiguration);
+            return Ok(new { Success = res });
+        }
+
         [HttpPost]
         public async Task<IActionResult> SavePopupTitlesConfiguration([FromBody] PopupTitleConfigurations popupTilesConfigurations)
         {
@@ -76,12 +92,19 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             return Ok(new { Success = res });
         }
 
+        public async Task<IActionResult> SavePdfConfiguration([FromBody] ProspectConfiguration prospectConfiguration)
+        {
+            var res = await _prospectConfigurationService.SavePdfConfiguration(_sessionService.PartnerID ?? PartnerId, UserId, prospectConfiguration);
+            return Ok(new { Success = res });
+        }
+
         #endregion
 
         #region Grid Methods
         [HttpGet]
-        public async Task<IActionResult> GetCommunitiesGrid(GridSettings gridSettings, string searchTerm)
+        public IActionResult GetCommunitiesGrid(GridSettings gridSettings, string searchTerm)
         {
+
             var communities = _communityService.GetGridCommunitiesList(_sessionService.PartnerID ?? PartnerId, searchTerm);
             if (communities != null && communities.Any())
             {
@@ -99,7 +122,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                             cell = new Cell()
                             {
                                 ID = c.Id,
-                                DWStatus = c.Dwstatus == 1 ? "Active" : c.Dwstatus == 3 ? "Pending" : "Inactive",
+                                DWStatus = c.Dwstatus.ToString(),
                                 Name = c.Name,
                                 Brand = c.Brand, //builderBrands.First(p => communityBuilderBrands.Any(q => q.BuilderBrandID == p.ID && q.CommunityID == c.ID)).Name,
                                 Market = c.MarketName,
@@ -131,6 +154,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             }
         }
         #endregion
+
         #region Private Methods
         private async Task InitViewBag()
         {

@@ -101,10 +101,10 @@ img {
 
         .form-input:focus ~ .form-label,
         .form-input:valid ~ .form-label {
-            font-size: 95%;
+            font-size: 100%;
             transform: translate3d(0, -100%, 0);
             opacity: 1;
-            padding-bottom: 0.2rem;
+            padding-bottom: 0.4rem;
         }
 
 .divider-text {
@@ -346,7 +346,7 @@ button[type=button]:disabled {
     cursor: not-allowed;
 }
 
-.login-form, .forgot-form {
+.login-form {
     background: #fff url(../content/images/login-bg.jpg);
     background-position: center;
     background-size: cover;
@@ -363,7 +363,7 @@ button[type=button]:disabled {
     justify-content: center;
 }
 
-    .login-form .login-form-content, .login-form .forgot-form-content, .forgot-form .login-form-content, .forgot-form .forgot-form-content {
+    .login-form .login-form-content, .login-form .login-form-content {
         max-width: 400px;
         width: 100%;
         position: relative;
@@ -374,15 +374,16 @@ button[type=button]:disabled {
         padding: 3rem 3rem;
         -ms-flex-item-align: center;
         align-self: center;
+        border-radius: 15px;
     }
 
-        .login-form .login-form-content .v-blue, .login-form .forgot-form-content .v-blue, .forgot-form .login-form-content .v-blue, .forgot-form .forgot-form-content .v-blue {
+        .login-form .login-form-content .v-blue, .login-form .v-blue, .login-form-content .v-blue, .v-blue {
             padding: .572rem 2rem;
         }
 
-    .login-form h2, .forgot-form h2 {
+    .login-form h2, h2 {
         margin-bottom: 2.8rem;
-        font-size: 21px;
+        font-size: 23px;
         font-weight: 600;
         line-height: 1.2;
     }
@@ -391,7 +392,7 @@ button[type=button]:disabled {
     background: #189fcf;
     border: 1px solid #189fcf;
     color: #fff;
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 .v-align {
@@ -407,3 +408,4 @@ button[type=button]:disabled {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
+    

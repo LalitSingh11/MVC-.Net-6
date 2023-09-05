@@ -1,14 +1,7 @@
-﻿const SAVE_PROSPECT_CONFIGURATION_URL = "partnerconfiguration/saveprospectconfiguration"
+﻿"use strict";
+const SAVE_PROSPECT_CONFIGURATION_URL = "partnerconfiguration/saveprospectconfiguration";
 async function saveProspectSettings() {
-    const radioButtons = $('#prospectSettingsform input[type="radio"]');
-    const data = {};
-
-    // Loop through radio buttons and add their values to the object
-    radioButtons.each(function () {
-        if ($(this).prop('checked')) {
-            data[$(this).attr('name')] = $(this).val();
-        }
-    });
+    let data = getFormObj("prospectSettingsform");
 
     const prospectObj = {
         IsIsp: data.isIsp === 'true' ? true : false,

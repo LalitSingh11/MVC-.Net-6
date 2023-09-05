@@ -1,7 +1,7 @@
-﻿
-"use strict";
+﻿"use strict";
 var currentRowId = -1;
 const CREATE_USER_URL = "adduser";
+
 $(function () {
     $("#create_user_form").validate({
         rules: {

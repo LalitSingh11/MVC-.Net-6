@@ -1,4 +1,5 @@
 ﻿using BHI.SalesArchitect.Model.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 {
@@ -10,9 +11,9 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = db;
         }
 
-        public IEnumerable<CommunitySiteGeoJson> GetByCommunityIds(List<int> communityIds)
+        public async Task<IEnumerable<CommunitySiteGeoJson>> GetByCommunityIdsAsync(List<int> communityIds)
         {
-            return _dbContext.CommunitySiteGeoJsons.Where(x => communityIds.Contains(x.Id) && x.ActivityStateId == 1).ToList();
+            return await _dbContext.CommunitySiteGeoJsons.Where(x => communityIds.Contains(x.Id) && x.ActivityStateId == 1).ToListAsync();
         }
     }
 }

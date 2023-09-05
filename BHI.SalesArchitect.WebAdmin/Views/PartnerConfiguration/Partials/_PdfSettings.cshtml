@@ -1,14 +1,17 @@
 ﻿<div class="container-fluid">
     <br />
     <h6>
-        Geospatial PDF Disclaimer <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This is tool tip</span> </span></h6>
+        Geospatial PDF Disclaimer <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This is tool tip</span> </span>
+    </h6>
     <br />
-    <div class="col-sm-8">
-        <textarea class="form-control" name="holdAlotDisclaimer" id="pdfDisclaimer" rows="10"></textarea>
-    </div>
+    <form id="pdfDisclaimerForm">
+        <div class="col-sm-8">
+            <textarea class="form-control" name="holdAlotDisclaimer" id="pdfDisclaimer" rows="10"></textarea>
+        </div>
+    </form>
     <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
         <footer class="footer">
-            <button type="button" class="btn btn-primary" onclick="">Save changes</button>
+            <button type="button" class="btn btn-primary" onclick="updatePdfConfiguration();">Save changes</button>
             <button type="button" class="btn" onclick="setSettingsValues();">Cancel</button>
         </footer>
     </nav>

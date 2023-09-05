@@ -4,7 +4,6 @@ using System.Text.Json;
 
 namespace BHI.SalesArchitect.WebAdmin.Helpers
 {
-
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
@@ -45,7 +44,7 @@ namespace BHI.SalesArchitect.WebAdmin.Helpers
                 }
 
                 var result = JsonSerializer.Serialize(new { message = error?.Message, exception = error?.InnerException });
-                await response.WriteAsync(result);
+                await response.WriteAsync(result);                
             }
         }
     }

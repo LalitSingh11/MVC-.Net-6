@@ -11,9 +11,9 @@ namespace BHI.SalesArchitect.Service.Implementations
             _communitySiteGeoJsonRepository = communitySiteGeoJsonRepository;
         }
 
-        public IEnumerable<CommunitySiteGeoJson> GetByCommunityIds(List<int> communityIds)
+        public async Task<IEnumerable<CommunitySiteGeoJson>> GetByCommunityIdsAsync(List<int> communityIds)
         {
-            return _communitySiteGeoJsonRepository.GetByCommunityIds(communityIds);
+            return await _communitySiteGeoJsonRepository.GetByCommunityIdsAsync(communityIds);
         }
     }
 }

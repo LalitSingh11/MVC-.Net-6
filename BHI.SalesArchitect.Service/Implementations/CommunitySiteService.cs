@@ -10,9 +10,9 @@ namespace BHI.SalesArchitect.Service.Implementations
         {
             _communitySiteRepository = communitySiteRepository;
         }
-        public IEnumerable<CommunitySite> GetActiveCommunitySites(List<int> communityIds)
+        public async Task<IEnumerable<CommunitySite>> GetActiveCommunitySitesAsync(List<int> communityIds)
         {
-            return _communitySiteRepository.GetActiveCommunitySites(communityIds);
+            return await _communitySiteRepository.GetActiveCommunitySitesAsync(communityIds);
         }
     }
 }

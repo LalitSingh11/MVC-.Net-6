@@ -1,57 +1,59 @@
 ﻿<div class="container-fluid">
     <br />
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="ispPartnerType" id="ispPartnerTypRadio1" value="1">
-        <label class="form-check-label" for="ispPartnerTypeRadio1">
-            SVG ISP Partner
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="ispPartnerType" id="ispPartnerTypRadio2" value="3">
-        <label class="form-check-label" for="ispPartnerTypeRadio2">
-            Paid Geospatial ISP Partner
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="ispPartnerType" id="ispPartnerTypRadio3" value="4">
-        <label class="form-check-label" for="ispPartnerTypeRadio3">
-            SVG and Paid Geospatial ISP Partner
-        </label>
-    </div>
-    <br />
-    <h6> Google Maps API Key* <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This is tool tip</span> </span></h6>
-    <div class="row g-3">
-        <div class="col-md-4">
-            <label for="apiKey" class="form-label">API Key</label>
-            <input type="text" class="form-control" id="apiKey" name="googleApikey" placeholder="API Key">
+    <form id="ispPartnerTypeForm">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ispPartnerType" id="ispPartnerTypRadio1" value="1">
+            <label class="form-check-label" for="ispPartnerTypeRadio1">
+                SVG ISP Partner
+            </label>
         </div>
-        <div class="col-md-4">
-            <label for="clientId" class="form-label">Client Id</label>
-            <input type="text" class="form-control" id="clientId" name="googleClientId" placeholder="Client Id">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ispPartnerType" id="ispPartnerTypRadio2" value="3">
+            <label class="form-check-label" for="ispPartnerTypeRadio2">
+                Paid Geospatial ISP Partner
+            </label>
         </div>
-    </div>
-    <br />
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ispPartnerType" id="ispPartnerTypRadio3" value="4">
+            <label class="form-check-label" for="ispPartnerTypeRadio3">
+                SVG and Paid Geospatial ISP Partner
+            </label>
+        </div>
+        <br />
+        <h6> Google Maps API Key* <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This is tool tip</span> </span></h6>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="apiKey" class="form-label">API Key</label>
+                <input type="text" class="form-control" id="apiKey" name="googleApikey" placeholder="API Key">
+            </div>
+            <div class="col-md-4">
+                <label for="clientId" class="form-label">Client Id</label>
+                <input type="text" class="form-control" id="clientId" name="googleClientId" placeholder="Client Id">
+            </div>
+        </div>
+        <br />
         <h6>Preview ISP Plugin <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This is tool tip</span> </span></h6>
-    <div class="form-check form-check-inline m-1">
-        <input class="form-check-input" type="radio" name="previewIspplugin" id="previewIspRadio1" value="true">
-        <label class="form-check-label" for="previewIspRadio1">Yes</label>
-    </div>
-    <div class="form-check form-check-inline m-1">
-        <input class="form-check-input" type="radio" name="previewIspplugin" id="previewIspRadio2" value="false">
-        <label class="form-check-label" for="previewIspRadio2">No</label>
-    </div>
-<div class="mb-3"></div>
-    <h6>Envision NHT Builder Number <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This is tool tip</span> </span></h6>
-    <div class="col-md-4">
-        <input type="text" class="form-control" id="nhtNumber" name="nhtbuilderNumber" placeholder="NHT Builder Number">
-    </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="previewIspplugin" id="previewIspRadio1" value="true">
+            <label class="form-check-label" for="previewIspRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="previewIspplugin" id="previewIspRadio2" value="false">
+            <label class="form-check-label" for="previewIspRadio2">No</label>
+        </div>
+        <div class="mb-3"></div>
+        <h6>Envision NHT Builder Number <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This is tool tip</span> </span></h6>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="nhtNumber" name="nhtbuilderNumber" placeholder="NHT Builder Number">
+        </div>
+    </form>
     <br />
     <br />
     <br />
     <br />
     <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
         <footer class="footer">
-            <button type="button" class="btn btn-primary" onclick="">Save changes</button>
+            <button type="button" class="btn btn-primary" onclick="updateIspPartnerTypeConfiguration();">Save changes</button>
             <button type="button" class="btn" onclick="setSettingsValues();">Cancel</button>
         </footer>
     </nav>

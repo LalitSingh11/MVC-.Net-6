@@ -4,6 +4,6 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
 {
     public interface ICommunitySiteGeoJsonRepository
     {
-        IEnumerable<CommunitySiteGeoJson> GetByCommunityIds(List<int> communityIds);
+        Task<IEnumerable<CommunitySiteGeoJson>> GetByCommunityIdsAsync(List<int> communityIds);
     }
 }

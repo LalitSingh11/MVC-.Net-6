@@ -28,7 +28,7 @@ namespace BHI.SalesArchitect.Service.Implementations
                     Name = config.Name,
                     Code = config.Code,
                     AssetTypeId = config.AssetTypeId,
-                    ConfigValue = string.IsNullOrEmpty(updatedConfigValue) ? config.ConfigValue : updatedConfigValue,
+                    ConfigValue = String.IsNullOrWhiteSpace(updatedConfigValue) ? config.ConfigValue : updatedConfigValue,
                     PartnerId = partnerId
                 };
                 popupTitles.Add(configObj);
