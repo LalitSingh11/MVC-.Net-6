@@ -8,6 +8,7 @@ namespace BHI.SalesArchitect.DependencyResolver
     {
         public ServiceDependencies(IServiceCollection services)
         {
+            services.AddScoped<IActivityStateService, ActivityStateService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBuilderBrandService, BuilderBrandService>();
             services.AddScoped<ICommunityService, CommunityService>();
@@ -23,6 +24,7 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<IMasterPlanService, MasterPlanService>();
             services.AddScoped<IPartnerService, PartnerService>();
             services.AddScoped<IProspectConfigurationService, ProspectConfigurationService>();
+            services.AddScoped<IProspectCommunityService, ProspectCommunityService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ISiteService, SiteService>();
             services.AddScoped<ISessionService, SessionService>();

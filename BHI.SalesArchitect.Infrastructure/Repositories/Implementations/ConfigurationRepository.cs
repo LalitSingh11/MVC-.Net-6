@@ -40,9 +40,9 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 
         public async Task<bool> DeleteIspConfigByPartnerId(int partnerId)
         {
-            var existingconfig = _dbContext.Configurations.
+            var existingConfig = _dbContext.Configurations.
                 Where(x => x.PartnerId == partnerId && x.Code.StartsWith("ISP"));
-            _dbContext.Configurations.RemoveRange(existingconfig);
+            _dbContext.Configurations.RemoveRange(existingConfig);
             return await _dbContext.SaveChangesAsync() > 0;
         }
 

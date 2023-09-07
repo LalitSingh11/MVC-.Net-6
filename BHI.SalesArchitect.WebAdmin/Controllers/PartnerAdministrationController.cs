@@ -21,6 +21,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private IRoleService _roleService;
         private ISessionService _sessionService;
         private IProspectConfigurationService _prospectConfigurationService;
+        private IActivityStateService _activityStateService;
 
         public PartnerAdministrationController(IPartnerService partnerService,
             IBuilderBrandService builderBrandService,
@@ -28,7 +29,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             IUserService userService,
             IRoleService roleService,
             ISessionService sessionService,
-            IProspectConfigurationService prospectConfigurationService)
+            IProspectConfigurationService prospectConfigurationService,
+            IActivityStateService activityStateService)
         {
             _partnerService = partnerService;
             _builderBrandService = builderBrandService;
@@ -37,6 +39,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _roleService = roleService;
             _sessionService = sessionService;
             _prospectConfigurationService = prospectConfigurationService;
+            _activityStateService = activityStateService;
         }
         public IActionResult Index()
         {
@@ -200,6 +203,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                 var exists = await _userService.GetByUsername(user.UserName);
                 if (exists == null)
                 {
+                    user.ActivityStateId = _activityStateService.ActiveState.Id;
                     var res1 = await _userService.AddUser(user);
                     var newUser = await _userService.GetByUsername(model.UserName);
                     var roleId = model.IsPartnerSuperAdmin ? _roleService.PartnerSuperAdmin.Id : _roleService.BHIAdmin.Id;
@@ -216,7 +220,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         [Authorize(Roles = Roles.BHIADMIN)]
         public async Task<IActionResult> DeleteUser(int userId)
         {
-            var res1 = await _userRoleService.DeleteUserRole(userId);
+            var res1 = await _userRoleService.DeleteUserRoleByUserId(userId);
             var res2 = await _userService.DeleteUser(userId);
             return Json(new { Success = res1 && res2});
         }

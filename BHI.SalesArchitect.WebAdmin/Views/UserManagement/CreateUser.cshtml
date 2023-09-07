@@ -1,41 +1,89 @@
-﻿<div class="container-fluid border">
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Create User";
+}
+<div>
+    <a class="btn btn-secondary" style="float: right;" asp-controller="UserManagement" asp-action="Index">Manage Users</a>
     <br />
-    <h2>User Information</h2>
-    <hr />
-    <form class="row g-3 m-5" id="create_new_user_form">
-        <div class="col-md-6">
-            <label for="create_firstName" class="form-label">First Name</label>
-            <input type="text" class="form-control" name="create_firstName" id="create_firstName">
-        </div>
-        <div class="col-md-6">
-            <label for="create_lastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control" name="create_lastName" id="create_lastName">
-        </div>
-        <div class="col-md-6">
-            <label for="create_username" class="form-label">Username</label>
-            <input type="text" class="form-control" name="create_username" id="create_username">
-        </div>
-        <div class="col-md-6">
-            <label for="create_email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="create_email" id="create_email">
-        </div>
-        <div class="col-md-6">
-            <label for="create_password">Password</label>
-            <input type="password" class="form-control" id="create_password" name="create_password">
-        </div>
-        <div class="col-md-6">
-            <label for="create_confirm_password">Confirm Password</label>
-            <input type="password" class="form-control" id="create_confirm_password" name="create_confirm_password">
-        </div>
-        <div class="col-md-6">
-            <label for="create_phone" class="form-label">Phone Number</label>
-            <input type="number" class="form-control" name="create_phone" id="create_phone">
-        </div>
-    </form>
-    <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
-        <footer class="footer ">
-            <button type="button" class="btn btn-primary" onclick="">Register User</button>
-            @*<button type="button" class="btn" onclick="reloadUser();">Cancel</button>*@
-        </footer>
-    </nav>
+    <br />
+    <div class="container-fluid border">
+        <br />
+        <h2>User Information</h2>
+        <hr />
+        <form class="row g-3 m-5" id="create_new_user_form">
+            <div class="col-md-6">
+                <label for="create_firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="create_firstName" id="create_firstName">
+            </div>
+            <div class="col-md-6">
+                <label for="create_lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="create_lastName" id="create_lastName">
+            </div>
+            <div class="col-md-6">
+                <label for="create_username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="create_username" id="create_username" autocomplete="new-password">
+            </div>
+            <div class="col-md-6">
+                <label for="create_email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="create_email" id="create_email">
+            </div>
+            <div class="col-md-6">
+                <label for="create_password">Password</label>
+                <input type="password" class="form-control" id="create_password" name="create_password" autocomplete="new-password">
+            </div>
+            <div class="col-md-6">
+                <label for="create_confirm_password">Confirm Password</label>
+                <input type="password" class="form-control" id="create_confirm_password" name="create_confirm_password">
+            </div>
+            <div class="col-md-6">
+                <label for="create_phone" class="form-label">Phone Number</label>
+                <input type="number" class="form-control" name="create_phone" id="create_phone">
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="btn-check" name="userRole" id="option1" value="3" autocomplete="off" checked>
+                            <label class="btn btn-outline-secondary" for="option1">Sales Representative</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="btn-check" name="userRole" id="option2" value="2" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="option2">Community Administrator</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="btn-check" name="userRole" id="option3" value="5" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="option3">Lot Status Editor</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <partial name="Partials/_CommunityUserGrid" />
+        <br />
+        <br />
+        <br />
+        <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
+            <footer class="footer ">
+                <button type="button" class="btn btn-primary" onclick="createNewUser();">Register User</button>
+                @*<button type="button" class="btn" onclick="reloadUser();">Cancel</button>*@
+            </footer>
+        </nav>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/usermanagement/create-user.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link href="~/css/usermanagement/create-user.css" rel="stylesheet" asp-append-version=" true" />
+    <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
+}

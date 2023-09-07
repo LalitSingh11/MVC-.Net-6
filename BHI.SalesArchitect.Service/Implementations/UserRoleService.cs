@@ -21,7 +21,7 @@ namespace BHI.SalesArchitect.Service.Implementations
             return _userRoleRepository.AddUserRole(ur);
         }
 
-        public async Task<bool> DeleteUserRole(int userId)
+        public async Task<bool> DeleteUserRoleByUserId(int userId)
         {
             var userRole = GetByUserId(userId);
             return await _userRoleRepository.DeleteUserRole(userRole);

@@ -5,15 +5,10 @@ namespace BHI.SalesArchitect.WebAdmin.Models.Account
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User Name")]
         public string UserName { get; set; }
-
         [Required]
-        [Display(Name = "First Name")]
         public string FirstName { get; set; }
-
         [Required]
-        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [DataType(DataType.PhoneNumber)]
@@ -23,27 +18,17 @@ namespace BHI.SalesArchitect.WebAdmin.Models.Account
         public string PhoneNumber { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long and contain at least one number.", MinimumLength = 5)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
         public string Password { get; set; }
-
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [Display(Name = "Is BHI Administrator?")]
-        public int IsAdministrator { get; set; }
-
-        [Display(Name = "Is Active")]
+        public int RoleId { get; set; }
         public bool IsActive { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [Required]
         [RegularExpression(@"^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$", ErrorMessage = "Email format is not valid")]
         public string Email { get; set; }
-        [Display(Name = "Is Partner Super Admin?")]
         public bool IsPartnerSuperAdmin { get; set; }
         public string AssociationIds { get; set; }
     }

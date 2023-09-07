@@ -6,5 +6,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
     {
         Task<IEnumerable<CommunityUser>> GetByCommunityIds(List<int> communityIds);
         Task<IEnumerable<CommunityUser>> GetByUserIDs(List<int> userIds);
+        Task<bool> DeleteByUserId(int userId);
+        Task<bool> AddCommunityUser(List<CommunityUser> communityUsers);
     }
 }

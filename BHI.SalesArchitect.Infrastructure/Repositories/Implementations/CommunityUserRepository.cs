@@ -11,16 +11,27 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
         }
 
+        public async Task<bool> AddCommunityUser(List<CommunityUser> communityUsers)
+        {
+            await _dbContext.CommunityUsers.AddRangeAsync(communityUsers);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> DeleteByUserId(int userId)
+        {
+            var existingCommUsers = _dbContext.CommunityUsers.Where(x => x.UserId == userId);
+            _dbContext.CommunityUsers.RemoveRange(existingCommUsers);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
         public async Task<IEnumerable<CommunityUser>> GetByCommunityIds(List<int> communityIds)
         {
-            var result = await _dbContext.CommunityUsers.Where(x => communityIds.Contains(x.CommunityId)).ToListAsync();
-            return result;
+            return await _dbContext.CommunityUsers.Where(x => communityIds.Contains(x.CommunityId)).ToListAsync();            
         }
 
         public async Task<IEnumerable<CommunityUser>> GetByUserIDs(List<int> userIds)
         {
-            var result = await _dbContext.CommunityUsers.Where(x => userIds.Contains(x.UserId)).ToListAsync();
-            return result;
+            return await _dbContext.CommunityUsers.Where(x => userIds.Contains(x.UserId)).ToListAsync();            
         }
     }
 }

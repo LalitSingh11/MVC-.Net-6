@@ -24,6 +24,7 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<ILotStateRepository, LotStateRepository>();
             services.AddScoped<IMasterPlanRepository, MasterPlanRepository>();
             services.AddScoped<IProspectConfigurationRepository, ProspectConfigurationRepository>();
+            services.AddScoped<IProspectCommunityRepository, ProspectCommunityRepository>();
             services.AddScoped<IPartnerRepository, PartnerRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ISiteRepository, SiteRepository>();

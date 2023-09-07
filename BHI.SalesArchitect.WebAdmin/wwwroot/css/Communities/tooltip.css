@@ -7,20 +7,19 @@
 .tooltip-content {
     display: none;
     position: absolute;
-    font-weight:normal;
-    font-size:smaller;
+    font-weight: normal;
+    font-size: smaller;
     top: -15px;
     left: 20px;
     background-color: lightgray;
     color: black;
     padding: 5px 10px;
     border-radius: 5px;
-    width:auto;
+    width: auto;
     z-index: 100;
-    white-space:nowrap;
+    white-space: nowrap;
 }
 
 .tooltip-container:hover .tooltip-content {
     display: block;
 }
-

@@ -2,7 +2,7 @@
 const GRID_PARTNER = "#GridPartner";
 const GRID_USER = "#GridUser";
 const UPDATE_USER_URL = "partneradministration/updateuser";
-const DELETE_USER_URL = "partneradministration/deleteuser"
+const DELETE_USER_URL = "partneradministration/deleteuser";
 var currentUserRowId = -1;
 var currentPartnerRowId = -1;
 
@@ -60,12 +60,8 @@ function onUserRowSelected(rowid, status) {
     let user = $(GRID_USER).jqGrid("getRowData", rowid);
     let partner = $(GRID_PARTNER).jqGrid("getRowData", user?.Partner);
     $(GRID_PARTNER).jqGrid('resetSelection');
-    //if (status) {
     $(GRID_PARTNER).jqGrid('setSelection', partner?.ID, true);
-        populateUserForm(user);
-    /*}
-    else
-        $(`#update_user_form`)[0].reset();*/
+    populateUserForm(user);
 }
 
 function onPartnerRowSelected(rowid, status) {
@@ -138,7 +134,6 @@ async function deleteUser() {
         showToast("User Deleted Successfully");
     else
         showToast("Unsuccessful", false);
-
 }
 
 function onPartnerStatusChange(selectedValue) {

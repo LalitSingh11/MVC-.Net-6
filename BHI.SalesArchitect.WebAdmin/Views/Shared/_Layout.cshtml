@@ -43,7 +43,7 @@
             <li><a href="/HelpDocuments">Help</a></li>
             @if (User.IsInRole(Roles.BHIADMIN))
             {
-                <li><a asp-controller="NewHomeNavigator" asp-action="Index">New Home Navigator</a></li>
+                @* <li><a asp-controller="NewHomeNavigator" asp-action="Index">New Home Navigator</a></li> *@
             }
             @if (!User.IsInRole(Roles.LOTSTATUSEDITOR))
             {

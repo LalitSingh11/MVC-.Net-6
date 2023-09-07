@@ -211,45 +211,51 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             return Ok(lotInfo);
         }
 
-        /*[HttpGet]
-        public async Task<IActionResult> GetListingImages(int listingId, int lotid)
+/*        [HttpGet]
+        public async Task<IActionResult> GetCommunityPopupTitles(int commId)
         {
-            return Ok();
+
         }*/
-        /*  [HttpGet]
-          public IActionResult GetLotImage(int id, int maxwidth = 0, int maxheight = 0)
-          {
-              IActionResult result = null;
-              try
+
+            /*[HttpGet]
+            public async Task<IActionResult> GetListingImages(int listingId, int lotid)
+            {
+                return Ok();
+            }*/
+            /*  [HttpGet]
+              public IActionResult GetLotImage(int id, int maxwidth = 0, int maxheight = 0)
               {
-                  var gifType = _assetTypeRepository.GifType;
-                  var jpgType = _assetTypeRepository.JpgType;
-
-                  var lot = _lotRepository.GetByID(id);
-
-                  if (lot != null)
+                  IActionResult result = null;
+                  try
                   {
-                      var buffer = _imageFileService.ReadImageToByte(_pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath), maxwidth, maxheight);
-                      if (buffer != null)
-                          result = new FileStreamResult(new MemoryStream(buffer), FileImage.GetFileType(Path.GetExtension(lot.ImagePath).ToLower().Remove(0, 1)));
-                      else
+                      var gifType = _assetTypeRepository.GifType;
+                      var jpgType = _assetTypeRepository.JpgType;
+
+                      var lot = _lotRepository.GetByID(id);
+
+                      if (lot != null)
                       {
-                          _logService.Error("Bad Path or Something: Directory Path:" + _directoryPath + " Value:" + lot.ImagePath + " pathFactory:" + _pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath));
+                          var buffer = _imageFileService.ReadImageToByte(_pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath), maxwidth, maxheight);
+                          if (buffer != null)
+                              result = new FileStreamResult(new MemoryStream(buffer), FileImage.GetFileType(Path.GetExtension(lot.ImagePath).ToLower().Remove(0, 1)));
+                          else
+                          {
+                              _logService.Error("Bad Path or Something: Directory Path:" + _directoryPath + " Value:" + lot.ImagePath + " pathFactory:" + _pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath));
+                          }
                       }
                   }
-              }
-              catch (Exception e)
-              {
-                  _logService.Error(Request.Url.PathAndQuery, e);
-              }
+                  catch (Exception e)
+                  {
+                      _logService.Error(Request.Url.PathAndQuery, e);
+                  }
 
 
-              return result ?? (result = new HttpNotFoundResult());
-          }*/
-        #endregion
+                  return result ?? (result = new HttpNotFoundResult());
+              }*/
+            #endregion
 
-        #region Post Methods
-        [HttpPost]
+            #region Post Methods
+            [HttpPost]
         public async Task<IActionResult> UpdateLot([FromBody] LotListingsDataModel data)
         {
             if(ModelState.IsValid)

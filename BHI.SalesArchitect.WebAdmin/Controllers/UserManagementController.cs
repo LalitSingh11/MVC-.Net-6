@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MvcJqGrid;
 using BHI.SalesArchitect.Model.DB;
 using BHI.SalesArchitect.Core.Constants;
-using BHI.SalesArchitect.Service.Implementations;
+using BHI.SalesArchitect.WebAdmin.Models.Account;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
@@ -17,13 +17,17 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private IRoleService _roleService;
         private ICommunityService _communityService;
         private ICommunityUserService _communityUserService;
+        private IProspectCommunityService _prospectCommunityService;
+        private IActivityStateService _activityStateService;
 
         public UserManagementController(ISessionService sessionService,
             IUserService userService,
             IUserRoleService userRoleService,
             IRoleService roleService,
             ICommunityService communityService,
-            ICommunityUserService communityUserService)
+            ICommunityUserService communityUserService,
+            IProspectCommunityService prospectCommunityService,
+            IActivityStateService activityStateService)
         {
             _sessionService = sessionService;
             _userService = userService;
@@ -31,6 +35,8 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _roleService = roleService;
             _communityService = communityService;
             _communityUserService = communityUserService;
+            _prospectCommunityService = prospectCommunityService;
+            _activityStateService = activityStateService;
         }
 
         public IActionResult Index()
@@ -44,6 +50,101 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         }
 
         #region Get Methods
+        #endregion
+
+        #region Post Methods
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] RegisterModel model)
+        {
+            try
+            {
+                var user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    Password = model.Password,
+                    PhoneNumber = model.PhoneNumber,
+                    ActivityStateId =  _activityStateService.ActiveState.Id,
+                    PartnerId = _sessionService.PartnerID ?? PartnerId
+                };
+
+                var exists = await _userService.GetByUsername(user.UserName);
+                if (exists == null)
+                {
+                    var res1 = await _userService.AddUser(user);
+                    var newUser = await _userService.GetByUsername(model.UserName);
+                    var roleId = model.RoleId;
+                    var res2 = await _userRoleService.AddUserRole(newUser.Id, roleId);
+
+                    string[] stringArray = model.AssociationIds.Split(',');
+                    List<int> commIds = stringArray.Select(int.Parse).ToList();
+                    if(commIds.Any())
+                        await _communityUserService.AddByUserId(newUser.Id, commIds);
+                    return Json(new { Success = res1 && res2});
+                }
+                else
+                {
+                    return Json(new { Success = false, message = "Username already in use." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Error = ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser([FromBody] RegisterModel model, int userId)
+        {
+            try
+            {
+                var user = new User
+                {
+                    Id = userId,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    Password = model.Password,
+                    PhoneNumber = model.PhoneNumber,
+                    ActivityStateId = model.IsActive ? _activityStateService.ActiveState.Id : _activityStateService.InactiveState.Id
+                };
+
+                var res1 = await _userService.UpdateUser(user);
+                var roleId = model.RoleId;
+                var res2 = await _userRoleService.UpdateUserRole(userId, roleId);
+                if (model.IsActive)
+                {
+                    string[] stringArray = model.AssociationIds.Split(',');
+                    List<int> commIds = stringArray.Select(int.Parse).ToList();
+                    await _communityUserService.UpdateByUserId(userId, commIds);
+                }
+                return Json(new { Success = res1 && res2 });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            try
+            {
+                await _communityUserService.DeleteByUserId(userId);
+                await _userRoleService.DeleteUserRoleByUserId(userId);
+                await _prospectCommunityService.DeleteByUserId(userId);
+                var res = await _userService.DeleteUser(userId);
+                return Json(new { Success = res });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Error = ex.Message });
+            }
+        }
         #endregion
 
         #region Grid Methods
@@ -75,7 +176,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             List<UserRole> userRoles = new();
             if (users != null && users.Count > 0)
             {
-                communityUsers = ( await _communityUserService.GetByUserIds(users.Select(p => p.Id).ToList())).ToList();
+                communityUsers = (await _communityUserService.GetByUserIds(users.Select(p => p.Id).ToList())).ToList();
                 userRoles = _userRoleService.GetByUserIds(users.Select(p => p.Id).ToList()).ToList();
             }
 

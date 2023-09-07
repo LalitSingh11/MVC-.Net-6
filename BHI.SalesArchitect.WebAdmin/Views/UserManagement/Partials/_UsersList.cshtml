@@ -29,13 +29,13 @@
             .SetSortName("UserName")
             .SetSortOrder(SortOrder.Asc)
             .SetRowNum(10000)
-            //.SetWidth(1100)
             .SetAutoWidth(true)
             .SetScrollRows(true)
             //.SetHeight(450).
             .OnSelectRow("onUserRowSelected(rowid)")
             .SetViewRecords(true)
-            //.SetLoadText("Users loading...")
+            .OnLoadComplete("onManageUserComplete()")
+            .SetLoadText("Users loading...")
             )
     </div>
    

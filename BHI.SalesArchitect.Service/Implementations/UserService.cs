@@ -17,7 +17,6 @@ namespace BHI.SalesArchitect.Service.Implementations
 
         public Task<bool> AddUser(User user)
         {
-            user.ActivityStateId = _activityStateRepository.ActiveState.Id;
             return _userRepository.AddUser(user);
         }
 
@@ -70,7 +69,8 @@ namespace BHI.SalesArchitect.Service.Implementations
             dbUser.PhoneNumber = user.PhoneNumber;
             dbUser.UserName = user.UserName;
             dbUser.Password = String.IsNullOrWhiteSpace(user.Password) ? dbUser.Password : EncryptionHelper.GetSHA1(user.Password);
-            dbUser.PartnerId = user.PartnerId;
+            dbUser.PartnerId = user.PartnerId ?? dbUser.PartnerId;
+            dbUser.ActivityStateId = user.ActivityStateId == 0 ? dbUser.ActivityStateId : user.ActivityStateId;
             return await _userRepository.UpdateUser(dbUser);             
         }        
     }

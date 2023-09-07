@@ -11,7 +11,7 @@
 
 <div>
     <br />
-    <a class="btn btn-primary" style="float: right;" asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a>
+    <a class="btn btn-secondary" style="float: right;" asp-controller="PartnerAdministration" asp-action="Index">Manage Partners</a>
     <h2>New Administration User</h2>
     <div class="container-fluid border">
         <br />
@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-6">
                 <label for="create_username" class="form-label">Username</label>
-                <input type="text" class="form-control" name="create_username" id="create_username">
+                <input type="text" class="form-control" name="create_username" id="create_username" autocomplete="new-password">
             </div>
             <div class="col-md-6">
                 <label for="create_email" class="form-label">Email</label>
@@ -36,7 +36,7 @@
             </div>
             <div class="col-md-6">
                 <label for="create_password">Password</label>
-                <input type="password" class="form-control" id="create_password" name="create_password">
+                <input type="password" class="form-control" id="create_password" name="create_password" autocomplete="new-password">
             </div>
             <div class="col-md-6">
                 <label for="create_confirm_password">Confirm Password</label>

@@ -8,6 +8,6 @@ namespace BHI.SalesArchitect.Service
         UserRole GetByUserId(int userId);
         Task<bool> UpdateUserRole(int userId, int roleId);  
         Task<bool> AddUserRole(int userId, int roleId);  
-        Task<bool> DeleteUserRole(int userId);  
+        Task<bool> DeleteUserRoleByUserId(int userId);  
     }
 }
