@@ -4,9 +4,10 @@ namespace BHI.SalesArchitect.Service
 {
     public interface ILotService
     {
-        IEnumerable<Lot> GetByCommId(int commID);
+        Task<IEnumerable<Lot>> GetByCommId(int commID);
         Task<Lot> GetByID(int lotId);
-        
+        Task<bool> UpdateByLotStateId(int lotStateId);
+        Task<IEnumerable<Lot>> GetByConfigId(int configId);        
         Task<bool> UpdateLot(Lot lot);
     }
 }

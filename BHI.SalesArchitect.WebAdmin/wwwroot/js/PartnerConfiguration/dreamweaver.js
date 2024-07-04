@@ -1,5 +1,6 @@
 ﻿"use strict";
 const DREAMWEAVER_GRID = `#Dreamweaver_Grid`;
+const UPDATE_DREAMWEAVER_CONFIGURATION = "partnerconfiguration/savedreamweaverconfiguration";
 
 $(function () {
     $('input[name="isDreamweaver"]').on('change', toggleGridVisibility);
@@ -109,4 +110,17 @@ function searchCommunityGrid() {
         jQuery(DREAMWEAVER_GRID).jqGrid().setGridParam({ postData: { searchTerm: searchTerm }, page: 1 }).trigger('reloadGrid');
         $('#clear-search').removeClass('disable');
     }
+}
+
+async function updateDreamweaverConfiguration() {
+    let data = getFormObj("dreamweaverConfigurationForm");
+    let dreamweaverObj = {
+        IsDreamweaver: data.isDreamweaver == 'true' ? true : false
+    }
+    let result = await executeHttpRequest(UPDATE_DREAMWEAVER_CONFIGURATION, METHOD_POST, dreamweaverObj);
+    if (result.success == true)
+        showToast("Configuration Updated Successfully");
+    else
+        showToast("Unsuccessful", false);
+    console.log(data);
 }

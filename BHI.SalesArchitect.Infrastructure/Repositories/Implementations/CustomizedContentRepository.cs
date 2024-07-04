@@ -34,7 +34,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             return await customizedContent.ToListAsync();
         }
 
-        public async Task<IEnumerable<CustomizedContentResult>> GetByPartnerIdandCommId(int partnerId, int commId)
+        public async Task<IEnumerable<CustomizedContentResult>> GetByPartnerIdAndCommId(int partnerId, int commId)
         {
 
             var customizedContent = from cc in _dbContext.CustomizedContents
@@ -50,7 +50,8 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                                         PartnerId = cc.PartnerId,
                                         CommunityId = cc.CommunityId,
                                         CustomizedContentTypeId = cc.CustomizedContentTypeId,
-                                        Value = cc.Value
+                                        Value = cc.Value,
+                                        LocationCode = cl.LocationCode
                                     };            
 
             return await customizedContent.ToListAsync();

@@ -12,7 +12,7 @@ public partial class CommunitySiteGeoJson
 
     public int GeoJsontype { get; set; }
 
-    public string? Version { get; set; }
+    public string Version { get; set; }
 
     public int? ActivityStateId { get; set; }
 

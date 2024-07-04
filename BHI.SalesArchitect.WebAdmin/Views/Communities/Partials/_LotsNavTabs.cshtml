@@ -1,25 +1,46 @@
-﻿<div class="container-fluid border">
+﻿@using BHI.SalesArchitect.Core.Constants;
+@using BHI.SalesArchitect.Core.Enumerations;
+<div class="container-fluid border">
     <br />
     <ul class="nav nav-tabs" id="manageLotsTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="lots-tab" data-bs-toggle="tab" data-bs-target="#lots-tab-pane" type="button" role="tab" aria-controls="lots-tab-pane" aria-selected="true">Manage Lots</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#config-tab-pane" type="button" role="tab" aria-controls="config-tab-pane" aria-selected="false">ISP Configuration</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="manage-layers-tab" data-bs-toggle="tab" data-bs-target="#manage-layers-tab-pane" type="button" role="tab" aria-controls="manage-layers-tab-pane" aria-selected="false">Manage Layers</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="comm-customizable-tab" data-bs-toggle="tab" data-bs-target="#comm-customizable-tab-pane" type="button" role="tab" aria-controls="comm-customizable-tab-pane" aria-selected="false">Community Customizable Content</button>
-        </li>
+        @if (ViewBag.IspPartnerType != (int)CommonEnumerations.IspPartnerType.FreeGeoSpatial)
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="lots-tab" data-bs-toggle="tab" data-bs-target="#lots-tab-pane" type="button" role="tab" aria-controls="lots-tab-pane" aria-selected="true">Manage Lots</button>
+            </li>
+        }
+        @if (!User.IsInRole(Roles.PARTNERREADONLY) && !User.IsInRole(Roles.LOTSTATUSEDITOR))
+        {
+            if (ViewBag.IspPartnerType != (int)CommonEnumerations.IspPartnerType.FreeGeoSpatial)
+            {
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#config-tab-pane" type="button" role="tab" aria-controls="config-tab-pane" aria-selected="false">ISP Configuration</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="manage-layers-tab" data-bs-toggle="tab" data-bs-target="#manage-layers-tab-pane" type="button" role="tab" aria-controls="manage-layers-tab-pane" aria-selected="false">Manage Layers</button>
+                </li>
+            }
+            if ((!ViewBag.IsISPOnly) && (ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVG || ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVGGeoSpatial))
+            {
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="sales-nav-com-overview-tab" data-bs-toggle="tab" data-bs-target="#sales-nav-com-overview-tab-pane" type="button" role="tab" aria-controls="sales-nav-com-overview-tab-pane" aria-selected="false">Sales Navigator Community Overview</button>
+                </li>
+            }
+        }
+        @if (!User.IsInRole(Roles.PARTNERREADONLY) && !User.IsInRole(Roles.LOTSTATUSEDITOR))
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comm-customizable-tab" data-bs-toggle="tab" data-bs-target="#comm-customizable-tab-pane" type="button" role="tab" aria-controls="comm-customizable-tab-pane" aria-selected="false">Community Customizable Content</button>
+            </li>
+        }
+
     </ul>
     <div class="tab-content" id="manageLotsTabContent">
         <div class="tab-pane fade show active" id="lots-tab-pane" role="tabpanel" aria-labelledby="lots-tab" tabindex="0">
             <partial name="Partials/ManageLots/_ManageLots" />
             <br />
         </div>
-        <div class="tab-pane fade" id="config-tab-pane" role="tabpanel" aria-labelledby="config-tab" tabindex="0">conifg...</div>
+        <div class="tab-pane fade" id="config-tab-pane" role="tabpanel" aria-labelledby="config-tab" tabindex="0"> <partial name="Partials/ISPConfiguration/_ISPConfiguration" /></div>
         <div class="tab-pane fade" id="manage-layers-tab-pane" role="tabpanel" aria-labelledby="manage-layers-tab" tabindex="0">layers...</div>
         <div class="tab-pane fade" id="comm-customizable-tab-pane" role="tabpanel" aria-labelledby="comm-customizable-tab" tabindex="0">
             <partial name="Partials/CommunityCustomizableContent/_CommunityCustomizableContent" />

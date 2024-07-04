@@ -13,6 +13,10 @@ namespace BHI.SalesArchitect.Service.Implementations
             _communityRepository = communityRepository;
         }
 
+        public async Task<Community> GetByCommunityId(int communityId)
+        {
+            return await _communityRepository.GetByCommunityId(communityId);
+        }
         public async Task<IEnumerable<Community>> GetByCommunityIds(List<int> communityIds)
         {
             return await _communityRepository.GetByCommunityIds(communityIds);
@@ -27,6 +31,11 @@ namespace BHI.SalesArchitect.Service.Implementations
         public async Task<IEnumerable<Community>> GetCommunitiesByPartnerId(int partnerId)
         {
             return await _communityRepository.GetCommunitiesByPartnerId(partnerId);
+        }
+
+        public async Task<IEnumerable<Community>> GetBySiteIds(List<int> siteIds)
+        {
+            return await _communityRepository.GetBySiteIds(siteIds);
         }
 
         public IEnumerable<GridCommunityResult> GetGridCommunitiesList(int partnerId, string searchTerm, int commStatusType = 0, int commType = 0)
@@ -64,8 +73,7 @@ namespace BHI.SalesArchitect.Service.Implementations
 
         public async Task<IEnumerable<Community>> GetGridByPartnerIdAndByUserId(int partnerId, int userId, string searchTerm, int commType = 0)
         {
-            var communities1 = await _communityRepository.GetByPartnerIdAndByUserId(partnerId, userId);
-            var communities = communities1.ToList();
+            var communities =(await _communityRepository.GetByPartnerIdAndByUserId(partnerId, userId)).ToList();
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 searchTerm = searchTerm.Trim();
@@ -82,6 +90,11 @@ namespace BHI.SalesArchitect.Service.Implementations
             }
             
             return communities;
+        }
+
+        public async Task<IEnumerable<Community>> GetActiveCommunitiesByCommunityIds(List<int> communityIds)
+        {
+            return await _communityRepository.GetActiveCommunitiesByCommunityIds(communityIds);
         }
     }
 }

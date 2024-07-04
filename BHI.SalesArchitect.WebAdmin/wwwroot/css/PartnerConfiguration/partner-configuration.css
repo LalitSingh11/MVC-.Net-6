@@ -24,3 +24,9 @@
     display: block;
 }
 
+.colorResetBtn {
+    border: none;
+    background: none;
+    padding: 0;
+    color: blue;
+}

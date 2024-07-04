@@ -10,6 +10,12 @@ namespace BHI.SalesArchitect.Service.Implementations
         {
             _configurationRepository = configurationRepository;
         }
+
+        public async Task<bool> Delete(int id)
+        {
+            return await _configurationRepository.Delete(id);
+        }
+
         public async Task<IEnumerable<Configuration>> GetIspConfigurationsByPartnerId(int partnerId)
         {
             return await _configurationRepository.GetIspConfigurationsByPartnerId(partnerId);

@@ -25,7 +25,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 
             return query.ToList();
         }
-        public IEnumerable<Lot> GetByCommunityID(int commId)
+        public async Task<IEnumerable<Lot>> GetByCommunityID(int commId)
         {
             var query = from l in _dbContext.Lots
                         join ls in _dbContext.LotStates on l.LotStateId equals ls.Id
@@ -33,7 +33,7 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                         where cs.CommunityId == commId
                         select l;
 
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
         public async Task<Lot> GetByID(int lotId)
@@ -44,6 +44,24 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         public async Task<bool> UpdateLot(Lot lot)
         {
             _dbContext.Lots.Update(lot);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<IEnumerable<Lot>> GetByConfigId(int configId)
+        {
+            var result = from lot in _dbContext.Lots
+                         join lotState in _dbContext.LotStates on lot.LotStateId equals lotState.Id
+                         join config in _dbContext.Configurations on new { lotState.PartnerId, Name = lotState.Code } equals new { config.PartnerId, config.Name }
+                         where config.Id == configId
+                         select lot;
+
+            return await result.ToListAsync();
+        }
+
+        public async Task<bool> UpdateByLotStateId(int lotStateId)
+        {
+            var lotToUpdate = await _dbContext.Lots.Where(l => l.LotStateId == lotStateId).FirstOrDefaultAsync();
+            lotToUpdate.LotStateId = 1;          
             return await _dbContext.SaveChangesAsync() > 0;
         }
     }

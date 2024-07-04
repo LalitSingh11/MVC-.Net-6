@@ -55,8 +55,11 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCustomizedContent()
         {
-            var customizedContent = await _customizedContentService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
-            return Ok(customizedContent);
+            int partnerId = _sessionService.PartnerID ?? PartnerId;
+            var customizedContent = await _customizedContentService.GetByPartnerId(partnerId);
+            var holdALot = (await _prospectConfigurationService.GetByPartnerId(partnerId))?.HoldAlot ?? false;
+
+            return Ok(new { customizedContent, holdALot });
         }
         #endregion
 
@@ -80,6 +83,13 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         public async Task<IActionResult> SaveHoldALotConfiguration([FromBody] ProspectConfiguration prospectConfiguration)
         {
             var res = await _prospectConfigurationService.SaveHoldALotConfiguration(_sessionService.PartnerID ?? PartnerId, UserId, prospectConfiguration);
+            return Ok(new { Success = res });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveDreamweaverConfiguration([FromBody] ProspectConfiguration prospectConfiguration)
+        {
+            var res = await _prospectConfigurationService.SaveDreamweaverConfiguration(_sessionService.PartnerID ?? PartnerId, UserId, prospectConfiguration);
             return Ok(new { Success = res });
         }
 
@@ -159,7 +169,6 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private async Task InitViewBag()
         {
             var partnerConfig = await _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
-            ViewBag.showDreamweaver = partnerConfig != null ? partnerConfig.IsDreamweaver : false;
             ViewBag.IspPartnerType = partnerConfig?.IspPartnerType ?? 1;
             ViewBag.PreviewPlugin = partnerConfig?.PreviewIspplugin ?? false;
             ViewBag.HoldALotEnabled = partnerConfig?.HoldAlot ?? false;

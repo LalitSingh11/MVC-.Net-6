@@ -1,6 +1,5 @@
 ﻿"use strict";
 const GRID_LOTS = "#GridLots";
-const GET_LOT_INFO = "communities/getlotinfo";
 var currentLotRowId = -1;
 var ckEditorInstance;
 

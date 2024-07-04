@@ -1,6 +1,6 @@
 ﻿"use strict";
 const LOT_UPDATE_URL = "communities/updatelot";
-async function updateUser() {
+async function updateLot() {
     if (currentLotRowId == -1) {
         showToast("Select a lot", false);
         return;

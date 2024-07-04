@@ -1,0 +1,327 @@
+﻿@using BHI.SalesArchitect.Core.Constants;
+@using BHI.SalesArchitect.Core.Enumerations;
+<div>
+    <form id="commIspConfigurationForm">
+        <div class="container-fluid border">
+            <h3>General Configuration</h3>
+            <div class="mb-3"></div>
+            <div class="container-fluid m-2">
+                <div class="row">
+                    <div class="col-md-4">
+                        <b>Community Map Label <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When checked, the text in this field will override the Community Label.</span></span></b>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <input class="form-check-input" type="checkbox" name="isOverwriteName" id="isOverwriteName">             
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="displayName" id="displayName" />
+                            </div>
+                        </div>
+                        <br />
+                        @if (ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVG || ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVGGeoSpatial)
+                        {
+                            <b>
+                                Show Homesite Status Filter                                            @* prospect config *@
+                            </b>
+                            <br />
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="" value="TRUE">
+                                <label class="form-check-label" for="">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="" value="FALSE">
+                                <label class="form-check-label" for="">No</label>
+                            </div>
+                            <br />
+                        }
+                        <div class="mb-3"></div>
+                        <b>Enable Hover and Click for Unreleased</b>
+                        <br />
+                        <div class="form-check form-check-inline m-1">
+                            <input class="form-check-input" type="radio" name="COMM_ENBL_UNRELEASED" id="COMM_ENBL_UNRELEASED_1" value="TRUE">
+                            <label class="form-check-label" for="COMM_ENBL_UNRELEASED_1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline m-1">
+                            <input class="form-check-input" type="radio" name="COMM_ENBL_UNRELEASED" id="COMM_ENBL_UNRELEASED_2" value="FALSE">
+                            <label class="form-check-label" for="COMM_ENBL_UNRELEASED_2">No</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <b>Suppress All Pricing on Geospatial and ISP 2.0 Maps</b>
+                        <br />
+                        <input class="form-check-input" type="checkbox" name="COMM_SUPRS_PRICE" id="COMM_SUPRS_PRICE">
+                        <label class="form-check-label" for="COMM_SUPRS_PRICE"> Suppress Pricing </label>
+                        <br />
+                        <div class="mb-3"></div>
+                        @if (User.IsInRole(Roles.BHIADMIN) || User.IsInRole(Roles.PARTNERSUPERADMIN) || User.IsInRole(Roles.PARTNERADMIN))
+                        {
+                            if (ViewBag.DisplayAvailablePlans)
+                            {
+                                <b>Display Available Plans in Pop-up <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Show All Plans list in Popup if no Plan is assigned to a Homesite.</span></span></b>
+                                <br />
+                                <div class="form-check form-check-inline m-1">
+                                    <input class="form-check-input" type="radio" name="COMM_AVBL_PLANS" id="COMM_AVBL_PLANS_1" value="TRUE">
+                                    <label class="form-check-label" for="COMM_AVBL_PLANS_1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline m-1">
+                                    <input class="form-check-input" type="radio" name="COMM_AVBL_PLANS" id="COMM_AVBL_PLANS_2" value="FALSE">
+                                    <label class="form-check-label" for="COMM_AVBL_PLANS_2">No</label>
+                                </div>
+
+                                <br />
+                                <input class="form-check-input" type="checkbox" name="COMM_HIDE_PLANS" id="COMM_HIDE_PLANS">
+                                <label class="form-check-label" for="COMM_HIDE_PLANS"> Hide Assigned Plans</label>
+                                <br />
+                            }
+                            if (ViewBag.DisplayAvailableSpecs)
+                            {
+                                <div class="mb-3"></div>
+                                <b>Display Available Specs in Pop-up <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Show All Specs list in Popup if no Spec is assigned to a Homesite.</span></span></b>
+                                <br />
+                                <div class="form-check form-check-inline m-1">
+                                    <input class="form-check-input" type="radio" name="COMM_AVBL_SPECS" id="COMM_AVBL_SPECS_1" value="TRUE">
+                                    <label class="form-check-label" for="COMM_AVBL_SPECS_1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline m-1">
+                                    <input class="form-check-input" type="radio" name="COMM_AVBL_SPECS" id="COMM_AVBL_SPECS_2" value="FALSE">
+                                    <label class="form-check-label" for="COMM_AVBL_SPECS_2">No</label>
+                                </div>
+                                <br />
+                                <input class="form-check-input" type="checkbox" name="COMM_HIDE_SPECS" id="COMM_HIDE_SPECS">
+                                <label class="form-check-label" for="COMM_HIDE_SPECS"> Hide Assigned Specs</label>
+                            }
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        <b>Suppress Lot Status on Pop-up <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this option will suppress the '/ LotStatus' value on the popups.</span></span></b>
+                        <br />
+                        <div class="form-check form-check-inline m-1">
+                            <input class="form-check-input" type="radio" name="COMM_SUPRS_STATUS" id="COMM_SUPRS_STATUS_1" value="TRUE">
+                            <label class="form-check-label" for="COMM_SUPRS_STATUS_1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline m-1">
+                            <input class="form-check-input" type="radio" name="COMM_SUPRS_STATUS" id="COMM_SUPRS_STATUS_2" value="FALSE">
+                            <label class="form-check-label" for="COMM_SUPRS_STATUS_2">No</label>
+                        </div>
+                        <br />
+                        @if (ViewBag.DisplayLotListEnabled)
+                        {
+                            <div class="mb-3"></div>
+                            <b>Display Lot List on Plans <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will display all available lots for each plan in the right rail.</span></span></b>
+                            <br />
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="COMM_LOT_LIST_PLANS" id="COMM_LOT_LIST_PLANS_1" value="TRUE">
+                                <label class="form-check-label" for="COMM_LOT_LIST_PLANS_1">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="COMM_LOT_LIST_PLANS" id="COMM_LOT_LIST_PLANS_2" value="FALSE">
+                                <label class="form-check-label" for="COMM_LOT_LIST_PLANS_2">No</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4"></div>
+        <div class="container-fluid border">
+            <h3>Feature Configuration</h3>
+            <div class="mb-3"></div>
+            <div class="container-fluid m-2">
+                <div class="row">
+                    <div class="col-md-4">
+                        @if (ViewBag.AddModelHomesBanner || ViewBag.ReplaceKeyIcon || (User.IsInRole(Roles.BHIADMIN) && ViewBag.HoldALotEnabled))
+                        {
+                            <b><label for="COMM_MODEL_TEXT" class="form-label">Model Text (character limit 20):</label></b>
+                            <input type="text" class="form-control" name="COMM_MODEL_TEXT" id="COMM_MODEL_TEXT">
+                            <br />
+                            <b>
+                                Set background Color:
+                            </b>
+                            <br />
+                            <input type="color" name="COMM_MODEL_BKGD_COLOR" id="COMM_MODEL_BKGD_COLOR" />
+                            <button type="button" class="colorResetBtn" onclick="resetColor('#808080', 'COMM_MODEL_BKGD_COLOR')">Reset</button>
+                            <br />
+                            <div class="mb-3"></div>
+                            <b>
+                                Set Font Color:
+                            </b>
+                            <br />
+                            <input type="color" name="COMM_MODEL_FONT_COLOR" id="COMM_MODEL_FONT_COLOR" />
+                            <button type="button" class="colorResetBtn" onclick="resetColor('#ffffff', 'COMM_MODEL_FONT_COLOR')">Reset</button>
+                            <br />
+                            <div class="mb-3"></div>
+                            <b>Set Model Homes Banner Opacity</b>
+                            <br />
+                            <div class="col-sm-4">
+                                <select class=" form-select form-control" name="COMM_MODEL_OPACITY">
+                                    @for (var i = 0; i <= 100; i += 10)
+                                    {
+                                        <option value="@i">@i%</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @if (ViewBag.ReplaceKeyIcon)
+                        {
+                            <b><label for="COMM_SPEC_TEXT" class="form-label">Spec Text (character limit 20):</label></b>
+                            <input type="text" class="form-control" name="COMM_SPEC_TEXT" id="COMM_SPEC_TEXT">
+                            <br />
+                            <b>
+                                Set Banner background Color:
+                            </b>
+                            <br />
+                            <input type="color" name="COMM_SPEC_BKGD_COLOR" id="COMM_SPEC_BKGD_COLOR" />
+                            <button type="button" class="colorResetBtn" onclick="resetColor('#808080', 'COMM_SPEC_BKGD_COLOR')">Reset</button>
+                            <br />
+                            <div class="mb-3"></div>
+                            <b>
+                                Set Banner Font Color:
+                            </b>
+                            <br />
+                            <input type="color" name="COMM_SPEC_FONT_COLOR" id="COMM_SPEC_FONT_COLOR" />
+                            <button type="button" class="colorResetBtn" onclick="resetColor('#ffffff', 'COMM_SPEC_FONT_COLOR')">Reset</button>
+                            <br />
+                            <div class="mb-3"></div>
+                            <b>Banner Opacity</b>
+                            <br />
+                            <div class="col-sm-4">
+                                <select class=" form-select form-control" name="COMM_SPEC_OPACITY">
+                                    @for (var i = 0; i <= 100; i += 10)
+                                    {
+                                        <option value="@i">@i%</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @if ((User.IsInRole(Roles.BHIADMIN) || User.IsInRole(Roles.PARTNERSUPERADMIN) || User.IsInRole(Roles.PARTNERADMIN)) && ViewBag.HoldALotEnabled)
+                        {
+                            <b>Enable hold a lot feature</b>
+                            <br />
+                            <input class="form-check-input" type="checkbox" name="COMM_HOLDALOT" id="COMM_HOLDALOT">
+                            <label class="form-check-label" for="COMM_HOLDALOT"> Hold a lot</label>
+                            <br />
+                            @if (User.IsInRole(Roles.BHIADMIN) || User.IsInRole(Roles.PARTNERSUPERADMIN))
+                            {
+                                <div class="mb-3"></div>
+                                <label>Payment Platform Account </label> <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Payment platform account to be used for financial transactions for this community.</span></span>
+                                <br />
+                                <div class="col-sm-10">
+                                    <select class=" form-select form-control" name="">
+                                        <option selected>Stripe Something</option>                   @* payment adapter *@
+                                    </select>
+                                </div>
+                            }
+                            <label>Reservation Pending Lot Status</label>
+                            <br />
+                            <div class="col-sm-10">
+                                <select class=" form-select form-control" name="reservationPendingStatusDropdown" id="reservationPendingStatusDropdown">
+                                </select>
+                            </div>
+                            <label>Reserved Lot Status</label>
+                            <br />
+                            <div class="col-sm-10">
+                                <select class=" form-select form-control" name="reservedStatusDropdown" id="reservedStatusDropdown">
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-7">
+                                    <label for="COMM_HOLDALOTEMAIL" class="form-label">Email to Receive Requests</label>
+                                    <input type="email" class="form-control" name="COMM_HOLDALOTEMAIL" id="COMM_HOLDALOTEMAIL">
+                                </div>
+                                <div class="col-sm-5">
+                                    <label for="COMM_HOLDALOTPHONENUMBER" class="form-label">Phone Number</label>
+                                    <input type="number" class="form-control" name="COMM_HOLDALOTPHONENUMBER" id="COMM_HOLDALOTPHONENUMBER">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4"></div>
+        @if (ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.PaidGeoSpatial || ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVGGeoSpatial)
+        {
+            <div class="container-fluid border">
+                <h3>Geospatial Map Configuration</h3>
+                <div class="mb-3"></div>
+                <div class="container-fluid m-2">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <b>Geospatial Community Default Zoom</b>                                
+                            <br />
+                            <div class="col-sm-4">
+                                <select class=" form-select form-control" name="geospatialZoomLevel" id="geospatialZoomLevel">
+                                    @for (var i = 0; i < 23; i++)
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                </select>
+                            </div>
+                            <br />
+                            <b>GeoSpatial Map Default to Satellite View <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will make the GeoSpatial map default to the satellite view.</span></span></b>
+                            <br />
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="COMM_GEO_SAT_VIEW" id="COMM_GEO_SAT_VIEW_1" value="TRUE">
+                                <label class="form-check-label" for="COMM_GEO_SAT_VIEW_1">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="COMM_GEO_SAT_VIEW" id="COMM_GEO_SAT_VIEW_1" value="FALSE">
+                                <label class="form-check-label" for="COMM_GEO_SAT_VIEW_1">No</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <b>Points of Interest Categories for Geospatial</b>
+                            <br />
+                            <div id="pointOfInterestsCheckboxContainer"></div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4"></div>
+        }
+        @if (ViewBag.NHTBuilderNumber != null && ViewBag.NHTBuilderNumber != "")
+        {
+            <div class="container-fluid border">
+                <h3>Envision Integration</h3>
+                <div class="mb-3"></div>
+                <div class="container-fluid m-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <b><label for="COMM_ENVSN_INTGRTN_KEY" class="form-label">Envision Community Integration Key </label> <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Envision Community Integration Key from Builder</span></span></b>
+                            <input type="text" class="form-control" placeholder="Community Integration Key" name="COMM_ENVSN_INTGRTN_KEY">
+                        </div>
+                    </div><div class="row">
+                        <div class="col-md-6">
+                            <b><label for="COMM_ENVSN_SUB_CAT" class="form-label">Envision Option Sub-Category Number </label> <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Envision Option Sub-Category Number from Builder for Option Call Out</span></span></b>
+                            <input type="text" class="form-control" placeholder="Option Sub-Category Number" name="COMM_ENVSN_SUB_CAT">
+                        </div>
+                    </div><div class="row">
+                        <div class="col-md-6">
+                            <b><label for="COMM_ENVSN_OPTION_NAME" class="form-label">Envision Option Name Contains </label> <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">Optional Text for Additional Envision Option Filtering.</span></span></b>
+                            <input type="text" class="form-control" placeholder="Option Name Contains" name="COMM_ENVSN_OPTION_NAME">
+                        </div>
+                    </div><div class="row">
+                        <div class="col-md-6">
+                            <b>Show Exterior Color Scheme <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, the ISP will attempt to match an Envision Exterior Color Option based on a Lot’s External Reference number and display the Option Detail Page in a popup.</span></span></b>
+                            <br />
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="COMM_ENVSN_SHOW_CLR_SCHM" id="COMM_ENVSN_SHOW_CLR_SCHM_1" value="TRUE">
+                                <label class="form-check-label" for="COMM_ENVSN_SHOW_CLR_SCHM_1">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline m-1">
+                                <input class="form-check-input" type="radio" name="COMM_ENVSN_SHOW_CLR_SCHM" id="COMM_ENVSN_SHOW_CLR_SCHM_2" value="FALSE">
+                                <label class="form-check-label" for="COMM_ENVSN_SHOW_CLR_SCHM_2">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </form>
+</div>

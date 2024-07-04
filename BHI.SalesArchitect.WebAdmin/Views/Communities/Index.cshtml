@@ -15,24 +15,29 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/communities/search-filter.js" asp-append-version="true"></script>
-    <script src="~/js/communities/communities.js" asp-append-version="true"></script>
-    <script src="~/js/communities/lot-update.js" asp-append-version="true"></script>
-    <script src="~/js/communities/lots-grid.js" asp-append-version="true"></script>
-    <script src="~/js/communities/manage-lots.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/i18n/grid.locale-en.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/jquery.jqgrid.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqueryui/jquery-ui.min.js" asp-append-version="true"></script>
     <script src="~/lib/jqgrid/js/grid.jqueryui.min.js" asp-append-version="true"></script>
+    <script src="~/js/communities/search-filter.js" asp-append-version="true"></script>
+    <script src="~/js/communities/communities.js" asp-append-version="true"></script>
+    <script src="~/js/communities/lot-update.js" asp-append-version="true"></script>
+    <script src="~/js/communities/lots-grid.js" asp-append-version="true"></script>
+    <script src="~/js/communities/community-customizable-content.js" asp-append-version="true"></script>
+    <script src="~/js/communities/isp-configuration.js" asp-append-version="true"></script>
+    <script src="~/js/communities/manage-lots.js" asp-append-version="true"></script>
 
 }
 @section Styles{
-    <link href="~/css/communities/search-filter.css" rel="stylesheet" asp-append-version="true" />
-    <link href="~/css/communities/listings-list.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/communities/search-filter.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/communities/manage-lots.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/communities/isp-configuration.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/communities/tooltip.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/communities/communities.css" rel="stylesheet" asp-append-version="true" />
 }
 @section Modals{
+    
     <div class="modal fade" id="elevationImageModal" tabindex="-1" aria-labelledby="elevationImageModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -41,11 +46,76 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    IMages
+                    Images are coming soon...
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="deleteUser();" data-bs-dismiss="modal">Select Elevation</button>
+                    <button type="button" class="btn btn-primary" onclick="" data-bs-dismiss="modal">Select Elevation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="communityCustomizedContentModal" tabindex="-1" aria-labelledby="communityCustomizedContentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="communityCustomizedContentModalLabel">Edit Customized Content</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    In progress...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="" data-bs-dismiss="modal">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editLotStatusNameModal" tabindex="-1" aria-labelledby="editLotStatusNameModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editLotStatusNameModalLabel">Edit Lot Status Name</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="lotStatusName" class="col-sm-5 col-form-label">Current Value:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control-plaintext" name="lotStatusName" id="lotStatusName" disabled>
+                        </div>
+                    </div>
+                    <div class="mb-2"></div>
+                    <div class="form-group row">
+                        <label for="newLotStatusName" class="col-sm-5 col-form-label">New Lot status name:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="newLotStatusName" id="newLotStatusName">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="editLotStatusNameButton" onclick="updateLotStatusName(this);" data-bs-dismiss="modal">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteLotStatusModal" tabindex="-1" aria-labelledby="deleteLotStatusModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteLotStatusModalLabel">Delete Lot Status</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="deleteLotStatusButton" onclick="deleteLotStatus(this)" data-bs-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>

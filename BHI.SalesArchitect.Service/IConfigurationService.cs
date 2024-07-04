@@ -6,5 +6,7 @@ namespace BHI.SalesArchitect.Service
     {
         Task<IEnumerable<Configuration>> GetIspConfigurationsByPartnerId(int partnerId);
         Task<bool> UpdatePopupTitlesConfiguration(Dictionary<string,string> popupTitlesDict, int partnerId);
+
+        Task<bool> Delete(int id);
     }
 }

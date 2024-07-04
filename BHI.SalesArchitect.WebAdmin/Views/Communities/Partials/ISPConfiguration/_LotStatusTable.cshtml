@@ -1,0 +1,24 @@
+﻿@using BHI.SalesArchitect.Core.Constants;
+@using BHI.SalesArchitect.Core.Enumerations;
+<div class="table-scrollable">
+    <table id="lotStatusTable" class="table table-striped table-hover table-responsive border">
+        <thead>
+            <tr class="drag-disabled">
+                <th class="col-sm-4">Lot Status Color Scheme</th>
+                <th><i class="bi bi-pencil-fill"></i></th>
+                <th>Suppress Price</th>
+                @if (User.IsInRole(Roles.BHIADMIN) && ViewBag.IsDreamweaver)
+                {
+                    <th scope="col">Include DW</th>
+                }
+                @if ((User.IsInRole(Roles.BHIADMIN) || User.IsInRole(Roles.PARTNERSUPERADMIN) || User.IsInRole(Roles.PARTNERADMIN)) && (ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVG || ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.SVGGeoSpatial || ViewBag.IspPartnerType == (int)CommonEnumerations.IspPartnerType.PaidGeoSpatial) && ViewBag.HoldALotEnabled)
+                {
+                    <th>Hold a Lot</th>
+                    <th>Hold a Lot Button Text</th>
+                }
+                <th><i class="bi bi-trash3-fill"></i></th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider"> </tbody>
+    </table>
+</div>

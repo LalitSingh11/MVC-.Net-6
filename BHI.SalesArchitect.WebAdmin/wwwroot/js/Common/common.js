@@ -80,3 +80,10 @@ function hideLoader() {
     document.getElementById("overlay").style.display = "none";
 }
 
+function resetColor(color, colorInputId) {
+    var colorInput = document.getElementById(colorInputId);
+    if (colorInput) {
+        colorInput.value = color;
+    }
+    return false;
+}

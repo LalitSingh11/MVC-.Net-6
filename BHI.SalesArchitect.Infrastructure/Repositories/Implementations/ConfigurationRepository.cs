@@ -1,5 +1,6 @@
 ﻿using BHI.SalesArchitect.Model.DB;
 using Microsoft.EntityFrameworkCore;
+using static BHI.SalesArchitect.Core.Enumerations.CommonEnumerations;
 
 namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
 {
@@ -9,6 +10,15 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         public ConfigurationRepository(SalesArchitectContext dbContext)
         { 
             _dbContext = dbContext;
+        }
+        public async Task<IEnumerable<Configuration>> GetByPartnerId(int partnerId, int assetType = (int)AssetTypes.HEXCOL)
+        {
+            var result = from c in _dbContext.Configurations
+                         join at in _dbContext.AssetTypes on c.AssetTypeId equals at.Id
+                         where (c.PartnerId == partnerId || c.PartnerId == null)
+                         && c.AssetTypeId == assetType
+                         select c;
+            return await result.ToListAsync();
         }
 
         public async Task<IEnumerable<Configuration>> GetIspConfigurationsByPartnerId(int partnerId)
@@ -38,6 +48,18 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             return await result.ToListAsync();
         }
 
+        public async Task<IEnumerable<Configuration>> GetCommDefaultConfigurations()
+        {
+            var result = from c in _dbContext.Configurations
+                         join at in _dbContext.AssetTypes on c.AssetTypeId equals at.Id
+                         where c.PartnerId == null
+                            && c.AssetTypeId == 3
+                            && c.Code.StartsWith("COMM")
+                         select c;
+
+            return await result.ToListAsync();
+        }
+
         public async Task<bool> DeleteIspConfigByPartnerId(int partnerId)
         {
             var existingConfig = _dbContext.Configurations.
@@ -49,6 +71,13 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
         public async Task<bool> AddIspConfigByPartnerId(List<Configuration> popupConfigurations)
         {
             await _dbContext.Configurations.AddRangeAsync(popupConfigurations);
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            var configurationsToDelete = _dbContext.Configurations.FirstOrDefault(c => c.Id == id && c.PartnerId != null);
+            _dbContext.Configurations.Remove(configurationsToDelete);
             return await _dbContext.SaveChangesAsync() > 0;
         }
     }

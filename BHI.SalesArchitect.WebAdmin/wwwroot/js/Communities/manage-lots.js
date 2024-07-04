@@ -1,5 +1,6 @@
 ﻿"use strict";
 const GET_LISTING_ELEVATION_IMAGES = "communities/getlistingimages";
+const GET_LOT_INFO = "communities/getlotinfo";
 
 async function populateLotInfoForm() {
     let url = `${GET_LOT_INFO}?lotId=${currentLotRowId}&commId=${currentCommRowId}`
@@ -25,18 +26,27 @@ async function populateLotInfoForm() {
     // populating lot status dropdown
     let lotStatusDropdown = $("#lotStatus");
     lotStatusDropdown.empty();
-    $.each(lotInfo?.lotState, function (index, status) {
-        if (index == 0) lotStatusDropdown.append($('<option>', {
-            value: 0,
-            text: "Select Lot Status"
-        }));
-        var option = $('<option>', {
-            value: status.id,
-            text: status.name
+    let lotStatusExist = false;
+    if (lotInfo?.lotState) {
+        lotInfo.lotState.forEach(function (status, index) {
+            if (index === 0) {
+                lotStatusDropdown.append($('<option>', {
+                    value: 0,
+                    text: "Select Lot Status"
+                }));
+            }
+            var option = $('<option>', {
+                value: status.id,
+                text: status.name
+            });
+            if (status.id === lotInfo.lotData.lotStateId) {
+                lotStatusExist = true;
+            }
+            lotStatusDropdown.append(option);
         });
-        lotStatusDropdown.append(option);
-    });
-    lotStatusDropdown.val(lotInfo.lotData.lotStateId ?? 0);
+    }
+
+    lotStatusDropdown.val(lotStatusExist ? lotInfo.lotData.lotStateId : 0);
 
     /*if (lotInfo?.lotData?.imagePath) {
         $('#hotspotImage').attr('src', lotInfo.lotData.imagePath).show();
@@ -52,22 +62,7 @@ async function populateLotInfoForm() {
 }
 
 function emptyLotInfoForm() {
-    $("#lotId").val('');
-    $("#externalReference").val('');
-    $("#amenityCheckbox").prop("checked", false);
-    $("#displayName").val('');
-    $("#size").val('');
-    $("#premiumPrice").val('');
-    $("#reservationFee").val('');
-    $("#block").val('');
-    $("#phase").val('');
-    $("#elevation").val('');
-    $("#swing").val('');
-    $("#description").val('');
-    $("#address").val('');
-    $("#contactUrl").val('');
-    $("#contactButtonText").val('');
-    $("#videoUrl").val('');
+    $(`#lot-edit-form`)[0].reset();
     if (ckEditorInstance) {
         ckEditorInstance.setData('');
     }

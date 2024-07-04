@@ -5,6 +5,7 @@ using BHI.SalesArchitect.WebAdmin.Models.Communities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcJqGrid;
+using Newtonsoft.Json;
 
 namespace BHI.SalesArchitect.WebAdmin.Controllers
 {
@@ -26,6 +27,10 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
         private readonly ILotListingService _lotListingService;
         private readonly IRoleService _roleService;
         private readonly IPartnerService _partnerService;
+        private readonly ICommunityConfigurationService _communityConfigurationService;
+        private readonly IConfigurationService _configurationService;
+        private readonly ICustomizedContentService _customizedContentService;
+        private readonly IPointOfInterestService _pointOfInterestService;
 
         public CommunitiesController(ICommunityService communityService,
             ICommunityUserService communityUserService,
@@ -41,8 +46,12 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             ILotStateService lotStateService,
             ILotListingService lotListingService,
             IRoleService roleService,
-            IPartnerService partnerService
-            ) 
+            IPartnerService partnerService,
+            ICommunityConfigurationService communityConfigurationService,
+            ICustomizedContentService customizedContentService,
+            IPointOfInterestService pointOfInterestService,
+            IConfigurationService configurationService
+            )
         {
             _communityService = communityService;
             _communityUserService = communityUserService;
@@ -59,26 +68,214 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _lotListingService = lotListingService;
             _roleService = roleService;
             _partnerService = partnerService;
+            _communityConfigurationService = communityConfigurationService;
+            _customizedContentService = customizedContentService;
+            _pointOfInterestService = pointOfInterestService;
+            _configurationService = configurationService;
         }
-        
+
         public async Task<IActionResult> Index()
         {
-            await InitViewBag();
             await InitSession();
+            await InitViewBag();
             ViewData["PartnerName"] = _sessionService.PartnerName ?? PartnerName;
             return View();
         }
-        #region GRIDS
 
+        #region Get Methods
+        [HttpGet]
+        public async Task<IActionResult> GetLotInfo(int lotId, int commId)
+        {
+            _sessionService.CommunityID = commId;
+            var listings = _listingService.GetByCommunityId(commId);
+            var lotListings = _lotListingService.GetByLotId(lotId);
+            var lotInfo = new
+            {
+                lotData = await _lotService.GetByID(lotId),
+                lotState = await _lotStateService.GetByPartnerIdAndCommId(_sessionService.PartnerID ?? PartnerId, commId),
+                listings = (from l in listings
+                            join ll in lotListings on l.Id equals ll.ListingId
+                            select new
+                            {
+                                l.Id,
+                                ll.Price,
+                                ll.ListingImagesId
+                            }).ToList(),
+                plans = listings.Where(x => x.Type == "P").ToList(),
+                specs = listings.Where(x => x.Type == "S").ToList(),
+                models = listings.Where(x => x.Type == "M").ToList(),
+            };
+            return Ok(lotInfo);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCommunityPopupTitles(int commId)
+        {
+            return Ok(await _communityConfigurationService.GetTitleSettingsForCommunity(commId));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCommunityCustomizableContent(int commId)
+        {
+            int partnerId = _sessionService.PartnerID ?? PartnerId;
+            var communityConfig = await _communityConfigurationService.GetISPConfigById(commId);
+            var holdALot = communityConfig.Where(x => x.Configuration.Code == "COMM_HOLDALOT").FirstOrDefault()?.Value == "TRUE";
+            var customizedContent = await _customizedContentService.GetByPartnerIdAndCommId(partnerId, commId);
+            return Ok(new {customizedContent, holdALot});
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCommunityISPConfiguration(int commId)
+        {
+            var community = await _communityService.GetByCommunityId(commId);
+            var holdALotStatuses = await _lotStateService.GetHoldALotStatusByPartnerIdAndCommId(_sessionService.PartnerID ?? PartnerId, commId);
+            var ispConfiguration = await _communityConfigurationService.GetISPConfigById(commId);
+            var pointOfInterestsAll = _pointOfInterestService.GetAll();
+            var pointOfInterestsSelected = await _pointOfInterestService.GetByCommunityId(commId, true);
+            var pointOfInterests = new { pointOfInterestsAll, pointOfInterestsSelected };
+            return Ok(new { holdALotStatuses, ispConfiguration, pointOfInterests, community });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLotStatusTableData(int commId)
+        {
+            int partnerId = _sessionService.PartnerID ?? PartnerId;
+            var lotStatuses = await _communityConfigurationService.GetLotStatusConfigByCommId(partnerId, commId);
+            var partnerConfig = await _prospectConfigurationService.GetByPartnerId(partnerId);
+            return Ok(new {lotStatuses, partnerConfig });
+        }
+
+        /*[HttpGet]
+        public async Task<IActionResult> GetListingImages(int listingId, int lotid)
+        {
+            return Ok();
+        }*/
+        /*  [HttpGet]
+          public IActionResult GetLotImage(int id, int maxwidth = 0, int maxheight = 0)
+          {
+              IActionResult result = null;
+              try
+              {
+                  var gifType = _assetTypeRepository.GifType;
+                  var jpgType = _assetTypeRepository.JpgType;
+
+                  var lot = _lotRepository.GetByID(id);
+
+                  if (lot != null)
+                  {
+                      var buffer = _imageFileService.ReadImageToByte(_pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath), maxwidth, maxheight);
+                      if (buffer != null)
+                          result = new FileStreamResult(new MemoryStream(buffer), FileImage.GetFileType(Path.GetExtension(lot.ImagePath).ToLower().Remove(0, 1)));
+                      else
+                      {
+                          _logService.Error("Bad Path or Something: Directory Path:" + _directoryPath + " Value:" + lot.ImagePath + " pathFactory:" + _pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath));
+                      }
+                  }
+              }
+              catch (Exception e)
+              {
+                  _logService.Error(Request.Url.PathAndQuery, e);
+              }
+
+
+              return result ?? (result = new HttpNotFoundResult());
+          }*/
+        #endregion
+
+        #region Post Methods
+        [HttpPost]
+        public async Task<IActionResult> UpdateLot([FromBody] LotListingsDataModel data)
+        {
+            if (ModelState.IsValid)
+            {
+                var result1 = await _lotService.UpdateLot(data.lot);
+                var result2 = await _lotListingService.UpdateLotListings(data.lotListing, data.lot.Id);
+                return Ok(new { Success = result1 || result2 });
+            }
+            return BadRequest(new { Success = false });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewLotStatus([FromBody] LotListingsDataModel data)
+        {            
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteLotStatusAllowed(int configId)
+        {
+            var activeLotsWithAssignedStatus = await _lotService.GetByConfigId(configId);
+            var activeSites = activeLotsWithAssignedStatus.Select(x => x.SiteId).Distinct().ToList();
+            var activeCommunities = await _communityService.GetBySiteIds(activeSites);
+            if(activeLotsWithAssignedStatus.Any() && activeCommunities.Any())
+            {
+                var returnMessage = "This status can't be deleted because it is currently used on lots in the following communities: \n" ;
+                foreach (var community in activeCommunities)
+                {
+                    var siteId = (await _communitySiteService.GetByCommunityId(community.Id)).SiteId;
+                    var communityLots = activeLotsWithAssignedStatus.Where(x => x.SiteId == siteId)?.Select(x => x.InternalReference)?.ToList();
+                    returnMessage += Environment.NewLine + "<b>"+ community.Name + ":</b> " + string.Join(", ", communityLots);
+                }
+                return Json(new { Success = false, Message = returnMessage });
+            }
+            else
+            {
+                var activeCommunityConfigurations = await _communityConfigurationService.GetActiveConfigurationByConfigIdForPartnerComms(configId);
+                if (activeCommunityConfigurations.Any())
+                {
+                    var communities = await _communityService.GetActiveCommunitiesByCommunityIds(activeCommunityConfigurations.Select(x => x.CommunityId).ToList());
+                    var communitiesName = communities?.Select(x => x.Name).Distinct().ToList();
+                    var returnMessage = "This status is currently enabled on the following communities: \n" + string.Join("\n", communitiesName) + "\n\n<b>Delete Anyway?</b>";
+                    return Json(new { Success = true, Message = returnMessage });
+                }
+            }
+            return Ok(new { Success = true, Message = "" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteLotStatusAssociatedWithCommunity(int configId)
+        {
+            var activeLotsWithAssignedStatus = await _lotService.GetByConfigId(configId);
+            var lotState = _lotStateService.GetByConfigId(configId);
+            if (activeLotsWithAssignedStatus.Any())
+            {
+                await _lotService.UpdateByLotStateId(lotState.Id);
+            }
+            var res1 = await _lotStateService.DeleteByConfigId(configId);
+            var res2 = await _communityConfigurationService.Delete(configId);
+            var res3 = await _configurationService.Delete(configId);
+            return Ok(new { Success = res1 && res2 && res3 });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCommPopupTitles([FromBody]CommunityPopupTitles commPopupTitles, int communityId)
+        {
+            string jsonString = JsonConvert.SerializeObject(commPopupTitles);
+            Dictionary<string, string> popupTitlesDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
+            var res = await _communityConfigurationService.UpdateTitleSettingsForCommunity(communityId, popupTitlesDict);
+            return Ok(new { Success = res });
+        }
+        #endregion
+
+        #region Grid Methods
         [HttpGet]
         public async Task<IActionResult> GetCommunitiesGrid(GridSettings gridSettings, string searchTerm, int commStatusType = 0, int commType = 0)
         {
             var communities = _communityService.GetGridCommunitiesList(_sessionService.PartnerID ?? PartnerId, searchTerm, commStatusType, commType);
+            if (!communities.Any())
+            {
+                return new JsonResult(new
+                {
+                    total = 0,
+                    page = 0,
+                    records = 0
+                });
+            }
             _sessionService.CommunityID = communities.FirstOrDefault()?.Id;
             var commIds = communities.Select(p => p.Id).ToList();
             var communityAdmins = await _userService.GetCommunityAdminsByCommunityIDs(commIds);
             var communityUsers = await _communityUserService.GetByCommunityIDs(commIds);
-            var communitySites = await _communitySiteService.GetActiveCommunitySitesAsync(commIds);
+            var communitySites = await _communitySiteService.GetActiveCommunitySites(commIds);
             var communityMasterSites = await _communityService.GetByCommunityIds(commIds);
             var communitySiteGeoJson = await _communitySiteGeoJsonService.GetByCommunityIdsAsync(commIds);
             var partnerConfig = await _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
@@ -155,13 +352,13 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                             }
                         }).ToArray().Skip((gridSettings.PageIndex - 1) * gridSettings.PageSize).Take(gridSettings.PageSize))
             };
-            return new JsonResult(jsonData);        
+            return new JsonResult(jsonData);
         }
 
         [HttpGet]
-        public IActionResult GetLotsByCommId(GridSettings gridSettings, int commId)
+        public async Task<IActionResult> GetLotsByCommId(GridSettings gridSettings, int commId)
         {
-            var lots  = _lotService.GetByCommId(commId);
+            var lots = await _lotService.GetByCommId(commId);
             _sessionService.CommunityID = commId;
             var jsonData = new
             {
@@ -182,97 +379,13 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             return Json(jsonData);
         }
 
-
-        #endregion
-
-        #region Get Methods
-        [HttpGet]
-        public async Task<IActionResult> GetLotInfo(int lotId, int commId)
-        {
-            _sessionService.CommunityID = commId;
-            var listings = _listingService.GetByCommunityId(commId);
-            var lotListings = _lotListingService.GetByLotId(lotId);
-            var lotInfo = new
-            {
-                lotData = await _lotService.GetByID(lotId),
-                lotState = _lotStateService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId),
-                listings = (from l in listings
-                           join ll in lotListings on l.Id equals ll.ListingId
-                           select new
-                           {
-                               l.Id,
-                               ll.Price,
-                               ll.ListingImagesId
-                           }).ToList(),
-                plans = listings.Where(x => x.Type == "P").ToList(),
-                specs = listings.Where(x => x.Type == "S").ToList(),
-                models = listings.Where(x => x.Type == "M").ToList(),
-            };
-            return Ok(lotInfo);
-        }
-
-/*        [HttpGet]
-        public async Task<IActionResult> GetCommunityPopupTitles(int commId)
-        {
-
-        }*/
-
-            /*[HttpGet]
-            public async Task<IActionResult> GetListingImages(int listingId, int lotid)
-            {
-                return Ok();
-            }*/
-            /*  [HttpGet]
-              public IActionResult GetLotImage(int id, int maxwidth = 0, int maxheight = 0)
-              {
-                  IActionResult result = null;
-                  try
-                  {
-                      var gifType = _assetTypeRepository.GifType;
-                      var jpgType = _assetTypeRepository.JpgType;
-
-                      var lot = _lotRepository.GetByID(id);
-
-                      if (lot != null)
-                      {
-                          var buffer = _imageFileService.ReadImageToByte(_pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath), maxwidth, maxheight);
-                          if (buffer != null)
-                              result = new FileStreamResult(new MemoryStream(buffer), FileImage.GetFileType(Path.GetExtension(lot.ImagePath).ToLower().Remove(0, 1)));
-                          else
-                          {
-                              _logService.Error("Bad Path or Something: Directory Path:" + _directoryPath + " Value:" + lot.ImagePath + " pathFactory:" + _pathFactory.BuildAbsolute(_directoryPath, lot.ImagePath));
-                          }
-                      }
-                  }
-                  catch (Exception e)
-                  {
-                      _logService.Error(Request.Url.PathAndQuery, e);
-                  }
-
-
-                  return result ?? (result = new HttpNotFoundResult());
-              }*/
-            #endregion
-
-            #region Post Methods
-            [HttpPost]
-        public async Task<IActionResult> UpdateLot([FromBody] LotListingsDataModel data)
-        {
-            if(ModelState.IsValid)
-            {
-                var result1 = await _lotService.UpdateLot(data.lot);
-                var result2 = await _lotListingService.UpdateLotListings(data.lotListing, data.lot.Id);
-                return Json(new { Success = result1 || result2 });
-            }
-            return BadRequest(new { Success = false });
-        }
         #endregion
 
         #region Private Methods
         private static string GetLotNumber(string internalReference)
         {
-            var splittedString = internalReference.Split('_');
-            return (splittedString.Length > 1) ? splittedString[1] : splittedString[0];
+            var splitString = internalReference.Split('_');
+            return (splitString.Length > 1) ? splitString[1] : splitString[0];
         }
         private string GetISPVersion(bool hasGeoJson, bool isNewISP, int siteID, int ispPartnerType)
         {
@@ -296,7 +409,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
                     return "-";
             }
         }
-        
+
         private bool GeoSVGCheck(int siteID)
         {
             if (siteID != -1)
@@ -316,10 +429,9 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             }
             return false;
         }
-       private async Task InitViewBag()
-       {
+        private async Task InitViewBag()
+        {
             var partnerConfig = await _prospectConfigurationService.GetByPartnerId(_sessionService.PartnerID ?? PartnerId);
-            ViewBag.showDreamweaver = partnerConfig != null ? partnerConfig.IsDreamweaver : false;
             ViewBag.IspPartnerType = partnerConfig?.IspPartnerType ?? 1;
             ViewBag.PreviewPlugin = partnerConfig?.PreviewIspplugin ?? false;
             ViewBag.HoldALotEnabled = partnerConfig?.HoldAlot ?? false;
@@ -341,7 +453,7 @@ namespace BHI.SalesArchitect.WebAdmin.Controllers
             _sessionService.PartnerName = partner.Name;
             _sessionService.PartnerDataKey = partner.DataKey;
         }
-            #endregion
+        #endregion
     }
 
 }

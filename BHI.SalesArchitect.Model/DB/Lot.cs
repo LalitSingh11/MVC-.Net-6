@@ -16,7 +16,7 @@ public partial class Lot
     public string InternalReference { get; set; } = null!;
 
     public string ExternalReference { get; set; }
-
+   
     public string Size { get; set; }
 
     public string Block { get; set; }

@@ -86,7 +86,7 @@ namespace BHI.SalesArchitect.Service.Implementations
                 existingConfig.HoldAlot = prospectConfiguration.HoldAlot;
                 existingConfig.BuilderEmail = prospectConfiguration.BuilderEmail;
                 existingConfig.BuilderPhone = prospectConfiguration.BuilderPhone;
-                existingConfig.HoldAlotButtonText = prospectConfiguration.HoldAlotButtonText;
+                existingConfig.HoldAlotButtonText = String.IsNullOrWhiteSpace(prospectConfiguration.HoldAlotButtonText) ? "Hold a Lot" : prospectConfiguration.HoldAlotButtonText;
                 return await _prospectConfigurationRepository.Update(existingConfig);
             }
             else
@@ -98,6 +98,25 @@ namespace BHI.SalesArchitect.Service.Implementations
                 existingConfig.BuilderEmail = prospectConfiguration.BuilderEmail;
                 existingConfig.BuilderPhone = prospectConfiguration.BuilderPhone;
                 existingConfig.HoldAlotButtonText = prospectConfiguration.HoldAlotButtonText;
+                return await _prospectConfigurationRepository.Insert(defaultConfig);
+            }
+        }
+
+        public async Task<bool> SaveDreamweaverConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration)
+        {
+            var existingConfig = await GetByPartnerId(partnerId);
+            if (existingConfig != null)
+            {
+                existingConfig.UserId = userId;
+                existingConfig.IsDreamweaver = prospectConfiguration.IsDreamweaver;               
+                return await _prospectConfigurationRepository.Update(existingConfig);
+            }
+            else
+            {
+                var defaultConfig = GetDefaultProspectConfigurations();
+                defaultConfig.UserId = userId;
+                defaultConfig.PartnerId = partnerId;
+                existingConfig.IsDreamweaver = prospectConfiguration.IsDreamweaver;
                 return await _prospectConfigurationRepository.Insert(defaultConfig);
             }
         }
@@ -187,6 +206,7 @@ namespace BHI.SalesArchitect.Service.Implementations
                 NhtbuilderNumber = string.Empty,
                 ShowExteriorColorScheme = false,
                 IsSecured = false,
+                HoldAlotButtonText = "Hold a Lot"
             };
         }        
         #endregion

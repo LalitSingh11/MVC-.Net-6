@@ -10,9 +10,14 @@ namespace BHI.SalesArchitect.Service.Implementations
         {
             _lotRepository = lotRepository;
         }
-        public IEnumerable<Lot> GetByCommId(int commId)
+        public async Task<IEnumerable<Lot>> GetByCommId(int commId)
         {
-            return _lotRepository.GetByCommunityID(commId);
+            return await _lotRepository.GetByCommunityID(commId);
+        }
+
+        public async Task<IEnumerable<Lot>> GetByConfigId(int configId)
+        {
+            return await _lotRepository.GetByConfigId(configId);
         }
 
         public async Task<Lot> GetByID(int lotId)
@@ -20,6 +25,11 @@ namespace BHI.SalesArchitect.Service.Implementations
             var lot = await _lotRepository.GetByID(lotId);
             //lot.ImagePath = GetLotImagePath(lot.Id);
             return lot;
+        }
+
+        public async Task<bool> UpdateByLotStateId(int lotStateId)
+        {
+            return await _lotRepository.UpdateByLotStateId(lotStateId);
         }
 
         public async Task<bool> UpdateLot(Lot lot)

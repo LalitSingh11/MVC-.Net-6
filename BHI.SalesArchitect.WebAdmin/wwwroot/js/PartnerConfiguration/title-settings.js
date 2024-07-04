@@ -13,7 +13,6 @@ async function setTitleSettings() {
         let inputValue = item.configValue;
         $('#popupTitleSettingsForm input[name="' + inputName + '"]').val(inputValue);
     });
-    console.log(popUpData);
 }
 
 async function updateTitleSettings() {

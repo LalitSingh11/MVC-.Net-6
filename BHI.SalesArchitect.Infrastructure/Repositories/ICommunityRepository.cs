@@ -7,6 +7,9 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
     {
         IEnumerable<GridCommunityResult> GetProcDataByPartnerId(int partnerId);
         Task<IEnumerable<Community>> GetByCommunityIds(List<int> communityIds);
+        Task<IEnumerable<Community>> GetBySiteIds(List<int> siteIds);
+        Task<Community> GetByCommunityId(int communityId);
+        Task<IEnumerable<Community>> GetActiveCommunitiesByCommunityIds(List<int> communityIds);
         Task<IEnumerable<Community>> GetByPartnerIdAndByUserId(int partnerId, int userId);
         Task<IEnumerable<Community>> GetCommunitiesByPartnerId(int partnerId);
 

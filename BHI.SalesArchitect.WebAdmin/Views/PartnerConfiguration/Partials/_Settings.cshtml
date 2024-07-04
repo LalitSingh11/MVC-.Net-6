@@ -90,7 +90,8 @@
     <div class="m-2">
         <b>Selected Lot Outline Color <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">This color will determine the outline color for selected lots on the map.</span> </span></b>
         <br />
-            <input type="color" name="lotOutlineColor" id="outlineColor" />
+            <input type="color" name="lotOutlineColor" id="lotOutlineColor" />
+            <button type="button" class="colorResetBtn" onclick="resetColor('#0375EE', 'lotOutlineColor')">Reset</button>
     </div>
     <div class="m-2">
         <b>Lot Premium Optional Display <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">When enabled, this will modify pricing display. 2 or more plans assigned to a lot will display premium + base in the right rail as ‘Starting at’. A single plan assigned to a lot will display Lot Premium value as ‘Priced at’.</span> </span></b>

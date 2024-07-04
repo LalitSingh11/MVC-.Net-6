@@ -1,0 +1,16 @@
+﻿.table-scrollable {
+    overflow-y: auto;
+    max-height: 420px;
+}
+
+    .table-scrollable thead th {
+        position: sticky;
+        top: 0;
+        background-color:white;
+    }
+.colorResetBtn {
+    border: none;
+    background: none;
+    padding: 0;
+    color: blue;
+}

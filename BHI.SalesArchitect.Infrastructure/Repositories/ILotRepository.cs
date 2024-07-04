@@ -5,7 +5,9 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
     public interface ILotRepository
     {
         IEnumerable<Lot> GetBySiteID(int siteId);
-        IEnumerable<Lot> GetByCommunityID(int commId);
+        Task<IEnumerable<Lot>> GetByConfigId(int configId);
+        Task<bool> UpdateByLotStateId(int lotStateId);
+        Task<IEnumerable<Lot>> GetByCommunityID(int commId);
         IEnumerable<Lot> GetByPartnerID(int partnerId);
         Task<Lot> GetByID(int lotId);
         Task<bool> UpdateLot(Lot lot);

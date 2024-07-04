@@ -4,6 +4,7 @@ namespace BHI.SalesArchitect.Service
 {
     public interface ICommunitySiteService
     {
-        Task<IEnumerable<CommunitySite>> GetActiveCommunitySitesAsync(List<int> communityIds);
+        Task<IEnumerable<CommunitySite>> GetActiveCommunitySites(List<int> communityIds);
+        Task<CommunitySite> GetByCommunityId(int communityId);
     }
 }

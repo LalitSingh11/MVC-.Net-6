@@ -1,16 +1,18 @@
 ﻿<div class="container-fluid">
     <br />
-    <h6>Dreamweaver Client <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">No plans are available on all lots with exclusions</span> </span></h6>
-    <div class="form-check form-check-inline m-1">
-        <input class="form-check-input" type="radio" name="isDreamweaver" id="dreamweaverRadio1" value="true">
-        <label class="form-check-label" for="dreamweaverRadio1">Yes</label>
-    </div>
-    <div class="form-check form-check-inline m-1">
-        <input class="form-check-input" type="radio" name="isDreamweaver" id="dreamweaverRadio2" value="false">
-        <label class="form-check-label" for="dreamweaverRadio2">No</label>
-    </div>
+    <form id="dreamweaverConfigurationForm">
+        <h6>Dreamweaver Client <span class="tooltip-container"> <i class="bi bi-question-circle text-primary"></i> <span class="tooltip-content">No plans are available on all lots with exclusions</span> </span></h6>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isDreamweaver" id="dreamweaverRadio1" value="true">
+            <label class="form-check-label" for="dreamweaverRadio1">Yes</label>
+        </div>
+        <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="isDreamweaver" id="dreamweaverRadio2" value="false">
+            <label class="form-check-label" for="dreamweaverRadio2">No</label>
+        </div>
+    </form>
     <br />
-    <div  class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
         <div id="dreamweaver_grid">
             <table id="Dreamweaver_Grid"></table><div id="pager"></div>
         </div>
@@ -20,7 +22,7 @@
     <br />
     <nav class="navbar fixed-bottom navbar-expand-lg bg-light justify-content-center">
         <footer class="footer">
-            <button type="button" class="btn btn-primary" onclick="">Save changes</button>
+            <button type="button" class="btn btn-primary" onclick="updateDreamweaverConfiguration();">Save changes</button>
             <button type="button" class="btn" onclick="setSettingsValues();">Cancel</button>
         </footer>
     </nav>

@@ -1,5 +1,7 @@
-﻿namespace BHI.SalesArchitect.Model.DB;
+﻿using System.Diagnostics;
 
+namespace BHI.SalesArchitect.Model.DB;
+[DebuggerDisplay("Id={Id}")]
 public partial class CommunityConfiguration
 {
     public int Id { get; set; }
@@ -12,7 +14,7 @@ public partial class CommunityConfiguration
 
     public int ActivityStateId { get; set; }
 
-    public bool? HoldAlotStatus { get; set; }
+    public bool HoldAlotStatus { get; set; }
 
     public bool IncludeDwstatus { get; set; }
 

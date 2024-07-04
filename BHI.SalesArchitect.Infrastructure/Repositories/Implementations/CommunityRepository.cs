@@ -14,26 +14,53 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<Community>> GetActiveCommunitiesByCommunityIds(List<int> communityIds)
+        {
+            var result = from c in _dbContext.Communities
+                         join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
+                         where communityIds.Contains(c.Id)
+                         select c;
+            return await result.ToListAsync();
+        }
+
+        public Task<Community> GetByCommunityId(int communityId)
+        {
+            var result = from c in _dbContext.Communities
+                        join m in _dbContext.Markets on c.MarketId equals m.Id
+                        join acts in _dbContext.ActivityStates on c.ActivityStateId equals acts.Id
+                        where c.Id == communityId
+                        select c;
+            return result.FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Community>> GetByCommunityIds(List<int> communityIds)
         {
-            var query = from c in _dbContext.Communities
+            var result = from c in _dbContext.Communities
                         join m in _dbContext.Markets on c.MarketId equals m.Id
                         join acts in _dbContext.ActivityStates on c.ActivityStateId equals acts.Id
                         where communityIds.Contains(c.Id)
                         select c;
-                        
-
-            return await query.ToListAsync();
+            return await result.ToListAsync();
         }
 
         public async Task<IEnumerable<Community>> GetByPartnerIdAndByUserId(int partnerId, int userId)
         {
-            var query  = from c in _dbContext.Communities
-                                    join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
-                                    join cu in _dbContext.CommunityUsers on c.Id equals cu.CommunityId
-                                    where pc.PartnerId == partnerId && cu.UserId == userId
-                                    select c;
-            return await query.ToListAsync();
+            var result = from c in _dbContext.Communities
+                         join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
+                         join cu in _dbContext.CommunityUsers on c.Id equals cu.CommunityId
+                         where pc.PartnerId == partnerId && cu.UserId == userId
+                         select c;
+            return await result.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Community>> GetBySiteIds(List<int> siteIds)
+        {
+            var result = from c in _dbContext.Communities
+                         join cs in _dbContext.CommunitySites on c.Id equals cs.CommunityId
+                         join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
+                         where siteIds.Contains(cs.SiteId)
+                         select c;
+            return await result.ToListAsync();
         }
 
         public async Task<IEnumerable<Community>> GetCommunitiesByPartnerId(int partnerId)
@@ -42,8 +69,8 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories.Implementations
                          join m in _dbContext.Markets on c.MarketId equals m.Id
                          join acts in _dbContext.ActivityStates on c.ActivityStateId equals acts.Id
                          join pc in _dbContext.PartnerCommunities on c.Id equals pc.CommunityId
-                        where pc.PartnerId == partnerId
-                        select c;
+                         where pc.PartnerId == partnerId
+                         select c;
             return await result.ToListAsync();
         }
 

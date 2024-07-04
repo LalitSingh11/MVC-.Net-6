@@ -12,6 +12,7 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBuilderBrandService, BuilderBrandService>();
             services.AddScoped<ICommunityService, CommunityService>();
+            services.AddScoped<ICommunityConfigurationService, CommunityConfigurationService>();
             services.AddScoped<ICommunitySiteService, CommunitySiteService>();
             services.AddScoped<ICommunityUserService, CommunityUserService>();
             services.AddScoped<ICommunitySiteGeoJsonService, CommunitySiteGeoJsonService>();
@@ -25,6 +26,7 @@ namespace BHI.SalesArchitect.DependencyResolver
             services.AddScoped<IPartnerService, PartnerService>();
             services.AddScoped<IProspectConfigurationService, ProspectConfigurationService>();
             services.AddScoped<IProspectCommunityService, ProspectCommunityService>();
+            services.AddScoped<IPointOfInterestService, PointOfInterestService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ISiteService, SiteService>();
             services.AddScoped<ISessionService, SessionService>();

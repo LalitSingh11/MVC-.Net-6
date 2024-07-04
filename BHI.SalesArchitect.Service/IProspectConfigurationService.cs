@@ -9,5 +9,6 @@ namespace BHI.SalesArchitect.Service
         Task<bool> SaveIspPartnerConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
         Task<bool> SaveHoldALotConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
         Task<bool> SavePdfConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
+        Task<bool> SaveDreamweaverConfiguration(int partnerId, int userId, ProspectConfiguration prospectConfiguration);
     }
 }

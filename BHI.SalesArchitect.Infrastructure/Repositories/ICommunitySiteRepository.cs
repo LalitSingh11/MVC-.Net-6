@@ -4,7 +4,9 @@ namespace BHI.SalesArchitect.Infrastructure.Repositories
 {
     public interface ICommunitySiteRepository
     {
-        Task<IEnumerable<CommunitySite>> GetActiveCommunitySitesAsync(List<int> communityIds);
+        Task<IEnumerable<CommunitySite>> GetActiveCommunitySites(List<int> communityIds);
+        Task<CommunitySite> GetByCommunityId(int communityId);
+
         
     }
 }
