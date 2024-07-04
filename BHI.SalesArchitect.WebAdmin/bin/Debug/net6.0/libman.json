@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jqgrid@5.8.5",
+      "destination": "wwwroot/lib/jqgrid/"
+    },
+    {
+      "library": "jqueryui@1.13.2",
+      "destination": "wwwroot/lib/jqueryui/"
+    },
+    {
+      "library": "jquery.serializeJSON@3.2.1",
+      "destination": "wwwroot/lib/jquery.serializeJSON/"
+    },
+    {
+      "library": "bootstrap-icons@1.10.5",
+      "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "library": "bootstrap-modal@2.2.6",
+      "destination": "wwwroot/lib/bootstrap-modal/"
+    },
+    {
+      "library": "ckeditor5@39.0.1",
+      "destination": "wwwroot/lib/ckeditor5/"
+    }
+  ]
+}

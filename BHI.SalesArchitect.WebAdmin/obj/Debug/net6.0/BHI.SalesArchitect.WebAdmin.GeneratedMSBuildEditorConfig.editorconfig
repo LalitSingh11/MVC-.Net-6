@@ -1,0 +1,359 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = BHI.SalesArchitect.WebAdmin
+build_property.RootNamespace = BHI.SalesArchitect.WebAdmin
+build_property.ProjectDir = D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.WebAdmin\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.WebAdmin
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBY2NvdW50XExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBY2NvdW50XFJlZ2lzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/AssociateMasterPlan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxBc3NvY2lhdGVNYXN0ZXJQbGFuLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/EditCustomizedContent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxFZGl0Q3VzdG9taXplZENvbnRlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/EditLotStatusName.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxFZGl0TG90U3RhdHVzTmFtZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/LoadGeoJson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxMb2FkR2VvSnNvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/LoadHomeElevation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxMb2FkSG9tZUVsZXZhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/LoadMap.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxMb2FkTWFwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/LoadMasterPlanMap.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxMb2FkTWFzdGVyUGxhbk1hcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Admin/LoadUpdateData.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBZG1pblxMb2FkVXBkYXRlRGF0YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Apps/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBcHBzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/AppVersion/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xBcHBWZXJzaW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Communities/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xDb21tdW5pdGllc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/GeoJsonISP/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xHZW9Kc29uSVNQXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/GeoJsonISP/Index_old.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xHZW9Kc29uSVNQXEluZGV4X29sZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/GeoJsonISP/PdfFileNotAvailable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xHZW9Kc29uSVNQXFBkZkZpbGVOb3RBdmFpbGFibGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/HelpDocuments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xIZWxwRG9jdW1lbnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/NewHomeNavigator/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xOZXdIb21lTmF2aWdhdG9yXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/PartnerAdministration/CreateUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xQYXJ0bmVyQWRtaW5pc3RyYXRpb25cQ3JlYXRlVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/PartnerAdministration/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xQYXJ0bmVyQWRtaW5pc3RyYXRpb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/PartnerConfiguration/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xQYXJ0bmVyQ29uZmlndXJhdGlvblxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Policy/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xQb2xpY3lcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Prospects/AddProspect.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xQcm9zcGVjdHNcQWRkUHJvc3BlY3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Prospects/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xQcm9zcGVjdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Prospects/Partials/_prospectPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xQcm9zcGVjdHNcUGFydGlhbHNcX3Byb3NwZWN0UGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Reports/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xSZXBvcnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/GoogleAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcR29vZ2xlQW5hbHl0aWNzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/svgLayerRow.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcc3ZnTGF5ZXJSb3cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_communityList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2NvbW11bml0eUxpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_communityTitleSettings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2NvbW11bml0eVRpdGxlU2V0dGluZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_customizedContent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2N1c3RvbWl6ZWRDb250ZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_designStudio.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2Rlc2lnblN0dWRpby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_dreamweaverSettings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2RyZWFtd2VhdmVyU2V0dGluZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_externalLink.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2V4dGVybmFsTGluay5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_googleAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2dvb2dsZUFuYWx5dGljcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_HoldALotRequest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX0hvbGRBTG90UmVxdWVzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_HoldALotRequestGeo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX0hvbGRBTG90UmVxdWVzdEdlby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_holdALotSettings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2hvbGRBTG90U2V0dGluZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_interactiveMedia.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2ludGVyYWN0aXZlTWVkaWEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_ISPNotAvailable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX0lTUE5vdEF2YWlsYWJsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_ispPartnerSettings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX2lzcFBhcnRuZXJTZXR0aW5ncy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_manageAppsMenu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX21hbmFnZUFwcHNNZW51LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_menu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX21lbnUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_modal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX21vZGFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_partnerConfiguration.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3BhcnRuZXJDb25maWd1cmF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_pdfSettings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3BkZlNldHRpbmdzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_popupTitleSettings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3BvcHVwVGl0bGVTZXR0aW5ncy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_qrCodePdf.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3FyQ29kZVBkZi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_requestInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3JlcXVlc3RJbmZvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_resourceCentre.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3Jlc291cmNlQ2VudHJlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_resourceCentreGrids.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3Jlc291cmNlQ2VudHJlR3JpZHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_rightPanel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3JpZ2h0UGFuZWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/Partials/_sessionDialog.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcUGFydGlhbHNcX3Nlc3Npb25EaWFsb2cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaGFyZWRcX0xvZ2luUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteMapPreview/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlTWFwUHJldmlld1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteMapPreview/MasterSitePlan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlTWFwUHJldmlld1xNYXN0ZXJTaXRlUGxhbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteMapPreview/NewIsp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlTWFwUHJldmlld1xOZXdJc3AuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteMapPreview/OldIsp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlTWFwUHJldmlld1xPbGRJc3AuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteMapPreview/SitePlanForIntuifaceKiosk.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlTWFwUHJldmlld1xTaXRlUGxhbkZvckludHVpZmFjZUtpb3NrLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteMapPreview/SitePlanImageConversion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlTWFwUHJldmlld1xTaXRlUGxhbkltYWdlQ29udmVyc2lvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteOverview/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlT3ZlcnZpZXdcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteOverview/NewIsp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlT3ZlcnZpZXdcTmV3SXNwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteOverview/OldIsp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlT3ZlcnZpZXdcT2xkSXNwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/SiteOverview/PdfFileNotAvailable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xTaXRlT3ZlcnZpZXdcUGRmRmlsZU5vdEF2YWlsYWJsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/UserManagement/CreateUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xVc2VyTWFuYWdlbWVudFxDcmVhdGVVc2VyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/UserManagement/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xVc2VyTWFuYWdlbWVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/wwwroot/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdFxWaWV3c1xfVmlld1N0YXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/AssociateMasterPlan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQXNzb2NpYXRlTWFzdGVyUGxhbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/EditCustomizedContent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdEN1c3RvbWl6ZWRDb250ZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/EditLotStatusName.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdExvdFN0YXR1c05hbWUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/LoadGeoJson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9hZEdlb0pzb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/LoadHomeElevation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9hZEhvbWVFbGV2YXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/LoadMap.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9hZE1hcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/LoadMasterPlanMap.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9hZE1hc3RlclBsYW5NYXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Admin/LoadUpdateData.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9hZFVwZGF0ZURhdGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Communities/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbXVuaXRpZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SalesArchitect-Core/BHI.SalesArchitect.WebAdmin/BHI.SalesArchitect.WebAdmin/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-felr5vyuag

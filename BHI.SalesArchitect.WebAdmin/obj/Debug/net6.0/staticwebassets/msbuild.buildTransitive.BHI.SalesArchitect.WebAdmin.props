@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\BHI.SalesArchitect.WebAdmin.props" />
+</Project>

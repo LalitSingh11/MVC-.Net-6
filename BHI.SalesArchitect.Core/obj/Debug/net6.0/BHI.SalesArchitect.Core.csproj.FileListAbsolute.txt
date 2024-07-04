@@ -1,0 +1,12 @@
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\bin\Debug\net6.0\BHI.SalesArchitect.Core.deps.json
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\bin\Debug\net6.0\BHI.SalesArchitect.Core.dll
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\bin\Debug\net6.0\BHI.SalesArchitect.Core.pdb
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\BHI.SalesArchitect.Core.csproj.AssemblyReference.cache
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\BHI.SalesArchitect.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\BHI.SalesArchitect.Core.AssemblyInfoInputs.cache
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\BHI.SalesArchitect.Core.AssemblyInfo.cs
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\BHI.SalesArchitect.Core.csproj.CoreCompileInputs.cache
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\BHI.SalesArchitect.Core.dll
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\refint\BHI.SalesArchitect.Core.dll
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\BHI.SalesArchitect.Core.pdb
+D:\SalesArchitect-Core\BHI.SalesArchitect.WebAdmin\BHI.SalesArchitect.Core\obj\Debug\net6.0\ref\BHI.SalesArchitect.Core.dll
